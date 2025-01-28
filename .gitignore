@@ -129,6 +129,7 @@ dist
 .env
 .code
 .idea
+.vscode
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
