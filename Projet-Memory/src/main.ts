@@ -1,14 +1,23 @@
-import './assets/main.css'
+import './assets/main.css';
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import piniaPersist from 'pinia-plugin-persistedstate';
+import localforage from 'localforage';
+import App from './App.vue';
+import router from './router';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+localforage.config({
+    name: 'memoryApp',
+    storeName: 'pinia_store',
+});
 
-import App from './App.vue'
-import router from './router'
+const pinia = createPinia();
+pinia.use(piniaPersist);
 
-const app = createApp(App)
+const app = createApp(App);
+app.use(pinia);
+app.use(router);
+app.mount('#app');
 
-app.use(createPinia())
-app.use(router)
 
-app.mount('#app')
+// registerSW({ immediate: true });
