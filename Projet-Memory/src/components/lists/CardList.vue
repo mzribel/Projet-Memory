@@ -27,25 +27,23 @@ const isFormOpen = ref(false);
 const currentCard = ref<Card | null>(null);
 
 const openForm = () => {
-  currentCard.value = null; // Nouveau formulaire
+  currentCard.value = null;
   isFormOpen.value = true;
 };
 
 const editCard = (card: Card) => {
-  currentCard.value = card; // Charger une carte existante
+  currentCard.value = card;
   isFormOpen.value = true;
 };
 
 const saveCard = (card: Card) => {
   if (card.id) {
-    // Mise à jour
     const index = cards.value.findIndex((c) => c.id === card.id);
     if (index !== -1) cards.value[index] = card;
   } else {
-    // Ajout
     cards.value.push({
       ...card,
-      id: Date.now().toString(), // Générer un ID fictif
+      id: Date.now().toString(), // Générer un ID unique
     });
   }
   closeForm();
@@ -62,8 +60,8 @@ const closeForm = () => {
 
 <template>
   <div>
-    <h2 class="text-2xl font-bold mb-4">Cartes de révision</h2>
-    <button @click="openForm()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">
+    <h2 class="">Cartes de révision</h2>
+    <button @click="openForm()" class="">
       Ajouter une carte
     </button>
     <div v-if="cards.length">
@@ -76,7 +74,7 @@ const closeForm = () => {
       />
     </div>
     <div v-else>
-      <p>Aucune carte disponible. Créez-en une !</p>
+      <p>Aucune carte disponible. Créez-en une !</p>
     </div>
     <CardForm
         v-if="isFormOpen"
@@ -88,5 +86,4 @@ const closeForm = () => {
 </template>
 
 <style scoped>
-/* Ajoute des styles si nécessaire */
 </style>

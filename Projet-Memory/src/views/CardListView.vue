@@ -24,8 +24,8 @@ const addCardToCategory = (card: Card) => {
 
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-6">Thèmes dans {{ category?.name }}</h1>
-    <p class="text-gray-700 mb-4">{{ category?.description }}</p>
+    <h1 class="">Thèmes dans {{ category?.name }}</h1>
+    <p class="">{{ category?.description }}</p>
 
     <CardList :cards="cards" />
     <CardForm :categoryId="categoryId" @addCard="addCardToCategory"  :card="null"/>

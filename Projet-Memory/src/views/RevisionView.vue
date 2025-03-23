@@ -5,7 +5,7 @@ import CategoryList from "@/components/lists/CategoryList.vue";
 
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-6">Session de révision</h1>
+    <h1 class="">Session de révision</h1>
     <RevisionSession />
   </div>
 </template>

@@ -37,8 +37,8 @@ const closeForm = () => {
 
 <template>
   <div>
-    <h2 class="text-2xl font-bold mb-4">Thèmes de la catégorie</h2>
-    <button @click="openForm()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">
+    <h2 class="">Thèmes de la catégorie</h2>
+    <button @click="openForm()" class="">
       Ajouter un thème
     </button>
     <div v-if="themes.length">
@@ -63,5 +63,4 @@ const closeForm = () => {
 </template>
 
 <style scoped>
-/* Ajoute des styles si nécessaire */
 </style>

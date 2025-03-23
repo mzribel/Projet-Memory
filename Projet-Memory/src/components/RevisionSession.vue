@@ -23,7 +23,7 @@ const markMemorized = () => {
 
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-4">Session de révision</h1>
+    <h1 class="">Session de révision</h1>
     <ProgressTracker :current="currentIndex" :total="cards.length" />
     <RevisionCard
         :card="cards[currentIndex]"
@@ -34,5 +34,4 @@ const markMemorized = () => {
 </template>
 
 <style scoped>
-/* Ajoute des styles si nécessaire */
 </style>

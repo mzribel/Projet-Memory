@@ -14,15 +14,15 @@ const goToLocation = (id: string) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow mb-2">
+  <div >
     <div>
-      <h3 class="text-lg font-semibold">{{ category.name }}</h3>
-      <p class="text-sm text-gray-600">{{ category.description || 'Pas de description' }}</p>
+      <h3 >{{ category.name }}</h3>
+      <p >{{ category.description || 'Pas de description' }}</p>
     </div>
-    <div class="flex items-center space-x-2">
-      <button @click="goToLocation(category.id)" class="text-blue-600 hover:underline">Voir détails</button>
-      <button @click="emit('edit', category)" class="text-blue-600 hover:underline">Modifier</button>
-      <button @click="emit('delete', category.id)" class="text-red-600 hover:underline">Supprimer</button>
+    <div >
+      <button @click="goToLocation(category.id)">Voir détails</button>
+      <button @click="emit('edit', category)">Modifier</button>
+      <button @click="emit('delete', category.id)">Supprimer</button>
     </div>
   </div>
 </template>

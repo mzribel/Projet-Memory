@@ -44,45 +44,42 @@ const save = () => {
 </script>
 
 <template>
-  <div class="bg-white shadow-lg p-6 rounded-lg">
-    <h2 class="text-lg font-bold mb-4">
+  <div >
+    <h2 >
       {{ card ? 'Modifier la carte' : 'Ajouter une carte' }}
     </h2>
     <form @submit.prevent="save">
-      <div class="mb-4">
-        <label for="front" class="block text-sm font-medium text-gray-700">Recto</label>
+      <div >
+        <label for="front">Recto</label>
         <textarea
             v-model="form.front"
             id="front"
             rows="3"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
             required
         ></textarea>
       </div>
-      <div class="mb-4">
-        <label for="back" class="block text-sm font-medium text-gray-700">Verso</label>
+      <div >
+        <label for="back">Verso</label>
         <textarea
             v-model="form.back"
             id="back"
             rows="3"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
             required
         ></textarea>
       </div>
-      <div class="mb-4">
-        <label for="multimedia" class="block text-sm font-medium text-gray-700">Média (URL)</label>
+      <div >
+        <label for="multimedia">Média (URL)</label>
         <input
             v-model="form.multimedia"
             type="url"
             id="multimedia"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
         />
       </div>
-      <div class="flex justify-end space-x-2">
-        <button type="button" @click="$emit('close')" class="px-4 py-2 bg-gray-200 rounded">
+      <div >
+        <button type="button" @click="$emit('close')" >
           Annuler
         </button>
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
+        <button type="submit" >
           Sauvegarder
         </button>
       </div>
@@ -91,5 +88,4 @@ const save = () => {
 </template>
 
 <style scoped>
-/* Ajoute des styles si nécessaire */
 </style>

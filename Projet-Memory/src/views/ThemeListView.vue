@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { useCategoryStore } from '@/stores/categoryStore';
 import { useThemeStore } from '@/stores/themeStore';
 import { useRoute } from 'vue-router';
@@ -24,7 +23,7 @@ const addThemeToCategory = (theme: Theme, categorieId: number) => {
 
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-6">Thèmes</h1>
+    <h1 >Thèmes</h1>
 
     <ThemeList :themes="themes" />
     <ThemeForm :categoryId="categoryId" @addTheme="addThemeToCategory"  :theme="null"/>

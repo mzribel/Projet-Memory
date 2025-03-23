@@ -2,9 +2,13 @@
 import Navbar from './components/Navbar.vue';
 </script>
 <template>
-  <div>
-    <Navbar />
-    <router-view />
-  </div>
+  <Navbar />
+  <router-view class="main-ctn"/>
 </template>
 
+<style scoped>
+
+.main-ctn {
+  margin-top: 20px;
+}
+</style>
