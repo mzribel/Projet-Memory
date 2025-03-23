@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import type { Theme } from '@/types/Theme.ts';
+import { computed, ref } from 'vue';
 import ThemeItem from '../items/ThemeItem.vue';
 import ThemeForm from '../forms/ThemeForm.vue';
-import { useThemeStore } from "@/stores/themeStore.ts";
+import { useThemeStore } from '@/stores/themeStore';
+import type { Theme } from '@/types/Theme.ts';
 
 const themeStore = useThemeStore();
-const themes = themeStore.themes;
 
 const isFormOpen = ref(false);
 const currentTheme = ref<Theme | null>(null);
 
-const openForm = () => {
+const openFormToCreateTheme = () => {
   currentTheme.value = null;
   isFormOpen.value = true;
 };
@@ -21,27 +20,31 @@ const editTheme = (theme: Theme) => {
   isFormOpen.value = true;
 };
 
-const saveTheme = (theme: Theme) => {
-  themeStore.addThemeOrUpdateIt(theme);
+const saveTheme = async (theme: Theme) => {
+  await themeStore.addThemeOrUpdateIt(theme);
   closeForm();
-};
-
-const deleteTheme = (themeId: string) => {
-  themeStore.deleteThemeById(themeId);
 };
 
 const closeForm = () => {
   isFormOpen.value = false;
 };
+
+const themes = computed(() => themeStore.themes);
+const isLoaded = computed(() => themeStore.isLoaded);
+const deleteTheme = themeStore.deleteThemeById;
 </script>
 
 <template>
   <div>
-    <h2 class="">Thèmes de la catégorie</h2>
-    <button @click="openForm()" class="">
-      Ajouter un thème
+    <h2 class="">Liste des themes</h2>
+    <button @click="openFormToCreateTheme()"
+            class="">
+      Ajouter un theme
     </button>
-    <div v-if="themes.length">
+
+
+    <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
+    <div v-else-if="themes.length">
       <ThemeItem
           v-for="theme in themes"
           :key="theme.id"
@@ -51,8 +54,10 @@ const closeForm = () => {
       />
     </div>
     <div v-else>
-      <p>Aucun thème disponible. Créez-en un !</p>
+      <p>Aucune catégorie disponible .</p>
     </div>
+
+
     <ThemeForm
         v-if="isFormOpen"
         :theme="currentTheme"

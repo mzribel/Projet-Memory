@@ -67,7 +67,7 @@ const save = () => {
         <button type="button" @click="$emit('close')">
           Annuler
         </button>
-        <button type="submit">
+        <button type="submit" @click="save">
           Sauvegarder
         </button>
       </div>

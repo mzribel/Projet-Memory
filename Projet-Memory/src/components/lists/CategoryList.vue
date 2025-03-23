@@ -43,6 +43,7 @@ const deleteCategory = categoryStore.deleteCategoryById;
       Ajouter une catégorie
     </button>
 
+
     <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
     <div v-else-if="categories.length">
       <CategoryItem
@@ -56,6 +57,8 @@ const deleteCategory = categoryStore.deleteCategoryById;
     <div v-else>
       <p>Aucune catégorie disponible .</p>
     </div>
+
+
     <CategoryForm
         v-if="isFormOpen"
         :category="currentCategory"
