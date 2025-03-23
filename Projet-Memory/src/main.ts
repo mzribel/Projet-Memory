@@ -5,6 +5,7 @@ import piniaPersist from 'pinia-plugin-persistedstate';
 import localforage from 'localforage';
 import App from './App.vue';
 import router from './router';
+import './index.css';
 
 localforage.config({
     name: 'memoryApp',
@@ -19,5 +20,3 @@ app.use(pinia);
 app.use(router);
 app.mount('#app');
 
-
-// registerSW({ immediate: true });

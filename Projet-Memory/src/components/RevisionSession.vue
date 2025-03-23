@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { Card } from '@/types/Card';
 import ProgressTracker from './ProgressTracker.vue';
 import RevisionCard from './RevisionCard.vue';
 import { useCardStore } from "@/stores/cardStore.ts";

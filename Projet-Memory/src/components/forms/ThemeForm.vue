@@ -15,6 +15,7 @@ const form = ref<Theme>({
   name: '',
   description: '',
   cardCount: 0,
+  isThemeSelected: false,
 });
 
 watch(
@@ -29,6 +30,7 @@ watch(
           name: '',
           description: '',
           cardCount: 0,
+          isThemeSelected: false,
         };
       }
     },

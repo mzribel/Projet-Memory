@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import {computed, onMounted, ref} from 'vue';
 import type { Theme } from '@/types/Theme';
 import {db} from "@/database.ts";
-// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 
 export const useThemeStore = defineStore('theme', () => {
@@ -45,6 +44,24 @@ export const useThemeStore = defineStore('theme', () => {
         return await db.themes.where('categoryId').equals(id).toArray();
     }
 
+    const setThemeSelected = async (id: string) => {
+        const theme = await db.themes.get(id);
+        if (theme) {
+            theme.isThemeSelected = true;
+            await db.themes.put(theme);
+            await loadThemes();
+        }
+    }
+
+    const setThemeUnselected = async (id: string) => {
+        const theme = await db.themes.get(id);
+        if (theme) {
+            theme.isThemeSelected = false;
+            await db.themes.put(theme);
+            await loadThemes();
+        }
+    }
+
 
     onMounted(loadThemes);
     return {
@@ -55,6 +72,8 @@ export const useThemeStore = defineStore('theme', () => {
         deleteThemeByCategoryId,
         loadThemes,
         getThemeById,
-        getThemesByCategoryId
+        getThemesByCategoryId,
+        setThemeSelected,
+        setThemeUnselected
     };
 });

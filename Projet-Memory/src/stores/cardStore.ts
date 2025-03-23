@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import {onMounted, ref, computed} from 'vue';
 import { db } from '@/database.ts';
 import type { Card } from '@/types/Card';
-// @ts-ignore
 import { v4 as uuidv4 } from 'uuid';
 
 export const useCardStore = defineStore('card', () => {

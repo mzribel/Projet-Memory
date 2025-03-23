@@ -5,4 +5,5 @@ export interface Theme {
     name: string; // Nom du thème
     description?: string; // Description du thème (optionnelle)
     cardCount: number; // Nombre de cartes associées
+    isThemeSelected: boolean; // Thème sélectionné pour la révision
 }
