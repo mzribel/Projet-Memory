@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router';
 import CardList from '@/components/lists/CardList.vue';
 import CardForm from '@/components/forms/CardForm.vue';
 import type { Card } from '@/types/Card.ts';
+import LayoutDefault from "@/layouts/LayoutDefault.vue";
 
 const route = useRoute();
 const categoryId = route.params.id as string;
@@ -23,13 +24,15 @@ const addCardToCategory = (card: Card) => {
 </script>
 
 <template>
-  <div>
-    <h1 class="">Thèmes dans {{ category?.name }}</h1>
-    <p class="">{{ category?.description }}</p>
+  <layout-default>
+    <div>
+      <h1 class="">Thèmes dans {{ category?.name }}</h1>
+      <p class="">{{ category?.description }}</p>
 
-    <CardList :cards="cards" />
-    <CardForm :categoryId="categoryId" @addCard="addCardToCategory"  :card="null"/>
-  </div>
+      <CardList :cards="cards" />
+      <CardForm :categoryId="categoryId" @addCard="addCardToCategory"  :card="null"/>
+    </div>
+  </layout-default>
 </template>
 
 <style scoped>

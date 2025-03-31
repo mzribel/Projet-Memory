@@ -24,5 +24,4 @@ const props = defineProps<{
 </template>
 
 <style scoped>
-/* Ajoute des styles si nécessaire */
 </style>

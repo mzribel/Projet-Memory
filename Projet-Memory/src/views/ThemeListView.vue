@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import ThemeList from '@/components/lists/ThemeList.vue';
 import ThemeForm from '@/components/forms/ThemeForm.vue';
 import type { Theme } from '@/types/Theme.ts';
+import LayoutDefault from "@/layouts/LayoutDefault.vue";
 
 const route = useRoute();
 const themeStore = useThemeStore();
@@ -17,11 +18,13 @@ const addThemeToCategory = (theme: Theme, categorieId: number) => {
 </script>
 
 <template>
-  <div>
-    <h1 >Thèmes</h1>
+  <layout-default>
+    <div>
+      <h1 >Thèmes</h1>
 
-    <ThemeList :themes="themes" />
-  </div>
+      <ThemeList :themes="themes" />
+    </div>
+  </layout-default>
 </template>
 
 <style scoped>

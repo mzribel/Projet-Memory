@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
 import type { Card } from '@/types/Card.ts';
 
 const props = defineProps<{

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineProps, defineEmits } from 'vue';
 import type { Category } from '@/types/Category.ts';
 
 const props = defineProps<{

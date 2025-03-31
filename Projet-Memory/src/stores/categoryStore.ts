@@ -28,7 +28,7 @@ export const useCategoryStore = defineStore('category', () => {
     };
 
     const getCategoryById = async (id: string) => {
-        return await db.categories.get(id);
+        return db.categories.get(id);
     }
 
     const deleteCategoryById = async (id: string) => {
