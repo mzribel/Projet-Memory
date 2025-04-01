@@ -1,6 +1,5 @@
 
 <script lang="ts" setup>
-import { defineProps } from 'vue';
 import type { Theme } from '@/types/Theme.ts';
 
 const props = defineProps<{

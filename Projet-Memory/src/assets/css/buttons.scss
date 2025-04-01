@@ -1,0 +1,89 @@
+button {
+  all: unset;
+  height: 35px;
+  width: fit-content;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 100px;
+  gap: 8px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: all .1s ease-in-out;
+  label {
+    pointer-events: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &.large {
+    height: 45px;
+  }
+
+  &.fab-btn {
+    border-radius: 10px;
+  }
+  &.round,
+  &.icon-btn {
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+  &.square {
+    aspect-ratio: 1;
+    padding: 0;
+  }
+
+  // Standard
+    &.primary, & {
+      &:hover {
+        background-color: rgba(101, 85, 143, .1);
+      }
+    }
+    &.secondary:hover {
+      background-color: rgb(50, 47, 53, .1);
+    }
+  // Tonal
+    &.tonal {
+      background-color: rgba(101, 85, 143, .1);
+      &:hover {
+        background-color: rgba(101, 85, 143, .2);
+      }
+      &.secondary {
+        background-color: rgba(50, 47, 53, 0.1);
+        &:hover {
+          background-color: rgba(50, 47, 53, 0.2);
+        }
+      }
+    }
+
+  // Filled
+  &.filled {
+    background-color: rgba(101, 85, 143);
+    color: white;
+    &:hover {
+      opacity: 0.9;
+    }
+    &.secondary {
+      background-color: rgb(50, 47, 53);
+    }
+  }
+
+  // Outlined
+  &.outlined {
+    border-color: rgba(101, 85, 143, 0.3);
+    &:hover {
+      border-color: rgba(101, 85, 143);
+      background-color: transparent;
+    }
+    &.secondary {
+      border-color: rgba(50, 47, 53, 0.3);
+      &:hover {
+        border-color: rgba(50, 47, 53);
+        background-color: transparent;
+      }
+    }
+  }
+}

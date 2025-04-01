@@ -1,16 +1,33 @@
 <script setup lang="ts">
+import {ref} from "vue";
+import type { Card as CardData } from "@/types/Card.ts";
+import CardFace from "@/components/card/CardFace.vue";
+
+const isFlipped = ref(false)
+const flipCard = () => {
+  isFlipped.value = !isFlipped.value;
+}
+
+const { cardData, showOptions } = defineProps<{
+  cardData:CardData,
+  showOptions?:boolean
+}>();
+
+
 </script>
 
 <template>
-  <div class="flip-card">
+  <div class="flip-card" :class="isFlipped ? 'flipped' : ''" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <img src="" alt="Avatar" style="width:300px;height:300px;">
+        <CardFace :show-options="showOptions" :is-question="true" :level="[1,3]">
+          {{ cardData.front }}
+        </CardFace>
       </div>
       <div class="flip-card-back">
-        <h1>John Doe</h1>
-        <p>Architect & Engineer</p>
-        <p>We love that guy</p>
+        <CardFace :show-options="showOptions" :is-question="false" :level="[1,3]">
+          {{ cardData.back }}
+        </CardFace>
       </div>
     </div>
   </div>
@@ -20,9 +37,8 @@
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
-  width: 300px;
-  height: 200px;
-  border: 1px solid #f1f1f1;
+  width: 500px;
+  height: 300px;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
 
@@ -32,12 +48,12 @@
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.25s;
+  transition: transform 0.3s;
   transform-style: preserve-3d;
 }
 
 /* Do an horizontal flip when you move the mouse over the flip box container */
-.flip-card:hover .flip-card-inner {
+.flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
 
@@ -46,19 +62,24 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
+  cursor: pointer;
 }
 
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
-  background-color: #bbb;
+  border-radius: 8px;
+  background-color: #ececec;
   color: black;
 }
 
 /* Style the back side */
 .flip-card-back {
-  background-color: dodgerblue;
+  border-radius: 8px;
+  background-color: black;
   color: white;
   transform: rotateY(180deg);
 }
