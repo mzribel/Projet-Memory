@@ -4,6 +4,7 @@ export interface Card {
     themeId: string;
     front: string;
     back: string;
-    multimedia?: string;
+    multimediaFront?: string;
+    multimediaBack?: string;
     level: number; // Niveau de révision
 }

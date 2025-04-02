@@ -1,13 +1,8 @@
-
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import type { PropType } from 'vue';
 import type { Card } from '@/types/Card.ts';
 
-const props = defineProps<{
-  card: Card | null;
-}>();
-
+const props = defineProps<{ card: Card | null }>();
 const emit = defineEmits(['save', 'close']);
 
 const form = ref<Card>({
@@ -15,7 +10,8 @@ const form = ref<Card>({
   themeId: '',
   front: '',
   back: '',
-  multimedia: '',
+  multimediaFront: '',
+  multimediaBack: '',
   level: 0,
 });
 
@@ -30,7 +26,8 @@ watch(
           themeId: '',
           front: '',
           back: '',
-          multimedia: '',
+          multimediaFront: '',
+          multimediaBack: '',
           level: 0,
         };
       }
@@ -38,50 +35,53 @@ watch(
     { immediate: true }
 );
 
+const handleFileUpload = (event: Event, isFront: boolean) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    const file = target.files[0];
+    const fileURL = URL.createObjectURL(file).slice(5);
+    console.log('file', file);
+
+
+    if (isFront) {
+      form.value.multimediaFront = file;
+    } else {
+      form.value.multimediaBack = file;
+    }
+  }
+};
+
 const save = () => {
   emit('save', form.value);
 };
 </script>
-
 <template>
-  <div >
-    <h2 >
-      {{ card ? 'Modifier la carte' : 'Ajouter une carte' }}
-    </h2>
+  <div>
+    <h2>{{ card ? 'Modifier la carte' : 'Ajouter une carte' }}</h2>
     <form @submit.prevent="save">
-      <div >
+      <div>
         <label for="front">Recto</label>
-        <textarea
-            v-model="form.front"
-            id="front"
-            rows="3"
-            required
-        ></textarea>
+        <textarea v-model="form.front" id="front" rows="3" required></textarea>
+        <div>
+          <label for="multimediaFront">Média côté recto</label>
+          <input type="file" id="multimediaFront" accept="image/*,video/*,audio/*" @change="handleFileUpload($event, true)">
+          <p v-if="form.multimediaFront">Fichier actuel : {{ form.multimediaFront }}</p>
+        </div>
       </div>
-      <div >
+
+      <div>
         <label for="back">Verso</label>
-        <textarea
-            v-model="form.back"
-            id="back"
-            rows="3"
-            required
-        ></textarea>
+        <textarea v-model="form.back" id="back" rows="3" required></textarea>
+        <div>
+          <label for="multimediaBack">Média côté verso</label>
+          <input type="file" id="multimediaBack" accept="image/*,video/*,audio/*" @change="handleFileUpload($event, false)">
+          <p v-if="form.multimediaBack">Fichier actuel : {{ form.multimediaBack }}</p>
+        </div>
       </div>
-      <div >
-        <label for="multimedia">Média (URL)</label>
-        <input
-            v-model="form.multimedia"
-            type="url"
-            id="multimedia"
-        />
-      </div>
-      <div >
-        <button type="button" @click="$emit('close')" >
-          Annuler
-        </button>
-        <button type="submit" >
-          Sauvegarder
-        </button>
+
+      <div>
+        <button type="button" @click="$emit('close')">Annuler</button>
+        <button type="submit">Sauvegarder</button>
       </div>
     </form>
   </div>
