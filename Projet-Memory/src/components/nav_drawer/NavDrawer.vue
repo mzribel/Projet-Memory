@@ -14,7 +14,7 @@ const menu = [{
       title:"Réviser",
       icon: "fa-solid fa-book",
       subtitle: "24 cartes aujourd'hui",
-      link: "/revision"
+      link: "/practice"
     },
     {
       title:"Mes catégories",

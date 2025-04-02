@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useThemeStore } from '@/stores/themeStore';
+import { useThemeStore } from '@/stores/themeStore.ts';
 import ThemeList from '@/components/lists/ThemeList.vue';
 import type { Theme } from '@/types/Theme.ts';
 import LayoutDefault from "@/layouts/LayoutDefault.vue";

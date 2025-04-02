@@ -1,32 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CategoryListView from '@/views/CategoryListView.vue';
-import ThemeListView from '@/views/ThemeListView.vue';
-import RevisionView from '@/views/RevisionView.vue';
-import CardListView from "@/views/CardListView.vue";
-import SettingsView from "@/views/SettingsView.vue";
-import TestView from "@/views/TestView.vue";
+import SettingsView from "@/views/settings/SettingsView.vue";
+import TestView from "@/views/test/TestView.vue";
 import NotFound from "@/views/NotFound.vue";
-import CategoryView from "@/views/CategoryView.vue";
-import ThemeView from "@/views/ThemeView.vue";
+import HomeView from "@/views/HomeView.vue";
+import CategoriesView from "@/views/categories/CategoriesView.vue";
+import CategoryDetailView from "@/views/categories/CategoryDetailView.vue";
+import ThemesView from "@/views/themes/ThemesView.vue";
+import ThemeDetailView from "@/views/themes/ThemeDetailView.vue";
+import PracticeView from "@/views/practice/PracticeView.vue";
 
 const routes = [
-  { path: '/', name: 'Home', component: CategoryListView },
-  { path: '/categories', name: 'Categories', component: CategoryListView },
-  { path: '/themes', name: 'ThemeListView', component: ThemeListView },
-  { path: '/themes/:themeId', name: 'Theme', component: ThemeView },
-  { path: '/cards', name: 'CardListView', component: CardListView },
-  { path: '/revision', name: 'Revision', component: RevisionView },
-  { path: '/categories/:categoryId', name: 'Category', component: CategoryView },
-  { path:'/settings', name: 'Settings', component: SettingsView},
-  {
-    path: "/test",
-    name:"Test",
-    meta: {
-      layout: 'footer-only'
-    },
-    component:
-      TestView
-  },
+  { path: "/test", name:"Test", component: TestView }, // TODO : Remove
+
+  { path: '/', name: 'Home', component: HomeView },
+  { path: '/categories', name: 'Categories', component: CategoriesView },
+  { path: '/categories/:categoryId', name: 'Category', component: CategoryDetailView },
+  { path: '/themes', name: 'ThemeListView', component: ThemesView },
+  { path: '/themes/:themeId', name: 'Theme', component: ThemeDetailView },
+  { path: '/practice', name: 'Practice', component: PracticeView },
+  { path: '/settings', name: 'Settings', component: SettingsView},
   { path: '/404', name: "Not Found !", component: NotFound },
   { path: '/:pathMatch(.*)', redirect: '/404', hidden: true },
 ];

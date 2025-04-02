@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { defineProps, computed } from 'vue';
 import type { Theme } from '@/types/Theme.ts';
 import router from "@/router";
 import { useThemeStore } from "@/stores/themeStore.ts";
