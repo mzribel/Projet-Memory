@@ -15,6 +15,7 @@ const routes = [
   { path: '/cards', name: 'CardListView', component: CardListView },
   { path: '/revision', name: 'Revision', component: RevisionView },
   { path: '/category/:categoryId', name: 'Category', component: CategoryView },
+  { path: '/theme/:themeId', name: 'Theme', component: CardListView },
   { path:'/settings', name: 'Settings', component: SettingsView},
   {
     path: "/test",
