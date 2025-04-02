@@ -36,12 +36,12 @@ export const useThemeStore = defineStore('theme', () => {
         await loadThemes();
     }
 
-    const getThemeById = async (id: string) => {
-        return await db.themes.get(id);
+    const getThemeById = (id: string) => {
+        return themes.value.find((theme) => theme.id === id);
     }
 
-    const getThemesByCategoryId = async (id: string) => {
-        return await db.themes.where('categoryId').equals(id).toArray();
+    const getThemesByCategoryId = (id: string) => {
+        return themes.value.filter((theme) => theme.categoryId === id);
     }
 
     const setThemeSelected = async (id: string) => {
@@ -62,6 +62,15 @@ export const useThemeStore = defineStore('theme', () => {
         }
     }
 
+    const setThemeCardCount = async (id: string, cardCount: number) => {
+        const theme = await db.themes.get(id);
+        if (theme) {
+            theme.cardCount = cardCount;
+            await db.themes.put(theme);
+            await loadThemes();
+        }
+    }
+
 
     onMounted(loadThemes);
     return {
@@ -74,6 +83,7 @@ export const useThemeStore = defineStore('theme', () => {
         getThemeById,
         getThemesByCategoryId,
         setThemeSelected,
-        setThemeUnselected
+        setThemeUnselected,
+        setThemeCardCount
     };
 });

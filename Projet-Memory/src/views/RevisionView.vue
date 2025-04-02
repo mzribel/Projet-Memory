@@ -7,7 +7,6 @@ import LayoutDefault from "@/layouts/LayoutDefault.vue";
 <template>
   <layout-default>
     <div>
-      <h1 class="">Session de révision</h1>
       <RevisionSession />
     </div>
   </layout-default>

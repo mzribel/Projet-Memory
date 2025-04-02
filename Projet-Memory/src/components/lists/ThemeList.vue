@@ -54,7 +54,7 @@ const deleteTheme = themeStore.deleteThemeById;
       />
     </div>
     <div v-else>
-      <p>Aucune catégorie disponible .</p>
+      <p>Aucun theme disponible.</p>
     </div>
 
 

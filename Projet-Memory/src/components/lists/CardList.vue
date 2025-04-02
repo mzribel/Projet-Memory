@@ -1,27 +1,18 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import type { Card } from '@/types/Card.ts';
 import CardItem from '../items/CardItem.vue';
 import CardForm from '../forms/CardForm.vue';
+import {useCardStore} from "@/stores/cardStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
 
-const cards = ref<Card[]>([
-  {
-    id: '1',
-    themeId: '1',
-    front: 'Chat',
-    back: 'Cat',
-    multimedia: '',
-    level: 1,
-  },
-  {
-    id: '2',
-    themeId: '1',
-    front: 'Chien',
-    back: 'Dog',
-    multimedia: '',
-    level: 1,
-  },
-]);
+const props = defineProps<{
+  themeId: string;
+}>();
+
+const cardStore = useCardStore();
+const themeStore = useThemeStore();
+const cards = computed(() => cardStore.getCardsByThemeId(props.themeId));
 
 const isFormOpen = ref(false);
 const currentCard = ref<Card | null>(null);
@@ -37,20 +28,15 @@ const editCard = (card: Card) => {
 };
 
 const saveCard = (card: Card) => {
-  if (card.id) {
-    const index = cards.value.findIndex((c) => c.id === card.id);
-    if (index !== -1) cards.value[index] = card;
-  } else {
-    cards.value.push({
-      ...card,
-      id: Date.now().toString(), // Générer un ID unique
-    });
-  }
+  card.themeId = props.themeId;
+  cardStore.addCard(card);
+  themeStore.setThemeCardCount(props.themeId, cards.value.length + 1);
   closeForm();
 };
 
 const deleteCard = (cardId: string) => {
-  cards.value = cards.value.filter((c) => c.id !== cardId);
+  cardStore.deleteCardById(cardId);
+  themeStore.setThemeCardCount(props.themeId, cards.value.length - 1);
 };
 
 const closeForm = () => {
@@ -64,10 +50,16 @@ const closeForm = () => {
     <button @click="openForm()" class="">
       Ajouter une carte
     </button>
-    <div v-if="cards.length">
+    <CardForm
+      v-if="isFormOpen"
+      :card="currentCard"
+      @save="saveCard"
+      @close="closeForm"
+    />
+    <div v-if="cards">
+
       <CardItem
           v-for="card in cards"
-          :key="card.id"
           :card="card"
           @edit="editCard"
           @delete="deleteCard"
@@ -76,12 +68,7 @@ const closeForm = () => {
     <div v-else>
       <p>Aucune carte disponible. Créez-en une !</p>
     </div>
-    <CardForm
-        v-if="isFormOpen"
-        :card="currentCard"
-        @save="saveCard"
-        @close="closeForm"
-    />
+
   </div>
 </template>
 
