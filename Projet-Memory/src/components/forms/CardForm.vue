@@ -35,24 +35,23 @@ watch(
     { immediate: true }
 );
 
+const frontFile = ref<File | null>(null);
+const backFile = ref<File | null>(null);
+
 const handleFileUpload = (event: Event, isFront: boolean) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files[0]) {
     const file = target.files[0];
-    const fileURL = URL.createObjectURL(file).slice(5);
-    console.log('file', file);
-
-
     if (isFront) {
-      form.value.multimediaFront = file;
+      frontFile.value = file;
     } else {
-      form.value.multimediaBack = file;
+      backFile.value = file;
     }
   }
 };
 
 const save = () => {
-  emit('save', form.value);
+  emit('save', form.value, frontFile.value, backFile.value);
 };
 </script>
 <template>

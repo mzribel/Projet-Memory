@@ -27,9 +27,9 @@ const editCard = (card: Card) => {
   isFormOpen.value = true;
 };
 
-const saveCard = (card: Card) => {
+const saveCard = (card: Card, multimediaFront?:File, multimediaBack?:File) => {
   card.themeId = props.themeId;
-  cardStore.addCard(card);
+  cardStore.addCard(card, multimediaFront, multimediaBack);
   themeStore.setThemeCardCount(props.themeId, cards.value.length + 1);
   closeForm();
 };

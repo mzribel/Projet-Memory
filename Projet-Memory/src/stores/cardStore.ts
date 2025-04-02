@@ -34,13 +34,13 @@ export const useCardStore = defineStore('card', () => {
             card.multimediaBack = `${card.id}-back`;
         }
 
-        await db.cards.put(card);
+        await db.cards.put(JSON.parse(JSON.stringify(card)));
         await loadCards();
     };
 
     const getFileById = async (fileId: string): Promise<Blob | null> => {
         const fileEntry = await db.files.get(fileId);
-        return fileEntry ? new Blob([fileEntry.file]) : null;
+        return fileEntry ? new Blob([fileEntry.file], { type: fileEntry.file.type }) : null;
     };
 
     const deleteCardById = async (id: string) => {
@@ -50,6 +50,10 @@ export const useCardStore = defineStore('card', () => {
         await loadCards();
     };
 
+    const getCardsByThemeId = (themeId: string) => {
+        return cards.value.filter(card => card.themeId === themeId);
+    }
+
     onMounted(loadCards);
 
     return {
@@ -58,6 +62,7 @@ export const useCardStore = defineStore('card', () => {
         addCard: addCardOrUpdateIt,
         deleteCardById,
         getFileById,
-        loadCards
+        loadCards,
+        getCardsByThemeId
     };
 });

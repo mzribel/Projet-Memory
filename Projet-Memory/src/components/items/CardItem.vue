@@ -1,23 +1,36 @@
 <script lang="ts" setup>
 import type { Card } from '@/types/Card.ts';
+import { useCardStore } from "@/stores/cardStore.ts";
+import { onMounted, ref, computed } from "vue";
 
 const props = defineProps<{ card: Card }>();
 const emit = defineEmits(['edit', 'delete']);
+const cardStore = useCardStore();
 
+const cardFileFront = ref<Blob | null>(null);
+const cardFileBack = ref<Blob | null>(null);
+const cardFileFrontUrl = ref<string | null>(null);
+const cardFileBackUrl = ref<string | null>(null);
 
+onMounted(async () => {
+  if (props.card.multimediaFront) {
+    const file = await cardStore.getFileById(props.card.multimediaFront);
+    if (file) {
+      cardFileFront.value = file;
+      cardFileFrontUrl.value = URL.createObjectURL(file);
+    }
+  }
+  if (props.card.multimediaBack) {
+    const file = await cardStore.getFileById(props.card.multimediaBack);
+    if (file) {
+      cardFileBack.value = file;
+      cardFileBackUrl.value = URL.createObjectURL(file);
+    }
+  }
+});
 
-// const getMediaType = (file?: File): 'image' | 'video' | 'audio' | 'unknown' => {
-//   if (!file) return 'unknown';
-//
-//   const extension = file.name.split('.').pop()?.toLowerCase();
-//   if (!extension) return 'unknown';
-//
-//   if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
-//   if (['mp4', 'webm', 'ogg'].includes(extension)) return 'video';
-//   if (['mp3', 'wav', 'ogg', 'flac'].includes(extension)) return 'audio';
-//
-//   return 'unknown';
-// };
+const cardFileFrontType = computed(() => cardFileFront.value?.type || '');
+const cardFileBackType = computed(() => cardFileBack.value?.type || '');
 </script>
 
 <template>
@@ -26,17 +39,21 @@ const emit = defineEmits(['edit', 'delete']);
       <p>Recto:</p>
       <p>{{ card.front }}</p>
 
-      <template v-if="card.multimediaFront">
-        <p>feur</p>
-<!--        <p>{{ getMediaType(card.multimediaFront) }}</p>-->
+      <template v-if="cardFileFrontUrl">
+        <p>Fichier attaché :</p>
+        <img v-if="cardFileFrontType.startsWith('image')" :src="cardFileFrontUrl" alt="Recto image" />
+        <video v-else-if="cardFileFrontType.startsWith('video')" :src="cardFileFrontUrl" controls />
+        <audio v-else-if="cardFileFrontType.startsWith('audio')" :src="cardFileFrontUrl" controls />
       </template>
 
       <p>Verso:</p>
       <p>{{ card.back }}</p>
 
-      <template v-if="card.multimediaBack">
-        {{card.multimediaBack.name}}
-<!--        {{getMediaType(card.multimediaBack)}}-->
+      <template v-if="cardFileBackUrl">
+        <p>Fichier attaché :</p>
+        <img v-if="cardFileBackType.startsWith('image')" :src="cardFileBackUrl" alt="Verso image" />
+        <video v-else-if="cardFileBackType.startsWith('video')" :src="cardFileBackUrl" controls />
+        <audio v-else-if="cardFileBackType.startsWith('audio')" :src="cardFileBackUrl" controls />
       </template>
     </div>
 
@@ -48,4 +65,10 @@ const emit = defineEmits(['edit', 'delete']);
 </template>
 
 <style scoped>
+img, video {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin-top: 10px;
+}
 </style>
