@@ -4,6 +4,7 @@ import ProgressTracker from './ProgressTracker.vue';
 import RevisionCard from './RevisionCard.vue';
 import { useCardStore } from "@/stores/cardStore.ts";
 
+
 const cards = useCardStore().cards;
 const currentIndex = ref(0);
 

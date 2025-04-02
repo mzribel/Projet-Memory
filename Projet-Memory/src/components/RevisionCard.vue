@@ -15,13 +15,16 @@ const showBack = ref(false);
 
 const flipCard = () => {
   showBack.value = true;
+  console.log('flipCard to value : ' + showBack.value);
 };
 
 const markMemorized = () => {
+  showBack.value = false;
   emit('memorized');
 };
 
 const nextCard = () => {
+  showBack.value = false;
   emit('next');
 };
 </script>
@@ -29,8 +32,15 @@ const nextCard = () => {
 <template>
   <div class="">
     <h2 class="">Carte de révision</h2>
-    <div v-if="showBack">
-      <p class="">{{ card?.back }}</p>
+    <div v-if="!card">t'as pas mis de cartes enculé</div>
+    <div v-else-if="!showBack" if="!showBack">
+      <p class="">{{ card?.front }} front</p>
+      <button @click="flipCard" class="">
+        Retourner
+      </button>
+    </div>
+    <div v-else-if="showBack">
+      <p class="">{{ card?.back }} back</p>
       <div v-if="card?.multimedia">
         <p class="">Multimédia :</p>
         <a :href="card?.multimedia" target="_blank" class="">

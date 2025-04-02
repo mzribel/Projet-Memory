@@ -1,18 +1,30 @@
-
 <script lang="ts" setup>
+import { defineProps, computed } from 'vue';
 import type { Theme } from '@/types/Theme.ts';
+import router from "@/router";
+import { useThemeStore } from "@/stores/themeStore.ts";
 
-const props = defineProps<{
-  theme: Theme;
-}>();
+const props = defineProps<{ theme: Theme }>();
+const themeStore = useThemeStore();
+
+
+const toggleThemeSelection = () => {
+  if (props.theme.isThemeSelected) {
+    themeStore.setThemeUnselected(props.theme.id);
+  } else {
+    themeStore.setThemeSelected(props.theme.id);
+  }
+};
+
+const goToThemeCards = () => {
+  router.push(`/theme/${props.theme.id}`);
+};
 </script>
 
 <template>
   <div class="">
     <div>
-      <router-link :to="`/themes/${theme.id}`"><h3 class="">{{ theme.name }}</h3></router-link>
-      <p>ID : {{ theme.id }}</p>
-      <p>Catégorie : {{ theme.categoryId ? theme.categoryId : "Pas de catégorie associée"}}</p>
+      <h3 class="">{{ theme.name }}</h3>
       <p class="">
         {{ theme.description || 'Pas de description' }} - {{ theme.cardCount }} carte(s)
       </p>
@@ -21,9 +33,58 @@ const props = defineProps<{
       <router-link :to="`/themes/${theme.id}`"><button>Détails</button></router-link>
       <button @click="$emit('edit', theme)" >Modifier</button>
       <button @click="$emit('delete', theme.id)" >Supprimer</button>
+
+      <label class="switch">
+        <input type="checkbox" :checked="theme.isThemeSelected" @change="toggleThemeSelection">
+        <span class="slider"></span>
+      </label>
     </div>
   </div>
 </template>
 
 <style scoped>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
 </style>
