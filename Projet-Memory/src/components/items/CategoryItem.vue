@@ -8,7 +8,7 @@ const props = defineProps<{
 const emit = defineEmits(['edit', 'delete']);
 
 const goToLocation = (id: string) => {
-  window.location.href = '/category/' + id;
+  window.location.href = '/categories/' + id;
 };
 </script>
 

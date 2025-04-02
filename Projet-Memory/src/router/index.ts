@@ -7,14 +7,16 @@ import SettingsView from "@/views/SettingsView.vue";
 import TestView from "@/views/TestView.vue";
 import NotFound from "@/views/NotFound.vue";
 import CategoryView from "@/views/CategoryView.vue";
+import ThemeView from "@/views/ThemeView.vue";
 
 const routes = [
   { path: '/', name: 'Home', component: CategoryListView },
   { path: '/categories', name: 'Categories', component: CategoryListView },
   { path: '/themes', name: 'ThemeListView', component: ThemeListView },
+  { path: '/themes/:themeId', name: 'Theme', component: ThemeView },
   { path: '/cards', name: 'CardListView', component: CardListView },
   { path: '/revision', name: 'Revision', component: RevisionView },
-  { path: '/category/:categoryId', name: 'Category', component: CategoryView },
+  { path: '/categories/:categoryId', name: 'Category', component: CategoryView },
   { path:'/settings', name: 'Settings', component: SettingsView},
   {
     path: "/test",

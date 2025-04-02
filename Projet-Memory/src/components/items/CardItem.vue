@@ -23,6 +23,7 @@ const emit = defineEmits(['edit', 'delete']);
       </div>
     </div>
     <div >
+      <router-link :to="`/cards/${card.id}`"><button>Détails</button></router-link>
       <button @click="$emit('edit', card)">Modifier</button>
       <button @click="$emit('delete', card.id)">Supprimer</button>
     </div>

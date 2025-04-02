@@ -16,7 +16,7 @@ let category = ref<Category>();
 
 onMounted(async () => {
   category.value = await categoryStore.getCategoryById(categoryID);
-  if (!category) { await router.push("/404") }
+  if (!category.value) { await router.push("/404") }
 })
 </script>
 
