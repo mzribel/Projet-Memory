@@ -25,7 +25,7 @@ const goToThemeCards = () => {
     <div>
       <h3 class="">{{ theme.name }}</h3>
       <p class="">
-        {{ theme.description || 'Pas de description' }} - {{ theme.cardCount }} carte(s)
+        {{ theme.description || 'Pas de description' }}
       </p>
     </div>
     <div >
