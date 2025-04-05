@@ -5,4 +5,5 @@ export interface Theme {
     name: string;
     description?: string;
     isThemeSelected: boolean; // Thème sélectionné pour la révision
+    levelToReview: number; // Niveau de révision du thème
 }

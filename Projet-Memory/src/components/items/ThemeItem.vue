@@ -15,9 +15,10 @@ const toggleThemeSelection = () => {
   }
 };
 
-const goToThemeCards = () => {
-  router.push(`/theme/${props.theme.id}`);
+const updateThemeSelectedLevel = (theme: Theme) => {
+  themeStore.addThemeOrUpdateIt(theme);
 };
+
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const goToThemeCards = () => {
       </p>
     </div>
     <div >
-      <router-link :to="`/themes/${theme.id}`"><button>Détails</button></router-link>
+      <router-link :to="`/themes/${theme.id}`"><button>Voir les cartes</button></router-link>
       <button @click="$emit('edit', theme)" >Modifier</button>
       <button @click="$emit('delete', theme.id)" >Supprimer</button>
 
@@ -37,6 +38,18 @@ const goToThemeCards = () => {
         <input type="checkbox" :checked="theme.isThemeSelected" @change="toggleThemeSelection">
         <span class="slider"></span>
       </label>
+
+      <div v-if="theme.isThemeSelected">
+        <label for="levelToReview">Niveau de révision</label>
+        <select id="levelToReview" v-model="theme.levelToReview" @change="updateThemeSelectedLevel(theme)">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+
     </div>
   </div>
 </template>

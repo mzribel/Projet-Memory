@@ -15,6 +15,7 @@ const form = ref<Theme>({
   name: '',
   description: '',
   isThemeSelected: false,
+  levelToReview: 5,
 });
 
 watch(
@@ -29,6 +30,7 @@ watch(
           name: '',
           description: '',
           isThemeSelected: false,
+          levelToReview: 5,
         };
       }
     },
