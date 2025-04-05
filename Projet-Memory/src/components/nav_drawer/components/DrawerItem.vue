@@ -1,36 +1,35 @@
 <script setup lang="ts">
 
-export interface IDrawerItem {
+defineProps<{
   title:string,
   subtitle?:string,
   icon?:string,
   details?:string,
   link?:string
-}
-
-defineProps<{ item: IDrawerItem, isTitle?:boolean }>();
+  isTitle?:boolean }
+>();
 
 </script>
 
 <template>
   <div v-if="isTitle" class="nav-element title">
-    {{ item.title }}
+    {{ title }}
   </div>
 <!--   here -->
   <component
     v-else class="nav-element item"
-    :is="item.link ? 'router-link' : 'div'"
-    v-bind="item.link ? { to: item.link } : {}">
+    :is="link ? 'router-link' : 'div'"
+    v-bind="link ? { to: link } : {}">
     <div class="left">
-      <i v-if="item.icon" :class="item.icon"></i>
+      <i v-if="icon" :class="icon"></i>
       <div>
-        <span class="item-title">{{ item.title }}</span>
-        <div v-if="item.subtitle" class="item-details">
-          {{ item.subtitle }}
+        <span class="item-title">{{ title }}</span>
+        <div v-if="subtitle" class="item-details">
+          {{ subtitle }}
         </div>
       </div>
     </div>
-    <div class="right">{{ item.details }}</div>
+    <div class="right">{{ details }}</div>
 <!--    here -->
   </component>
 </template>

@@ -1,23 +1,22 @@
 <script setup lang="ts">
+import DrawerItem from "@/components/nav_drawer/components/DrawerItem.vue";
 
-import DrawerItem, {type IDrawerItem} from "@/components/nav_drawer/components/DrawerItem.vue";
+defineProps<{
+  title?:string
+  empty_message?:string
+}>();
 
-export interface IDrawerCategory {
-  title?:string,
-  options:IDrawerItem[],
-  empty_msg?:string
-}
-defineProps<{ category: IDrawerCategory }>();
 </script>
 
 <template>
   <div class="nav-category">
-    <DrawerItem v-if="category.title" :item="{title: category.title}" :is-title="true"></DrawerItem>
-    <div v-if="category.options.length > 0" class="item-ctn">
-      <DrawerItem v-for="item in category.options" :item="item"></DrawerItem>
+    <DrawerItem v-if="title" :title="title" :is-title="true"></DrawerItem>
+    <div v-if="$slots.default" class="item-ctn">
+      <slot></slot>
     </div>
-    <div v-else-if="category.empty_msg" class="no-item">
-      {{ category.empty_msg }}
+    <div v-else-if="empty_message" class="no-item">
+      {{ empty_message }}
+      hiyo
     </div>
   </div>
 </template>

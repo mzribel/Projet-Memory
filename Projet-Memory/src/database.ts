@@ -13,7 +13,7 @@ class MemoryDatabase extends Dexie {
         super('MemoryAppDB');
         this.version(1).stores({
             categories: 'id, name, description',
-            themes: 'id, categoryId, name, description, cardCount, isThemeSelected',
+            themes: 'id, categoryId, name, description, isThemeSelected',
             cards: 'id, themeId, front, back, multimediaFront, multimediaBack, level',
             files: 'id',
         });

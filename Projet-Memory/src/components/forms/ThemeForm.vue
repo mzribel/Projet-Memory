@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {ref, watch} from 'vue';
 import type {Theme} from '@/types/Theme.ts';
+import {useCategoryStore} from "@/stores/categoryStore.ts";
 
 const props = defineProps<{
   theme: Theme | null;
@@ -13,7 +14,6 @@ const form = ref<Theme>({
   categoryId: '',
   name: '',
   description: '',
-  cardCount: 0,
   isThemeSelected: false,
   levelToReview: 5,
 });
@@ -29,7 +29,6 @@ watch(
           categoryId: '',
           name: '',
           description: '',
-          cardCount: 0,
           isThemeSelected: false,
           levelToReview: 5,
         };
@@ -37,6 +36,8 @@ watch(
     },
     {immediate: true}
 );
+
+const categoryStore = useCategoryStore();
 
 const save = () => {
   emit('save', form.value);
@@ -64,6 +65,10 @@ const save = () => {
             v-model="form.description"
             rows="3"
         ></textarea>
+        <select id="category" v-model="form.categoryId">
+          <option value="">Choisir une catégorie</option>
+          <option v-for="category in categoryStore.categories" :value="category.id">{{ category.name }}</option>
+        </select>
       </div>
       <div >
         <button type="button" @click="$emit('close')">

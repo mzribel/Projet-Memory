@@ -3,6 +3,8 @@ import Navbar from './../components/Navbar.vue';
 import NavDrawer from "@/components/nav_drawer/NavDrawer.vue";
 import Footer from "@/components/Footer.vue";
 
+
+
 </script>
 <template>
   <Navbar />
