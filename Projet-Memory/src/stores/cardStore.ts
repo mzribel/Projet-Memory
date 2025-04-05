@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import { db } from '@/database.ts';
 import type { Card } from '@/types/Card';
 import { v4 as uuidv4 } from 'uuid';
+import type {Theme} from "@/types/Theme.ts";
 
 export const useCardStore = defineStore('card', () => {
     const cards = ref<Card[]>([]);
@@ -34,6 +35,7 @@ export const useCardStore = defineStore('card', () => {
             card.multimediaBack = `${card.id}-back`;
         }
 
+        console.log("card", card);
         await db.cards.put(JSON.parse(JSON.stringify(card)));
         await loadCards();
     };
@@ -54,15 +56,20 @@ export const useCardStore = defineStore('card', () => {
         return cards.value.filter(card => card.themeId === themeId);
     }
 
+    const getCardsByThemeList = (themeList: Theme[]) => {
+        return cards.value.filter(card => themeList.find(theme => theme.id === card.themeId && card.level <= theme.levelToReview));
+    }
+
     onMounted(loadCards);
 
     return {
         cards: computed(() => cards.value),
         isLoaded: computed(() => isLoaded.value),
-        addCard: addCardOrUpdateIt,
+        addCardOrUpdateIt,
         deleteCardById,
         getFileById,
         loadCards,
-        getCardsByThemeId
+        getCardsByThemeId,
+        getCardsByThemeList,
     };
 });

@@ -15,6 +15,7 @@ const form = ref<Theme>({
   description: '',
   cardCount: 0,
   isThemeSelected: false,
+  levelToReview: 5,
 });
 
 watch(
@@ -30,6 +31,7 @@ watch(
           description: '',
           cardCount: 0,
           isThemeSelected: false,
+          levelToReview: 5,
         };
       }
     },

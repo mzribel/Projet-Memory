@@ -71,6 +71,10 @@ export const useThemeStore = defineStore('theme', () => {
         }
     }
 
+    const getSelectedThemes = () => {
+        return themes.value.filter(theme => theme.isThemeSelected);
+    }
+
 
     onMounted(loadThemes);
     return {
@@ -84,6 +88,7 @@ export const useThemeStore = defineStore('theme', () => {
         getThemesByCategoryId,
         setThemeSelected,
         setThemeUnselected,
-        setThemeCardCount
+        setThemeCardCount,
+        getSelectedThemes
     };
 });

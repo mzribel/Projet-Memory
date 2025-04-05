@@ -6,4 +6,5 @@ export interface Theme {
     description?: string;
     cardCount: number;
     isThemeSelected: boolean; // Thème sélectionné pour la révision
+    levelToReview: number; // Niveau de révision du thème
 }
