@@ -36,11 +36,9 @@ export const useCategoryStore = defineStore('category', () => {
         await loadCategories();
     };
 
-    onMounted(loadCategories);
-
     return {
-        categories : computed(() => categories.value),
-        isLoaded : computed(() => isLoaded.value),
+        categories : categories,
+        isLoaded : isLoaded,
         addCategory: addCategoryOrUpdateIt,
         deleteCategoryById,
         loadCategories,

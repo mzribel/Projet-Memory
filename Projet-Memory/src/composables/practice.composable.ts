@@ -1,0 +1,106 @@
+import type {Card} from "@/types/Card.ts";
+import arrayShuffle from "array-shuffle";
+import {computed} from "vue";
+import {useCardStore} from "@/stores/cardStore.ts";
+
+export const practiceComposable = () => {
+    // Intervalles de révisions
+    const reviewInterval = (n:number, initial:number=1, factor:number=2) => {
+        return Math.round(initial*Math.pow(factor, n));
+    }
+    const generateReviewInterval = (count:number=7, initial:number=1, factor:number=2) => {
+        return Array.from({ length: count}, (_, i) => reviewInterval(i, initial, factor));
+    }
+
+    // Calcul de la nouvelle date de révision
+    const getNextReviewDate = (level: number, factor:number=2) => {
+        let newDate = new Date();
+        newDate.setDate(newDate.getDate() + reviewInterval(level-1, 1, factor));
+        newDate.setHours(0, 0, 0, 0);
+        return newDate;
+    };
+
+    // Récupération des cartes
+    const cardIsDue = (card:Card, maxLevel:number) => {
+        const now = new Date();
+
+        // Pas de niveau défini ou niveau maximum dépassé
+        if (!card.currentLevel || card.currentLevel >= maxLevel) return false;
+
+        // La carte est due si pas de date de review ou date de review passée
+        if (!card.nextReviewAt) return;
+        // Comparaison des dates
+        return (!card.nextReviewAt || new Date(card.nextReviewAt) <= now);
+    }
+    const getNewCards = (cards:Card[], newCardsPerDay?:number) => {
+        let newCards = cards.filter((card: Card) => !card.currentLevel)
+
+        // Pas de limite, ou nombre de cartes sous la limite
+        if (!newCardsPerDay || newCards.length <= newCardsPerDay) {
+            return newCards;
+        }
+
+        // Shuffle les cartes et en retourne un nombre correspondant à la limite
+        return arrayShuffle(newCards).slice(0, newCardsPerDay);
+    }
+    const getCardsToPractice = (cards:Card[], maxLevel:number, newCardsPerDay:number) => {
+        let cardsToPractice: Card[] = [];
+
+        // Cartes dues aujourd'hui
+        cardsToPractice = cards
+            .filter((card: Card) => cardIsDue(card, maxLevel))
+            .sort((a: Card, b: Card) => b.currentLevel - a.currentLevel);
+
+        // Nouvelles cartes
+        cardsToPractice.push(... getNewCards(cards, newCardsPerDay));
+        return cardsToPractice;
+    }
+
+    // Actions sur les cartes
+    const reviewCard = async (card:Card, maxLevel:number, direction:1|-1=1) => {
+        let cardStore = useCardStore();
+
+        const now = new Date();
+
+        card.lastReviewedAt = now.toISOString();
+        if (!card.firstReviewedAt) card.firstReviewedAt = now.toISOString();
+
+        card.currentLevel = direction > 0 ?
+            Math.min((card.currentLevel ?? 0)+direction, maxLevel) :
+            Math.max((card.currentLevel ?? 0)+direction, 1)
+
+        // On a atteint le niveau maximum
+        if (card.currentLevel >= maxLevel) {
+            card.nextReviewAt = undefined;
+            return;
+        }
+
+        // Calcul de la prochaine date
+        card.nextReviewAt = getNextReviewDate(card.currentLevel).toISOString() // Sauvegarde
+        await cardStore.addCardOrUpdateIt(card);
+    }
+    const promoteCard = (card:Card, maxLevel:number) => {
+        return reviewCard(card, maxLevel, 1)
+    }
+    const demoteCard = (card:Card, maxLevel:number) => {
+        return reviewCard(card, maxLevel, -1)
+    }
+    const resetCardLevel = async (card:Card) => {
+        let cardStore = useCardStore();
+
+        card.currentLevel = 0;
+        card.nextReviewAt = undefined;
+        card.lastReviewedAt = undefined;
+        await cardStore.addCardOrUpdateIt(card);
+    }
+
+
+    return {
+        reviewInterval,
+        generateReviewInterval,
+        getCardsToPractice,
+        promoteCard,
+        demoteCard,
+        resetCardLevel,
+    }
+}

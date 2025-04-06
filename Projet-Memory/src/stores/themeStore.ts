@@ -21,6 +21,7 @@ export const useThemeStore = defineStore('theme', () => {
     const addThemeOrUpdateIt = async (theme: Theme) => {
         if (!theme.id) {
             theme.id = uuidv4();
+            theme.createdAt = new Date().toISOString();
         }
         await db.themes.put(JSON.parse(JSON.stringify(theme)));
         await loadThemes();
@@ -75,8 +76,6 @@ export const useThemeStore = defineStore('theme', () => {
         return themes.value.filter(theme => theme.isThemeSelected);
     }
 
-
-    onMounted(loadThemes);
     return {
         themes : computed(() => themes.value),
         isLoaded : computed(() => isLoaded.value),

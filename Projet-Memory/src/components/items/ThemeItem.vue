@@ -2,10 +2,13 @@
 import type { Theme } from '@/types/Theme.ts';
 import router from "@/router";
 import { useThemeStore } from "@/stores/themeStore.ts";
+import {computed} from "vue";
+import {practiceComposable} from "@/composables/practice.composable.ts";
 
 const props = defineProps<{ theme: Theme }>();
 const themeStore = useThemeStore();
 
+const { generateReviewInterval } = practiceComposable();
 
 const toggleThemeSelection = () => {
   if (props.theme.isThemeSelected) {
@@ -18,6 +21,10 @@ const toggleThemeSelection = () => {
 const updateThemeSelectedLevel = (theme: Theme) => {
   themeStore.addThemeOrUpdateIt(theme);
 };
+
+const intervals = computed(()=> {
+  return
+})
 
 </script>
 
@@ -40,14 +47,8 @@ const updateThemeSelectedLevel = (theme: Theme) => {
       </label>
 
       <div v-if="theme.isThemeSelected">
-        <label for="levelToReview">Niveau de révision</label>
-        <select id="levelToReview" v-model="theme.levelToReview" @change="updateThemeSelectedLevel(theme)">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+        <span>Niveaux de révision :</span>
+        {{ generateReviewInterval(theme.maxLevel) }}
       </div>
 
     </div>

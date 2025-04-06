@@ -16,6 +16,7 @@ const dailyNewCardLimit = 5; // TODO mettre une prop
 const reviewQueue = ref([] as Card[]);
 const currentIndex = ref(0);
 
+// TODO : ça se calcule ça fdp
 const reviewIntervals = [1, 3, 7, 14, 30];
 
 const getDueCards = () => {
@@ -29,9 +30,9 @@ const getDueCards = () => {
 
 const initializeSession = () => {
   let dueCards = getDueCards();
-  let newCards = allCards.filter(card => card.level === 1 && !card.nextReviewAt).slice(0, dailyNewCardLimit);
+  let newCards = allCards.filter(card => card.currentLevel === 1 && !card.nextReviewAt).slice(0, dailyNewCardLimit);
 
-  dueCards.sort((a, b) => b.level - a.level);
+  dueCards.sort((a, b) => b.currentLevel - a.currentLevel);
   reviewQueue.value = [...dueCards, ...newCards];
   currentIndex.value = 0;
   console.log("initializeSession", reviewQueue.value);
@@ -54,17 +55,17 @@ const nextCard = () => {
 
 const markMemorized = () => {
   let currentCard = reviewQueue.value[currentIndex.value];
-  if (currentCard.level < 5) {
-    currentCard.level++;
+  if (currentCard.currentLevel < 5) {
+    currentCard.currentLevel++;
   }
-  currentCard.nextReviewAt = getNextReviewDate(currentCard.level);
+  currentCard.nextReviewAt = getNextReviewDate(currentCard.currentLevel);
   cardStore.addCardOrUpdateIt(currentCard);
   nextCard();
 };
 
 const markForgotten = () => {
   let currentCard = reviewQueue.value[currentIndex.value];
-  currentCard.level = Math.max(1, currentCard.level - 1);
+  currentCard.currentLevel = Math.max(1, currentCard.currentLevel - 1);
   currentCard.nextReviewAt = getNextReviewDate(1);
   cardStore.addCardOrUpdateIt(currentCard);
   nextCard();

@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
-import { ref, computed, onMounted } from 'vue';
-import { db } from '@/database.ts';
-import type { Card } from '@/types/Card';
-import { v4 as uuidv4 } from 'uuid';
+import {defineStore} from 'pinia';
+import {onMounted, ref} from 'vue';
+import {db} from '@/database.ts';
+import type {Card} from '@/types/Card';
+import {v4 as uuidv4} from 'uuid';
 import type {Theme} from "@/types/Theme.ts";
 
 export const useCardStore = defineStore('card', () => {
@@ -11,8 +11,7 @@ export const useCardStore = defineStore('card', () => {
 
     const loadCards = async () => {
         try {
-            const storedCards = await db.cards.toArray();
-            cards.value = storedCards;
+            cards.value = await db.cards.toArray();
         } catch (error) {
             console.error('Error loading cards:', error);
         }
@@ -22,6 +21,7 @@ export const useCardStore = defineStore('card', () => {
     const addCardOrUpdateIt = async (card: Card, fileFront?: File, fileBack?: File) => {
         if (!card.id) {
             card.id = uuidv4();
+            card.createdAt = new Date().toISOString();
         }
 
         if (fileFront) {
@@ -35,7 +35,7 @@ export const useCardStore = defineStore('card', () => {
             card.multimediaBack = `${card.id}-back`;
         }
 
-        console.log("card", card);
+        // TODO : double parse à changer
         await db.cards.put(JSON.parse(JSON.stringify(card)));
         await loadCards();
     };
@@ -57,14 +57,12 @@ export const useCardStore = defineStore('card', () => {
     }
 
     const getCardsByThemeList = (themeList: Theme[]) => {
-        return cards.value.filter(card => themeList.find(theme => theme.id === card.themeId && card.level <= theme.levelToReview));
+        return cards.value.filter(card => themeList.find(theme => theme.id === card.themeId && card.level <= theme.maxLevel));
     }
 
-    onMounted(loadCards);
-
     return {
-        cards: computed(() => cards.value),
-        isLoaded: computed(() => isLoaded.value),
+        cards,
+        isLoaded,
         addCardOrUpdateIt,
         deleteCardById,
         getFileById,

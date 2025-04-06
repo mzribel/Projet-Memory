@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
+import { useRoute } from 'vue-router';
 import LayoutDefault from "@/layouts/LayoutDefault.vue";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
-import { useRoute } from 'vue-router';
 import { onMounted, ref} from "vue";
 import type {Category} from "@/types/Category.ts";
 import router from "@/router";
