@@ -3,11 +3,10 @@ import {computed, onMounted, ref} from "vue";
 import LayoutDefault from "@/layouts/LayoutDefault.vue";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import type {Theme} from "@/types/Theme.ts";
-import vue from "@vitejs/plugin-vue";
 import type {Card} from "@/types/Card.ts";
 import {useThemeStore} from "@/stores/themeStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
-import arrayShuffle from 'array-shuffle';
+import {themeDataComposable} from "@/composables/themedata.composable.ts";
 
 
 const {
@@ -27,21 +26,25 @@ const {
 //   level: 2
 // }
 
-const themeID = "1bcad111-4b55-498b-92b1-8f74835ee51a";
-const theme = ref<Theme|null>(null);
+const themeID = "d28ad7f7-5475-4760-800a-f5e63aa7d5c4";
+const theme = ref<Theme>();
 const cards = ref<Card[]>([]);
 
 const themeStore = useThemeStore();
 const cardStore = useCardStore();
 
 onMounted(async () => {
-  theme.value = themeStore.getThemeById(themeID) ?? null;
+  theme.value = themeStore.getThemeById(themeID);
   cards.value = cardStore.getCardsByThemeId(themeID);
 })
 
 const newCards = computed(()=> {
-  return getCardsToPractice(cards.value, theme.value.maxLevel, theme.value.newCardsPerDay);
+  if (theme.value) {
+    return getCardsToPractice(cards.value, theme.value.maxLevel, theme.value.newCardsPerDay ?? 15);
+  }
 });
+
+
 
 </script>
 
@@ -65,7 +68,6 @@ const newCards = computed(()=> {
         <div v-for="(card, index) in cards">
           {{ index + 1 }} -- {{ card.front }} | {{ card.back}} | {{ card.currentLevel ?? 0 }} |
             {{ card.nextReviewAt ?? ""}} | {{ card.lastReviewedAt ?? "" }}
-          <button v-if="card.currentLevel" @click="resetCardLevel(card)">Reset</button>
         </div>
       </div>
       <h3>Cartes à réviser</h3>

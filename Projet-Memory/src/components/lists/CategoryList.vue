@@ -43,8 +43,7 @@ const deleteCategory = categoryStore.deleteCategoryById;
       Ajouter une catégorie
     </button>
 
-
-    <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
+    <div v-if="!isLoaded">Chargement...</div>
     <div v-else-if="categories.length">
       <CategoryItem
           v-for="category in categories"

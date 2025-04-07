@@ -12,7 +12,7 @@ const form = ref<Card>({
   back: '',
   multimediaFront: '',
   multimediaBack: '',
-  level: 0,
+  currentLevel: 0,
 });
 
 watch(
@@ -28,7 +28,7 @@ watch(
           back: '',
           multimediaFront: '',
           multimediaBack: '',
-          level: 0,
+          currentLevel: 0,
         };
       }
     },
@@ -84,6 +84,7 @@ const save = () => {
       </div>
     </form>
   </div>
+  <br>
 </template>
 
 <style scoped>

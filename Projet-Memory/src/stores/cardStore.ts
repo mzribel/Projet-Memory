@@ -57,7 +57,7 @@ export const useCardStore = defineStore('card', () => {
     }
 
     const getCardsByThemeList = (themeList: Theme[]) => {
-        return cards.value.filter(card => themeList.find(theme => theme.id === card.themeId && card.level <= theme.maxLevel));
+        return cards.value.filter(card => themeList.find(theme => theme.id === card.themeId && card.currentLevel <= theme.maxLevel));
     }
 
     return {

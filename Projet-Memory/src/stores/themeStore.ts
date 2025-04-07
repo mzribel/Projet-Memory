@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
-import {computed, onMounted, ref} from 'vue';
-import type { Theme } from '@/types/Theme';
+import {defineStore} from 'pinia';
+import {computed, ref} from 'vue';
+import type {Theme} from '@/types/Theme';
 import {db} from "@/database.ts";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 export const useThemeStore = defineStore('theme', () => {
     const themes = ref<Theme[]>([]);
@@ -28,11 +28,22 @@ export const useThemeStore = defineStore('theme', () => {
     }
 
     const deleteThemeById = async (id: string) => {
+        // Cascade
+        await db.cards.where('themeId').equals(id).delete();
+        // Suppression du thème
         await db.themes.delete(id);
         await loadThemes();
     }
 
     const deleteThemeByCategoryId = async (id : string) => {
+        // Récupération de tous les ID des thèmes à supprimer
+        const themeIds = (await db.themes.where('categoryId').equals(id)
+            .toArray())
+            .map(theme => theme.id)
+        // Cascade : suppression des cartes liées
+        await db.cards.where('themeId').anyOf(themeIds).delete();
+
+        // Suppression des thèmes
         await db.themes.where('categoryId').equals(id).delete();
         await loadThemes();
     }
@@ -66,7 +77,6 @@ export const useThemeStore = defineStore('theme', () => {
     const setThemeCardCount = async (id: string, cardCount: number) => {
         const theme = await db.themes.get(id);
         if (theme) {
-            theme.cardCount = cardCount;
             await db.themes.put(theme);
             await loadThemes();
         }

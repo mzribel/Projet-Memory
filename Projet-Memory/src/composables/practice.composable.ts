@@ -12,12 +12,17 @@ export const practiceComposable = () => {
         return Array.from({ length: count}, (_, i) => reviewInterval(i, initial, factor));
     }
 
+    const formatDateToLocalISO = (date: Date): string => {
+        const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+        return local.toISOString().slice(0, 10);
+    };
+
     // Calcul de la nouvelle date de révision
     const getNextReviewDate = (level: number, factor:number=2) => {
         let newDate = new Date();
         newDate.setDate(newDate.getDate() + reviewInterval(level-1, 1, factor));
         newDate.setHours(0, 0, 0, 0);
-        return newDate;
+        return formatDateToLocalISO(newDate);
     };
 
     // Récupération des cartes
@@ -32,7 +37,25 @@ export const practiceComposable = () => {
         // Comparaison des dates
         return (!card.nextReviewAt || new Date(card.nextReviewAt) <= now);
     }
+
+    const isCardFirstReviewToday = (card:Card) => {
+        const today = formatDateToLocalISO(new Date())
+        return card.currentLevel === 1 &&
+            card.firstReviewedAt &&
+            formatDateToLocalISO(new Date(card.firstReviewedAt)) == today;
+    }
+
     const getNewCards = (cards:Card[], newCardsPerDay?:number) => {
+        // Récupère les cartes de niveau 1 révisées ajd
+        if (newCardsPerDay) {
+            const reviewedToday = cards.reduce((count, card) => {
+                // Vérifie si la carte est de niveau 1 et révisée aujourd'hui
+                return isCardFirstReviewToday(card) ? count + 1 : count;
+            }, 0);
+
+            if (reviewedToday >= newCardsPerDay) { return [] }
+        }
+
         let newCards = cards.filter((card: Card) => !card.currentLevel)
 
         // Pas de limite, ou nombre de cartes sous la limite
@@ -76,7 +99,7 @@ export const practiceComposable = () => {
         }
 
         // Calcul de la prochaine date
-        card.nextReviewAt = getNextReviewDate(card.currentLevel).toISOString() // Sauvegarde
+        card.nextReviewAt = getNextReviewDate(card.currentLevel) // Sauvegarde
         await cardStore.addCardOrUpdateIt(card);
     }
     const promoteCard = (card:Card, maxLevel:number) => {
@@ -91,6 +114,7 @@ export const practiceComposable = () => {
         card.currentLevel = 0;
         card.nextReviewAt = undefined;
         card.lastReviewedAt = undefined;
+        card.firstReviewedAt = undefined;
         await cardStore.addCardOrUpdateIt(card);
     }
 

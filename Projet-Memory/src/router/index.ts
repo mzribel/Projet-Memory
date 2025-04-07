@@ -8,6 +8,9 @@ import ThemesView from "@/views/themes/ThemesView.vue";
 import ThemeDetailView from "@/views/themes/ThemeDetailView.vue";
 import PracticeView from "@/views/practice/PracticeView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
+import {useCardStore} from "@/stores/cardStore.ts";
 
 const routes = [
   { path: "/test", name:"Test", component: TestView }, // TODO : Remove
@@ -27,5 +30,18 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// TODO: possiblement déplacer ça
+router.beforeEach(async (to, from, next) => {
+  const categoryStore = useCategoryStore();
+  const themeStore = useThemeStore();
+  const cardStore = useCardStore();
+
+  await categoryStore.loadCategories();
+  await themeStore.loadThemes();
+  await cardStore.loadCards();
+
+  next();
+})
 
 export default router;

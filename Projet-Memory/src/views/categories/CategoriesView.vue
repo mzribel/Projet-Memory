@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import CategoryList from '@/components/lists/CategoryList.vue';
 import LayoutDefault from "@/layouts/LayoutDefault.vue";
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+
+let categoryStore = useCategoryStore();
 
 </script>
 

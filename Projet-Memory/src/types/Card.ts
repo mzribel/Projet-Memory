@@ -7,7 +7,7 @@ export interface Card {
     multimediaFront?: string;
     multimediaBack?: string;
     currentLevel: number; // Niveau de révision
-    createdAt: string;
+    createdAt?: string;
     lastReviewedAt?: string;
     firstReviewedAt?:string;
     nextReviewAt?: string; // Date de la prochaine révision

@@ -49,19 +49,26 @@ const closeForm = () => {
       Ajouter une carte
     </button>
     <CardForm
-      v-if="isFormOpen"
+      v-if="isFormOpen && !currentCard?.id"
       :card="currentCard"
       @save="saveCard"
       @close="closeForm"
     />
     <div v-if="cards">
-
+      <template v-for="card in cards">
+        <CardForm
+          v-if="isFormOpen && currentCard?.id == card.id"
+          :card="currentCard"
+          @save="saveCard"
+          @close="closeForm"
+        />
       <CardItem
-          v-for="card in cards"
+          v-else
           :card="card"
           @edit="editCard"
           @delete="deleteCard"
       />
+      </template>
     </div>
     <div v-else>
       <p>Aucune carte disponible. Créez-en une !</p>

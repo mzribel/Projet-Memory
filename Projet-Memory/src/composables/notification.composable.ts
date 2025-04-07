@@ -8,7 +8,6 @@ export const notificationComposable = () => {
 
     const notifyUser = () => {
         if ('Notification' in window && Notification.permission === 'granted') {
-            console.log("wtf")
             new Notification('Mes couilles en ski', {
                 body: `HELLO`
             });

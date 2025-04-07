@@ -5,21 +5,10 @@ import Footer from "@/components/Footer.vue";
 import {useThemeStore} from "@/stores/themeStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
-import {onBeforeMount, onMounted, ref } from "vue";
 
 const themeStore = useThemeStore();
-
 const cardStore = useCardStore();
-
 const categoryStore = useCategoryStore();
-const isLoaded = ref(false);
-
-onBeforeMount(async () => {
-  await themeStore.loadThemes();
-  await cardStore.loadCards();
-  await categoryStore.loadCategories();
-  isLoaded.value = true;
-})
 
 </script>
 <template v-if="isLoaded">

@@ -2,6 +2,7 @@
 import type { Card } from '@/types/Card.ts';
 import { useCardStore } from "@/stores/cardStore.ts";
 import { onMounted, ref, computed } from "vue";
+import {practiceComposable} from "@/composables/practice.composable.ts";
 
 const props = defineProps<{ card: Card }>();
 const emit = defineEmits(['edit', 'delete']);
@@ -11,6 +12,13 @@ const cardFileFront = ref<Blob | null>(null);
 const cardFileBack = ref<Blob | null>(null);
 const cardFileFrontUrl = ref<string | null>(null);
 const cardFileBackUrl = ref<string | null>(null);
+
+const {
+  getCardsToPractice,
+  promoteCard,
+  demoteCard,
+  resetCardLevel
+} = practiceComposable()
 
 onMounted(async () => {
   if (props.card.multimediaFront) {
@@ -57,10 +65,19 @@ const cardFileBackType = computed(() => cardFileBack.value?.type || '');
       </template>
     </div>
 
+    <div style="font-size: 12px">
+      <p v-if="card.firstReviewedAt">First reviewed : {{ new Date(card.firstReviewedAt).toLocaleString("fr-FR") }}</p>
+      <p v-if="card.lastReviewedAt">Last reviewed : {{ new Date(card.lastReviewedAt).toLocaleString("fr-FR") }}</p>
+      <p v-if="card.nextReviewAt">Next review : {{ new Date(card.nextReviewAt).toLocaleDateString("fr-FR") }}</p>
+    </div>
+    <div>
+      <button v-if="card.currentLevel" @click="resetCardLevel(card)">Reset</button>
+    </div>
     <div>
       <button @click="$emit('edit', card)">Modifier</button>
       <button @click="$emit('delete', card.id)">Supprimer</button>
     </div>
+    <br>
   </div>
 </template>
 
