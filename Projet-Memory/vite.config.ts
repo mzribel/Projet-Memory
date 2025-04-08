@@ -10,23 +10,12 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       strategies: 'generateSW',
-      manifest: {
-        name: 'Memory App',
-        short_name: 'Memory',
-        description: 'Une application de mémorisation basée sur la répétition espacée.',
-        theme_color: '#42b883',
-        background_color: '#ffffff',
-        display: 'standalone',
-        scope: '/',
-        start_url: '/',
-        icons: [
-          {
-            src: 'tony_pray.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-        ],
-      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg}'],
+        // cleanupOutdatedCaches: true,
+        // skipWaiting: true,
+        // clientsClaim: true,
+      }
 
     }),
   ],

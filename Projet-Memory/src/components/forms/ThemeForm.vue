@@ -17,6 +17,7 @@ const form = ref<Theme>({
   description: '',
   isThemeSelected: false,
   maxLevel: 5,
+  createdAt: "",
 });
 
 watch(
@@ -32,6 +33,7 @@ watch(
           description: '',
           isThemeSelected: false,
           maxLevel: 5,
+          createdAt: "",
           newCardsPerDay: undefined
         };
       }

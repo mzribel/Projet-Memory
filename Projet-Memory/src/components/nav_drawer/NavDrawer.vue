@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Drawer from "@/components/nav_drawer/components/Drawer.vue";
 import {computed, ref} from "vue";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useThemeStore} from "@/stores/themeStore.ts";

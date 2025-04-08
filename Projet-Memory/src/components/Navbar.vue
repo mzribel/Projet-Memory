@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import Button from "@/components/buttons/Button.vue";
 import {db} from '@/database.ts';
+import type {Category} from "@/types/Category.ts";
+import type {Theme} from "@/types/Theme.ts";
+import type {Card} from "@/types/Card.ts";
 
 const jsonImport = async (event:Event) => {
   const input = event.target as HTMLInputElement;
