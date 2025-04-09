@@ -82,6 +82,7 @@ defineExpose({openModal, closeModal});
 .modal-top-bar {
   display: flex;
   gap: 16px;
+  padding: 0 32px;
   justify-content: space-between;
   margin-bottom: 16px;
   .left {
@@ -90,6 +91,7 @@ defineExpose({openModal, closeModal});
     flex-direction: column;
     .title {
       font-weight: 500;
+      font-size:x-large;
     }
     .description {
       font-size: 14px;
