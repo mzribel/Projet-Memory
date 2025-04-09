@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router';
 import LayoutDefault from "@/layouts/LayoutDefault.vue";
 import {useThemeStore} from "@/stores/themeStore.ts";
+import {onMounted, ref, watch} from "vue";
 import {computed, onMounted, ref, watch} from "vue";
 import type {Theme} from "@/types/Theme.ts";
 import router from "@/router";
@@ -23,6 +24,9 @@ const themeStore = useThemeStore();
 let theme = ref<Theme>();
 const categoryStore = useCategoryStore();
 const cardStore = useCardStore();
+const fetchThemeOr404 = async (themeId:string) => {
+  theme.value = themeStore.getThemeById(themeId);
+
 const fetchThemeOr404 = async (themeId:string) => {
   theme.value = themeStore.getThemeById(themeId);
   if (!theme.value) { await router.push("/404") }
