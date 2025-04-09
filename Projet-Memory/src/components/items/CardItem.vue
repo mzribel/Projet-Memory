@@ -3,14 +3,13 @@ import type { Card } from '@/types/Card.ts';
 import { practiceComposable } from '@/composables/practice.composable.ts';
 import { cardMultimediaComposable } from '@/composables/cardmultimedia.composable.ts';
 import {onMounted, watch} from "vue";
-
 const props = defineProps<{ card: Card }>();
 const emit = defineEmits(['edit', 'delete']);
 
 const { resetCardLevel } = practiceComposable();
 
-const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = cardMultimediaComposable();
-const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = cardMultimediaComposable();
+const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = fileMultimediaComposable();
+const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = fileMultimediaComposable();
 
 watch(
   () => props.card,
