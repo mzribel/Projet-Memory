@@ -10,13 +10,13 @@ defineProps<{
 </script>
 
 <template>
-<div class="card-face" >
+<div class="card-face" :class="isQuestion ? 'question':'answer'" >
   <div class="header">
     <div class="left">
       <span class="face-type">{{ isQuestion ? "Q" : "A"}}</span>
     </div>
     <div class="right">
-<!--      <Button type="icon-btn" icon="fa-solid fa-pen" variant="outlined" color="secondary"></Button>-->
+      <Button v-if="showOptions" type="icon-btn" icon="fa-solid fa-pen" variant="outlined" color="secondary"></Button>
     </div>
   </div>
   <div class="body vertical">
@@ -29,8 +29,12 @@ defineProps<{
 
   </div>
   <div class="footer">
-    <div v-if="level" class="level">
-      Level {{ level[0] }} / {{ level[1]}}
+    <div class="left">
+      <div class="level">Niveau 0</div>
+    </div>
+    <div class="right" v-if="showOptions">
+      <span>Dernière révision : </span>
+      <span>Prochaine révision : </span>
     </div>
   </div>
 </div>
@@ -38,6 +42,21 @@ defineProps<{
 
 <style scoped>
 .card-face {
+  &.question{
+    color: black;
+    .level {
+      color: white;
+      background-color: black !important;
+    }
+  }
+  &.answer{
+    color: white;
+    .level {
+      color: black;
+
+    }
+  }
+
   display: grid;
   height: 100%;
   width: 100%;
@@ -88,11 +107,25 @@ defineProps<{
 
   .footer {
     display: flex;
-    justify-content: flex-end;
-    font-size: 14px;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-top: 8px;
+    font-size: 11px;
     .level {
-      opacity: .5;
+      background-color: white;
+      padding: 4px 8px;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 10px;
+      border-radius: 4px;
+      letter-spacing: .05em;
+    }
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      opacity: .7;
+      font-size: 11px;
     }
   }
 }
