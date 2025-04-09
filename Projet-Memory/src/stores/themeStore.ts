@@ -10,8 +10,7 @@ export const useThemeStore = defineStore('theme', () => {
 
     const loadThemes = async () => {
         try {
-            const storedThemes = await db.themes.toArray();
-            themes.value = storedThemes.map(theme => JSON.parse(JSON.stringify(theme)));
+            themes.value = await db.themes.toArray();
         } catch (error) {
             console.error('Error loading themes:', error);
         }
