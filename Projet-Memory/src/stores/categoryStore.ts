@@ -11,8 +11,7 @@ export const useCategoryStore = defineStore('category', () => {
 
     const loadCategories = async () => {
         try {
-            const storedCategories = await db.categories.toArray();
-            categories.value = storedCategories.map(category => JSON.parse(JSON.stringify(category)));
+            categories.value = await db.categories.toArray();
         } catch (error) {
             console.error('Error loading categories:', error);
         }
