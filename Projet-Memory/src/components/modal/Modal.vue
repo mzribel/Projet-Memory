@@ -76,7 +76,7 @@ defineExpose({openModal, closeModal});
   padding: 16px 24px;
   border-radius: 8px;
   z-index: 1;
-  min-width: min(100%, 500px);
+  min-width: min(95%, 600px);
 }
 
 .modal-top-bar {
