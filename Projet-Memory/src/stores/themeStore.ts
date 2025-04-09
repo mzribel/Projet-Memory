@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {computed, ref} from 'vue';
+import { ref} from 'vue';
 import type {Theme} from '@/types/Theme';
 import {db} from "@/database.ts";
 import {v4 as uuidv4} from 'uuid';
@@ -24,7 +24,7 @@ export const useThemeStore = defineStore('theme', () => {
             theme.createdAt = new Date().toISOString();
         }
         theme.lastActivityAt = new Date().toISOString();
-        await db.themes.put(JSON.parse(JSON.stringify(theme)));
+        await db.themes.put({ ...theme });
         await loadThemes();
     }
 
@@ -94,14 +94,14 @@ export const useThemeStore = defineStore('theme', () => {
         themes,
         isLoaded,
         addThemeOrUpdateIt,
+        loadThemes,
         deleteThemeById,
         deleteThemeByCategoryId,
-        loadThemes,
         getThemeById,
         getThemesByCategoryId,
         setThemeSelected,
-        setThemeUnselected,
         getSelectedThemes,
+        setThemeUnselected,
         setLatestActivity
     };
 });
