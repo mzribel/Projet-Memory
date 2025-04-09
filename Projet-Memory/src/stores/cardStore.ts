@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {onMounted, ref} from 'vue';
+import {ref} from 'vue';
 import {db} from '@/database.ts';
 import type {Card} from '@/types/Card';
 import {v4 as uuidv4} from 'uuid';
@@ -35,8 +35,7 @@ export const useCardStore = defineStore('card', () => {
             card.multimediaBack = `${card.id}-back`;
         }
 
-        // TODO : double parse à changer
-        await db.cards.put(JSON.parse(JSON.stringify(card)));
+        await db.cards.put({ ...card });
         await loadCards();
     };
 
