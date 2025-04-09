@@ -8,8 +8,8 @@ const emit = defineEmits(['edit', 'delete']);
 
 const { resetCardLevel } = practiceComposable();
 
-const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = fileMultimediaComposable();
-const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = fileMultimediaComposable();
+const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = cardMultimediaComposable();
+const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = cardMultimediaComposable();
 
 watch(
   () => props.card,
