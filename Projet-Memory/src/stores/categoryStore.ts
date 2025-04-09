@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import {computed, onMounted, ref} from 'vue';
+import { ref} from 'vue';
 import { db } from '@/database';
 import type { Category } from '@/types/Category';
 // @ts-ignore
@@ -23,7 +23,7 @@ export const useCategoryStore = defineStore('category', () => {
         if (!category.id) {
             category.id = uuidv4();
         }
-        await db.categories.put(JSON.parse(JSON.stringify(category)));
+        await db.categories.put({ ...category });
         await loadCategories();
     };
 
