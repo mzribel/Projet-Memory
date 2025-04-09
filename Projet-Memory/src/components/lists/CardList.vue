@@ -29,11 +29,13 @@ const editCard = (card: Card) => {
 
 const saveCard = (card: Card, multimediaFront?:File, multimediaBack?:File) => {
   card.themeId = props.themeId;
+  themeStore.setLatestActivity(card.themeId);
   cardStore.addCardOrUpdateIt(card, multimediaFront, multimediaBack);
   closeForm();
 };
 
 const deleteCard = (cardId: string) => {
+  themeStore.setLatestActivity(props.themeId);
   cardStore.deleteCardById(cardId);
 };
 

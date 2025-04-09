@@ -18,7 +18,7 @@ import LayoutDefault from "@/layouts/LayoutDefault.vue";
 <!--    <Button label="Open modal" @click="showModal" variant="outlined"></Button>-->
 <!--    <Modal ref="modalRef" title="Mes couilles en ski" description="c'est nike">-->
 <!--      <template #body>-->
-<!--        <Card :card-data="card"/>-->
+
 <!--      </template>-->
 <!--    </Modal>-->
   </layout-default>

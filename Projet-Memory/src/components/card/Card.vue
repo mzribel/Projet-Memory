@@ -20,12 +20,12 @@ const { cardData, showOptions } = defineProps<{
   <div class="flip-card" :class="isFlipped ? 'flipped' : ''" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <CardFace :show-options="showOptions" :is-question="true" :level="[1,3]">
+        <CardFace :show-options="showOptions" :is-question="true" :level="[cardData.currentLevel,3]">
           {{ cardData.front }}
         </CardFace>
       </div>
       <div class="flip-card-back">
-        <CardFace :show-options="showOptions" :is-question="false" :level="[1,3]">
+        <CardFace :show-options="showOptions" :is-question="false" :level="[cardData.currentLevel,3]">
           {{ cardData.back }}
         </CardFace>
       </div>

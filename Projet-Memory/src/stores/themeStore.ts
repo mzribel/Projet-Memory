@@ -23,6 +23,7 @@ export const useThemeStore = defineStore('theme', () => {
             theme.id = uuidv4();
             theme.createdAt = new Date().toISOString();
         }
+        theme.lastActivityAt = new Date().toISOString();
         await db.themes.put(JSON.parse(JSON.stringify(theme)));
         await loadThemes();
     }
@@ -60,6 +61,7 @@ export const useThemeStore = defineStore('theme', () => {
         const theme = await db.themes.get(id);
         if (theme) {
             theme.isThemeSelected = true;
+            theme.lastActivityAt = new Date().toISOString();
             await db.themes.put(theme);
             await loadThemes();
         }
@@ -69,14 +71,16 @@ export const useThemeStore = defineStore('theme', () => {
         const theme = await db.themes.get(id);
         if (theme) {
             theme.isThemeSelected = false;
+            theme.lastActivityAt = new Date().toISOString();
             await db.themes.put(theme);
             await loadThemes();
         }
     }
 
-    const setThemeCardCount = async (id: string, cardCount: number) => {
+    const setLatestActivity = async (id: string) => {
         const theme = await db.themes.get(id);
         if (theme) {
+            theme.lastActivityAt = new Date().toISOString();
             await db.themes.put(theme);
             await loadThemes();
         }
@@ -87,8 +91,8 @@ export const useThemeStore = defineStore('theme', () => {
     }
 
     return {
-        themes : computed(() => themes.value),
-        isLoaded : computed(() => isLoaded.value),
+        themes,
+        isLoaded,
         addThemeOrUpdateIt,
         deleteThemeById,
         deleteThemeByCategoryId,
@@ -97,7 +101,7 @@ export const useThemeStore = defineStore('theme', () => {
         getThemesByCategoryId,
         setThemeSelected,
         setThemeUnselected,
-        setThemeCardCount,
-        getSelectedThemes
+        getSelectedThemes,
+        setLatestActivity
     };
 });

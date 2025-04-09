@@ -37,8 +37,8 @@ export const useCategoryStore = defineStore('category', () => {
     };
 
     return {
-        categories : categories,
-        isLoaded : isLoaded,
+        categories,
+        isLoaded,
         addCategory: addCategoryOrUpdateIt,
         deleteCategoryById,
         loadCategories,
