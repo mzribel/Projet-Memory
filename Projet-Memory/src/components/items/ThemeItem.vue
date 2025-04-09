@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Theme } from '@/types/Theme.ts';
-import router from "@/router";
 import { useThemeStore } from "@/stores/themeStore.ts";
-import {computed} from "vue";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 
 const props = defineProps<{ theme: Theme }>();
@@ -17,14 +15,6 @@ const toggleThemeSelection = () => {
     themeStore.setThemeSelected(props.theme.id);
   }
 };
-
-const updateThemeSelectedLevel = (theme: Theme) => {
-  themeStore.addThemeOrUpdateIt(theme);
-};
-
-const intervals = computed(()=> {
-  return
-})
 
 </script>
 
