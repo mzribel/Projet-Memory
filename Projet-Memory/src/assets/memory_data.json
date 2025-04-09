@@ -1,0 +1,143 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Mathématiques",
+      "description": "Révisions des bases en maths"
+    },
+    {
+      "id": "2",
+      "name": "Histoire",
+      "description": "Dates et événements clés"
+    },
+    {
+      "id": "3",
+      "name": "Anglais",
+      "description": "Vocabulaire et grammaire"
+    }
+  ],
+  "themes": [
+    {
+      "id": "1",
+      "categoryId": "1",
+      "name": "Algèbre",
+      "description": "Opérations, équations, expressions",
+      "isThemeSelected": true,
+      "maxLevel": "5",
+      "newCardsPerDay": 10,
+      "createdAt": "2025-04-09T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "categoryId": "1",
+      "name": "Géométrie",
+      "description": "Figures, périmètres, aires",
+      "isThemeSelected": false,
+      "maxLevel": "5",
+      "newCardsPerDay": 5,
+      "createdAt": "2025-04-09T10:05:00.000Z"
+    },
+    {
+      "id": "3",
+      "categoryId": "2",
+      "name": "Révolution française",
+      "description": "Les grands moments entre 1789 et 1799",
+      "isThemeSelected": true,
+      "maxLevel": "7",
+      "newCardsPerDay": 7,
+      "createdAt": "2025-04-09T10:10:00.000Z"
+    },
+    {
+      "id": "4",
+      "categoryId": "3",
+      "name": "Vocabulaire courant",
+      "description": "Mots et expressions de base",
+      "isThemeSelected": true,
+      "maxLevel": "4",
+      "newCardsPerDay": 15,
+      "createdAt": "2025-04-09T10:15:00.000Z"
+    }
+  ],
+  "cards": [
+    {
+      "id": "1",
+      "themeId": "1",
+      "front": "Résous : 3x + 2 = 11",
+      "back": "x = 3",
+      "multimediaFront": "1-front",
+      "multimediaBack": "1-back",
+      "currentLevel": 0,
+      "createdAt": "2025-04-09T10:01:00.000Z"
+    },
+    {
+      "id": "2",
+      "themeId": "1",
+      "front": "Développe : (x + 2)(x - 3)",
+      "back": "x² - x - 6",
+      "multimediaFront": "2-front",
+      "multimediaBack": "2-back",
+      "currentLevel": 1,
+      "createdAt": "2025-04-09T10:02:00.000Z"
+    },
+    {
+      "id": "3",
+      "themeId": "2",
+      "front": "Aire d’un cercle de rayon 5 ?",
+      "back": "A = π × 5² = 25π",
+      "multimediaFront": "3-front",
+      "multimediaBack": "3-back",
+      "currentLevel": 0,
+      "createdAt": "2025-04-09T10:06:00.000Z"
+    },
+    {
+      "id": "4",
+      "themeId": "3",
+      "front": "Date de la prise de la Bastille ?",
+      "back": "14 juillet 1789",
+      "multimediaFront": "4-front",
+      "multimediaBack": "4-back",
+      "currentLevel": 2,
+      "createdAt": "2025-04-09T10:11:00.000Z"
+    },
+    {
+      "id": "5",
+      "themeId": "3",
+      "front": "Qui était Robespierre ?",
+      "back": "Un des leaders de la Révolution, membre des Jacobins.",
+      "multimediaFront": "5-front",
+      "multimediaBack": "5-back",
+      "currentLevel": 1,
+      "createdAt": "2025-04-09T10:12:00.000Z"
+    },
+    {
+      "id": "6",
+      "themeId": "4",
+      "front": "Comment dit-on 'pomme' en anglais ?",
+      "back": "Apple",
+      "multimediaFront": "6-front",
+      "multimediaBack": "6-back",
+      "currentLevel": 0,
+      "createdAt": "2025-04-09T10:16:00.000Z"
+    },
+    {
+      "id": "7",
+      "themeId": "4",
+      "front": "Traduis : 'Je vais à l'école.'",
+      "back": "I go to school.",
+      "multimediaFront": "7-front",
+      "multimediaBack": "7-back",
+      "currentLevel": 1,
+      "createdAt": "2025-04-09T10:17:00.000Z"
+    },
+    {
+      "id": "8",
+      "themeId": "4",
+      "front": "Donne le pluriel de 'child'.",
+      "back": "Children",
+      "multimediaFront": "8-front",
+      "multimediaBack": "8-back",
+      "currentLevel": 0,
+      "createdAt": "2025-04-09T10:18:00.000Z"
+    }
+  ]
+}

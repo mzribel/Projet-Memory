@@ -25,6 +25,26 @@ const jsonImport = async (event:Event) => {
     console.error(err);
   }
 }
+
+const downloadJson = async () => {
+  const categories = await db.categories.toArray();
+  const themes = await db.themes.toArray();
+  const cards = await db.cards.toArray();
+
+  const data = {
+    categories,
+    themes,
+    cards
+  };
+
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'memory_data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 </script>
 <template>
   <header>
@@ -32,7 +52,8 @@ const jsonImport = async (event:Event) => {
       <div class="left"><router-link to="/">Tony Memory</router-link></div>
       <div class="right">
         <input type="file" accept=".json" @change="jsonImport"/>
-        <div class="user-data">
+        <Button class="json-import-btn" @click="downloadJson">Télécharger les données</Button>
+          <div class="user-data">
           <span class="username">Utilisateur anonyme</span>
           <div class="user-pfp">
             <img src="../assets/img/peuchere.png" alt="Aidez-le">
