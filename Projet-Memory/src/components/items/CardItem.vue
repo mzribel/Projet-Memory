@@ -7,7 +7,7 @@ import {onMounted, watch} from "vue";
 const props = defineProps<{ card: Card }>();
 const emit = defineEmits(['edit', 'delete']);
 
-const { getCardsToPractice, promoteCard, demoteCard, resetCardLevel } = practiceComposable();
+const { resetCardLevel } = practiceComposable();
 
 const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = cardMultimediaComposable();
 const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = cardMultimediaComposable();

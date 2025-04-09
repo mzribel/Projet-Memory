@@ -31,7 +31,6 @@ const closeForm = () => {
 
 const categories = computed(() => categoryStore.categories);
 const isLoaded = computed(() => categoryStore.isLoaded);
-const addCategory = categoryStore.addCategory;
 const deleteCategory = categoryStore.deleteCategoryById;
 </script>
 

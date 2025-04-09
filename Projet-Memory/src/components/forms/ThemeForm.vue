@@ -18,6 +18,7 @@ const form = ref<Theme>({
   isThemeSelected: false,
   maxLevel: 5,
   createdAt: "",
+  lastActivityAt: "",
 });
 
 watch(
@@ -34,7 +35,8 @@ watch(
           isThemeSelected: false,
           maxLevel: 5,
           createdAt: "",
-          newCardsPerDay: undefined
+          newCardsPerDay: undefined,
+          lastActivityAt: "",
         };
       }
     },
