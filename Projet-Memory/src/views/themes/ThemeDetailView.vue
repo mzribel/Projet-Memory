@@ -103,5 +103,6 @@ const cards = computed(() => {
   display: flex;
   gap: 16px;
   row-gap: 16px;
+  flex-wrap: wrap;
 }
 </style>

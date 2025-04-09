@@ -4,6 +4,7 @@ import CategoryItem from '../items/CategoryItem.vue';
 import CategoryForm from '../forms/CategoryForm.vue';
 import { useCategoryStore } from '@/stores/categoryStore';
 import type { Category } from '@/types/Category.ts';
+import Button from "@/components/buttons/Button.vue";
 
 const categoryStore = useCategoryStore();
 
@@ -29,22 +30,21 @@ const closeForm = () => {
   isFormOpen.value = false;
 };
 
-const categories = computed(() => categoryStore.categories);
 const isLoaded = computed(() => categoryStore.isLoaded);
 const addCategory = categoryStore.addCategory;
 const deleteCategory = categoryStore.deleteCategoryById;
+defineProps<{
+  categories:Category[]}>
+()
+
 </script>
 
 <template>
-  <div>
-    <h2 class="">Liste des catégories</h2>
-    <button @click="openFormToCreateCategory()"
-            class="">
-      Ajouter une catégorie
-    </button>
+  <div class="container">
+    <Button @click="openFormToCreateCategory()" icon="fa-solid fa-plus" label="Ajouter une catégorie" variant="tonal" size="large"></Button>
 
-    <div v-if="!isLoaded">Chargement...</div>
-    <div v-else-if="categories.length">
+
+    <div v-if="categories" class="mescouillesenski">
       <CategoryItem
           v-for="category in categories"
           :key="category.id"
@@ -68,4 +68,15 @@ const deleteCategory = categoryStore.deleteCategoryById;
 </template>
 
 <style scoped>
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mescouillesenski {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 </style>

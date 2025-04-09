@@ -16,7 +16,6 @@ const routes = [
 
   { path: '/', name: 'Home', component: HomeView },
   { path: '/categories', name: 'Categories', component: CategoriesView },
-  { path: '/categories/:categoryId', name: 'Category', component: CategoryDetailView },
   { path: '/themes', name: 'ThemeListView', component: ThemesView },
   { path: '/themes/:themeId', name: 'Theme', component: ThemeDetailView },
   { path: '/practice', name: 'Practice', component: PracticeView },

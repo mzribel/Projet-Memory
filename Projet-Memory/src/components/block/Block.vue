@@ -1,9 +1,9 @@
 <script setup lang="ts">
-defineProps<{ type: "normal" | "title" }>();
+defineProps<{ type: "normal" | "title" | "small" }>();
 </script>
 
 <template>
-<div class="block" :class="type == 'title' ? 'title' : ''">
+<div class="block" :class="type">
   <slot></slot>
 </div>
 </template>
@@ -20,6 +20,9 @@ defineProps<{ type: "normal" | "title" }>();
     padding: 32px 40px;
     gap: 12px;
     margin-bottom: 32px;
+  }
+  &.small {
+    padding: 16px;
   }
 }
 </style>
