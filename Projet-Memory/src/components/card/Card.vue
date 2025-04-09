@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ref} from "vue";
-import type { Card as CardData } from "@/types/Card.ts";
+import type {Card as CardData} from "@/types/Card.ts";
 import CardFace from "@/components/card/CardFace.vue";
 
 const isFlipped = ref(false)
@@ -8,24 +8,24 @@ const flipCard = () => {
   isFlipped.value = !isFlipped.value;
 }
 
-const { cardData, showOptions } = defineProps<{
-  cardData:CardData,
-  showOptions?:boolean
+const {cardData, showOptions} = defineProps<{
+  cardData: CardData,
+  showOptions?: boolean
 }>();
 
 
 </script>
 
 <template>
-  <div class="flip-card" :class="isFlipped ? 'flipped' : ''" @click="flipCard">
+  <div :class="isFlipped ? 'flipped' : ''" class="flip-card" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <CardFace :show-options="showOptions" :is-question="true" :level="[cardData.currentLevel,3]">
+        <CardFace :is-question="true" :level="[cardData.currentLevel,3]" :show-options="showOptions">
           {{ cardData.front }}
         </CardFace>
       </div>
       <div class="flip-card-back">
-        <CardFace :show-options="showOptions" :is-question="false" :level="[cardData.currentLevel,3]">
+        <CardFace :is-question="false" :level="[cardData.currentLevel,3]" :show-options="showOptions">
           {{ cardData.back }}
         </CardFace>
       </div>
@@ -33,7 +33,7 @@ const { cardData, showOptions } = defineProps<{
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
