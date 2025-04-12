@@ -72,9 +72,9 @@ const categoryName = computed(() => {
   </router-link>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
-@import "../../assets/css/items.scss";
+@use "../../assets/css/items.scss";
 
 
 

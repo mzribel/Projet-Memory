@@ -62,7 +62,7 @@ const cardCount = computed(()=> {
   </Block>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
-@import "../../assets/css/items.scss";
+@use "../../assets/css/items.scss";
 </style>

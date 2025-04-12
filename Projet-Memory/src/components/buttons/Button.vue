@@ -18,6 +18,6 @@ defineProps<{
 </button>
 </template>
 
-<style scoped>
-@import "./../../assets/css/buttons.scss";
+<style scoped lang="scss">
+@use "./../../assets/css/buttons.scss";
 </style>
