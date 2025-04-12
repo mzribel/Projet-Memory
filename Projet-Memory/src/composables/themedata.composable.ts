@@ -7,7 +7,7 @@ export const themeDataComposable = () => {
     type GroupedCards = Record<string, Record<string, Card[]>>;
 
 
-    const groupCardsByDateAndTheme = (cards: Card[]): GroupedCards => {
+    const groupCardsByDateAndTheme = (cards: Card[], byPeriod:"past"|"today"|"due"|"next"|"all"="all"): GroupedCards => {
         const result: GroupedCards = {};
 
         cards.forEach(card => {

@@ -4,7 +4,6 @@ import { useThemeStore } from "@/stores/themeStore.ts";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import Block from "@/components/block/Block.vue";
 import Button from "@/components/buttons/Button.vue";
-import Note from "@/components/block/Note.vue";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
 import {computed} from "vue";
@@ -15,20 +14,6 @@ const themeStore = useThemeStore();
 
 const categoryStore = useCategoryStore();
 const cardStore = useCardStore();
-
-const { generateReviewInterval } = practiceComposable();
-
-const toggleThemeSelection = () => {
-  if (props.theme.isThemeSelected) {
-    themeStore.setThemeUnselected(props.theme.id);
-  } else {
-    themeStore.setThemeSelected(props.theme.id);
-  }
-};
-
-const updateThemeSelectedLevel = (theme: Theme) => {
-  themeStore.addThemeOrUpdateIt(theme);
-};
 
 const cardCount = computed(() => {
   return cardStore.cards.filter(card => card.themeId == props.theme.id).length;
