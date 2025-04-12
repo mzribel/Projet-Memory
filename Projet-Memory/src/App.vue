@@ -2,8 +2,7 @@
 import {onMounted} from "vue";
 import {notificationComposable} from "@/composables/notification.composable.ts";import {practiceComposable} from "@/composables/practice.composable.ts";
 
-const { requestNotificationPermission, notifyUser, generatePracticeMessage } = notificationComposable();
-const { getCardCountToPracticeToday } = practiceComposable();
+const { requestNotificationPermission, notifyUser } = notificationComposable();
 
 onMounted(async () => {
   const granted = await requestNotificationPermission()
