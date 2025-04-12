@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import {onMounted} from "vue";
 import {notificationComposable} from "@/composables/notification.composable.ts";
+import {practiceComposable} from "@/composables/practice.composable.ts";
 
-const { requestNotificationPermission, notifyUser } = notificationComposable()
+const { requestNotificationPermission, notifyUser, generatePracticeMessage } = notificationComposable();
+const { getCardCountToPracticeToday } = practiceComposable();
 
 onMounted(async () => {
   const granted = await requestNotificationPermission()
@@ -12,6 +14,7 @@ onMounted(async () => {
     }, 5000)
   }
 })
+
 </script>
 <template>
     <router-view/>
