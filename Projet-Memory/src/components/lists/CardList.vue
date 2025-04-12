@@ -1,82 +1,78 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
-import type { Card } from '@/types/Card.ts';
+import type { Card as CardType } from '@/types/Card.ts';
 import CardItem from '../items/CardItem.vue';
 import CardForm from '../forms/CardForm.vue';
 import {useCardStore} from "@/stores/cardStore.ts";
 import {useThemeStore} from "@/stores/themeStore.ts";
+import Modal from "@/components/modal/Modal.vue";
+import Button from "@/components/buttons/Button.vue";
+import Card from "@/components/card/Card.vue";
 
-const props = defineProps<{
+const {cards, themeId} = defineProps<{
+  cards: CardType[];
   themeId: string;
 }>();
 
 const cardStore = useCardStore();
 const themeStore = useThemeStore();
-const cards = computed(() => cardStore.getCardsByThemeId(props.themeId));
 
 const isFormOpen = ref(false);
-const currentCard = ref<Card | null>(null);
+const currentCard = ref<CardType | null>(null);
+
+const modalRef = ref<InstanceType<typeof Modal> | null>(null);
 
 const openForm = () => {
   currentCard.value = null;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
-const editCard = (card: Card) => {
+const editCard = (card: CardType) => {
   currentCard.value = card;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
-const saveCard = (card: Card, multimediaFront?:File, multimediaBack?:File) => {
-  card.themeId = props.themeId;
+const saveCard = (card: CardType, multimediaFront?:File, multimediaBack?:File) => {
+  card.themeId = themeId;
   themeStore.setLatestActivity(card.themeId);
   cardStore.addCardOrUpdateIt(card, multimediaFront, multimediaBack);
-  closeForm();
+  modalRef.value?.closeModal();
 };
 
 const deleteCard = (cardId: string) => {
-  themeStore.setLatestActivity(props.themeId);
+  themeStore.setLatestActivity(themeId);
   cardStore.deleteCardById(cardId);
 };
 
-const closeForm = () => {
-  isFormOpen.value = false;
-};
+
 </script>
 
 <template>
   <div>
     <h2 class="">Cartes de révision</h2>
-    <button @click="openForm()" class="">
-      Ajouter une carte
-    </button>
     <CardForm
       v-if="isFormOpen && !currentCard?.id"
       :card="currentCard"
       @save="saveCard"
-      @close="closeForm"
-    />
-    <div v-if="cards">
-      <template v-for="card in cards">
-        <CardForm
-          v-if="isFormOpen && currentCard?.id == card.id"
-          :card="currentCard"
-          @save="saveCard"
-          @close="closeForm"
-        />
-      <CardItem
-          v-else
-          :card="card"
-          @edit="editCard"
-          @delete="deleteCard"
       />
-      </template>
+    <div v-if="cards" class="card-list">
+      <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="tonal"></Button>
+      <div class="mescouillesenski">
+        <Card @edit-card="editCard(card)" @delete-card="deleteCard(card.id)" v-for="card in cards" :show-options="true" :card-data="card"></Card>
+      </div>
     </div>
     <div v-else>
       <p>Aucune carte disponible. Créez-en une !</p>
     </div>
 
   </div>
+
+  <Modal ref="modalRef"
+         title="Carte">
+    <template #body>
+      <CardForm :card="currentCard" @save="saveCard" @close="modalRef?.closeModal"/>
+    </template>
+  </Modal>
 </template>
 
 <style scoped>

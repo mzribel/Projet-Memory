@@ -7,6 +7,7 @@ import Button from "@/components/buttons/Button.vue";
 import Note from "@/components/block/Note.vue";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
+import {computed} from "vue";
 const props = defineProps<{
   theme: Theme
 }>();

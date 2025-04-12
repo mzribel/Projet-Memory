@@ -8,10 +8,13 @@ import PageSubtitle from "@/components/block/PageSubtitle.vue";
 import Note from "@/components/block/Note.vue";
 import Card from "@/components/card/Card.vue";
 import Section from "@/components/block/Section.vue";
+import {computed} from "vue";
 
 const themeStore = useThemeStore();
 
-const themes = themeStore.themes;
+const themes = computed(()=> {
+  return themeStore.themes;
+})
 
 </script>
 

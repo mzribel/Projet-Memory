@@ -30,9 +30,13 @@ const saveTheme = async (theme: Theme) => {
 };
 
 const isLoaded = computed(() => themeStore.isLoaded);
-const deleteTheme = themeStore.deleteThemeById;
+const deleteTheme = (themeId:string) => {
+  themeStore.deleteThemeById(themeId)
+}
 
-const themes = ref(themeStore.themes);
+const themes = computed(()=> {
+  return themeStore.themes
+});
 </script>
 
 <template>
@@ -46,7 +50,7 @@ const themes = ref(themeStore.themes);
           :key="theme.id"
           :theme="theme"
           @edit="editTheme"
-          @delete="deleteTheme"
+          @delete="deleteTheme(theme.id)"
       />
     </div>
     <div v-else>

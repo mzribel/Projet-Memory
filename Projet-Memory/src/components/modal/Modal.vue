@@ -22,7 +22,7 @@ defineExpose({openModal, closeModal});
     <div class="modal">
       <div class="modal-top-bar">
         <div class="left">
-          <div v-if="title" class="title">{{ title }}</div>
+          <h3 v-if="title" class="title">{{ title }}</h3>
           <div v-if="description" class="description">{{ description }}</div>
         </div>
         <div class="right">
@@ -82,7 +82,6 @@ defineExpose({openModal, closeModal});
 .modal-top-bar {
   display: flex;
   gap: 16px;
-  padding: 0 32px;
   justify-content: space-between;
   margin-bottom: 16px;
   .left {

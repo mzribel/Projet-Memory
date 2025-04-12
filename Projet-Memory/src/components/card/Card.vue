@@ -2,6 +2,7 @@
 import {ref} from "vue";
 import type {Card as CardData} from "@/types/Card.ts";
 import CardFace from "@/components/card/CardFace.vue";
+import Modal from "@/components/modal/Modal.vue";
 
 const isFlipped = ref(false)
 const flipCard = () => {
@@ -13,24 +14,38 @@ const {cardData, showOptions} = defineProps<{
   showOptions?: boolean
 }>();
 
+const currentCard = ref<CardData | null>(null);
 
+// const editCard = () => {
+//   currentCard.value = cardData;
+//   modalRef.value?.openModal();
+// }
+
+const modalRef = ref<InstanceType<typeof Modal> | null>(null);
+
+const emit = defineEmits(['editCard', "deleteCard"]);
+const editCard = () => { emit("editCard"); }
+const deleteCard = () => { emit("deleteCard"); }
 </script>
 
 <template>
   <div :class="isFlipped ? 'flipped' : ''" class="flip-card" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <CardFace :is-question="true" :level="[cardData.currentLevel,3]" :show-options="showOptions">
+        <CardFace @edit-card="editCard" @delete-card="deleteCard" :is-question="true" :level="cardData.currentLevel" :show-options="showOptions">
           {{ cardData.front }}
         </CardFace>
       </div>
       <div class="flip-card-back">
-        <CardFace :is-question="false" :level="[cardData.currentLevel,3]" :show-options="showOptions">
+        <CardFace :is-question="false" @delete-card="deleteCard" :level="cardData.currentLevel" :show-options="showOptions">
           {{ cardData.back }}
         </CardFace>
       </div>
     </div>
   </div>
+  <Modal ref="modalRef">
+    hello
+  </Modal>
 </template>
 
 <style lang="scss" scoped>

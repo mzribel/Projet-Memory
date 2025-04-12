@@ -9,7 +9,7 @@ import TitleBlock from "@/components/block/TitleBlock.vue";
 import {computed, ref} from "vue";
 
 const categoryStore = useCategoryStore();
-const categories = ref(categoryStore.categories);
+const categories = computed(()=>categoryStore.categories);
 </script>
 
 <template>

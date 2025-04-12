@@ -33,10 +33,13 @@ const closeForm = () => {
 };
 
 const isLoaded = computed(() => categoryStore.isLoaded);
-const deleteCategory = categoryStore.deleteCategoryById;
-defineProps<{
-  categories:Category[]}>
-()
+const deleteCategory = (categoryId:string) => {
+  categoryStore.deleteCategoryById(categoryId);
+}
+
+const categories = computed(() => {
+  return categoryStore.categories;
+})
 
 </script>
 
@@ -44,14 +47,13 @@ defineProps<{
   <div class="container">
     <Button @click="openFormToCreateCategory()" icon="fa-solid fa-plus" label="Ajouter une catégorie" variant="tonal" size="large"></Button>
 
-
     <div v-if="categories" class="mescouillesenski">
       <CategoryItem
           v-for="category in categories"
           :key="category.id"
           :category="category"
           @edit="editCategory"
-          @delete="deleteCategory"
+          @delete="deleteCategory(category.id)"
       />
     </div>
     <div v-else>

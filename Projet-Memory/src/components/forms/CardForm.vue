@@ -32,38 +32,37 @@ const save = () => emit('save', form.value, newFrontFile.value, newBackFile.valu
 </script>
 
 <template>
-  <div>
-    <h2>{{ card ? 'Modifier la carte' : 'Ajouter une carte' }}</h2>
-    <form @submit.prevent="save">
-      <div>
+  <div class="form-container">
+    <form @submit.prevent="save" class="form-content">
+      <div class="form-group">
         <label for="front">Recto</label>
         <textarea id="front" v-model="form.front" required rows="3"></textarea>
-        <div>
-          <label for="multimediaFront">Média côté recto</label>
-          <input id="multimediaFront" accept="image/*,video/*,audio/*" type="file"
-                 @change="handleFileUpload($event, true)">
-          <p v-if="form.multimediaFront">Fichier actuel : {{ form.multimediaFront }}</p>
-        </div>
       </div>
-
-      <div>
+      <div class="form-group">
+        <label for="multimediaFront">Média côté recto</label>
+        <input id="multimediaFront" accept="image/*,video/*,audio/*" type="file"
+               @change="handleFileUpload($event, true)">
+        <p v-if="form.multimediaFront">Fichier actuel : {{ form.multimediaFront }}</p>
+      </div>
+      <div class="form-group">
         <label for="back">Verso</label>
         <textarea id="back" v-model="form.back" required rows="3"></textarea>
-        <div>
-          <label for="multimediaBack">Média côté verso</label>
-          <input id="multimediaBack" accept="image/*,video/*,audio/*" type="file"
-                 @change="handleFileUpload($event, false)">
-          <p v-if="form.multimediaBack">Fichier actuel : {{ form.multimediaBack }}</p>
-        </div>
       </div>
-
-      <div>
-        <button type="button" @click="$emit('close')">Annuler</button>
-        <button type="submit">Sauvegarder</button>
+      <div class="form-group">
+        <label for="multimediaBack">Média côté verso</label>
+        <input id="multimediaBack" accept="image/*,video/*,audio/*" type="file"
+               @change="handleFileUpload($event, false)">
+        <p v-if="form.multimediaBack">Fichier actuel : {{ form.multimediaBack }}</p>
+      </div>
+      <div class="form-actions">
+        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
+        <button type="submit" @click="save" class="btn save">Sauvegarder</button>
       </div>
     </form>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "./../../assets/css/buttons.scss";
+@use "./../../assets/css/form.scss";
 </style>

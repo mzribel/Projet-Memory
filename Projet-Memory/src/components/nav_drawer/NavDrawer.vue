@@ -61,7 +61,7 @@ const themes = computed(() => themesStore.themes.slice(0, 5));
           :title="theme.name"
           :link="`/themes/${theme.id}`">
           ></DrawerItem>
-        <router-link to="/categories/" class="see-more">Voir tout</router-link>
+        <router-link to="/themes/" class="see-more">Voir tout</router-link>
       </template>
     </DrawerCategory>
   </div>
