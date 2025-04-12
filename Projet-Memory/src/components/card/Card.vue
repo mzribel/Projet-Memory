@@ -1,39 +1,54 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ref} from "vue";
-import type { Card as CardData } from "@/types/Card.ts";
+import type {Card as CardData} from "@/types/Card.ts";
 import CardFace from "@/components/card/CardFace.vue";
+import Modal from "@/components/modal/Modal.vue";
 
 const isFlipped = ref(false)
 const flipCard = () => {
   isFlipped.value = !isFlipped.value;
 }
 
-const { cardData, showOptions } = defineProps<{
-  cardData:CardData,
-  showOptions?:boolean
+const {cardData, showOptions} = defineProps<{
+  cardData: CardData,
+  showOptions?: boolean
 }>();
 
+const currentCard = ref<CardData | null>(null);
 
+// const editCard = () => {
+//   currentCard.value = cardData;
+//   modalRef.value?.openModal();
+// }
+
+const modalRef = ref<InstanceType<typeof Modal> | null>(null);
+
+const emit = defineEmits(['editCard', "deleteCard"]);
+const editCard = () => { emit("editCard"); }
+const deleteCard = () => { emit("deleteCard"); }
 </script>
 
 <template>
-  <div class="flip-card" :class="isFlipped ? 'flipped' : ''" @click="flipCard">
+  <div :class="isFlipped ? 'flipped' : ''" class="flip-card" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <CardFace :show-options="showOptions" :is-question="true" :level="[cardData.currentLevel,3]">
+        <CardFace @edit-card="editCard" @delete-card="deleteCard" :is-question="true" :level="cardData.currentLevel" :show-options="showOptions">
           {{ cardData.front }}
         </CardFace>
       </div>
       <div class="flip-card-back">
-        <CardFace :show-options="showOptions" :is-question="false" :level="[cardData.currentLevel,3]">
+        <CardFace :is-question="false" @delete-card="deleteCard" :level="cardData.currentLevel" :show-options="showOptions">
           {{ cardData.back }}
         </CardFace>
       </div>
     </div>
   </div>
+  <Modal ref="modalRef">
+    hello
+  </Modal>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;

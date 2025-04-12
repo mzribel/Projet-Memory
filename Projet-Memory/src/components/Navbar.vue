@@ -1,41 +1,19 @@
 <script lang="ts" setup>
-import Button from "@/components/buttons/Button.vue";
-import {db} from '@/database.ts';
-import type {Category} from "@/types/Category.ts";
-import type {Theme} from "@/types/Theme.ts";
-import type {Card} from "@/types/Card.ts";
+import {importDataComposable} from "@/composables/importdata.composable.ts";
 
-const jsonImport = async (event:Event) => {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-
-  if (!file) return;
-
-  try {
-    const text = await file.text();
-    const json = JSON.parse(text);
-
-    await db.transaction('rw', db.categories, db.themes, db.cards, async () => {
-      if (json.categories) await db.categories.bulkPut(json.categories as Category[]);
-      if (json.themes) await db.themes.bulkPut(json.themes as Theme[]);
-      if (json.cards) await db.cards.bulkPut(json.cards as Card[]);
-    });
-    window.location.reload();
-  } catch (err) {
-    console.error(err);
-  }
-}
+const { jsonImport } = importDataComposable();
 </script>
+
 <template>
   <header>
     <nav>
       <div class="left"><router-link to="/">Tony Memory</router-link></div>
       <div class="right">
-        <input type="file" accept=".json" @change="jsonImport"/>
+        <input type="file" accept=".json" @change="jsonImport" />
         <div class="user-data">
           <span class="username">Utilisateur anonyme</span>
           <div class="user-pfp">
-            <img src="../assets/img/peuchere.png" alt="Aidez-le">
+            <img src="../assets/img/peuchere.png" alt="Aidez-le" />
           </div>
         </div>
       </div>

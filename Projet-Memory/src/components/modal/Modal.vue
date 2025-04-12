@@ -22,7 +22,7 @@ defineExpose({openModal, closeModal});
     <div class="modal">
       <div class="modal-top-bar">
         <div class="left">
-          <div v-if="title" class="title">{{ title }}</div>
+          <h3 v-if="title" class="title">{{ title }}</h3>
           <div v-if="description" class="description">{{ description }}</div>
         </div>
         <div class="right">
@@ -76,7 +76,7 @@ defineExpose({openModal, closeModal});
   padding: 16px 24px;
   border-radius: 8px;
   z-index: 1;
-  min-width: min(100%, 500px);
+  min-width: min(95%, 600px);
 }
 
 .modal-top-bar {
@@ -90,6 +90,7 @@ defineExpose({openModal, closeModal});
     flex-direction: column;
     .title {
       font-weight: 500;
+      font-size:x-large;
     }
     .description {
       font-size: 14px;

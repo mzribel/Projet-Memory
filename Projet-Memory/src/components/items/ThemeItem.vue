@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import type { Theme } from '@/types/Theme.ts';
-import router from "@/router";
 import { useThemeStore } from "@/stores/themeStore.ts";
-import {computed} from "vue";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import Block from "@/components/block/Block.vue";
 import Button from "@/components/buttons/Button.vue";
 import Note from "@/components/block/Note.vue";
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
+import {computed} from "vue";
 const props = defineProps<{
   theme: Theme
 }>();
@@ -72,9 +71,9 @@ const categoryName = computed(() => {
   </router-link>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
-@import "../../assets/css/items.scss";
+@use "../../assets/css/items.scss";
 
 
 

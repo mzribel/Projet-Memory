@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
-import type { PropType } from 'vue';
 import type { Category } from '@/types/Category.ts';
 
 const props = defineProps<{
@@ -31,41 +30,28 @@ const save = () => {
   emit('save', form.value);
 };
 </script>
-
 <template>
-  <div >
-    <h2>
-      {{ category ? 'Modifier la catégorie' : 'Ajouter une catégorie' }}
-    </h2>
-    <form @submit.prevent="save">
-      <div >
+  <div class="form-container">
+    <form @submit.prevent="save" class="form-content">
+      <div class="form-group">
         <label for="name">Nom</label>
-        <input
-            v-model="form.name"
-            type="text"
-            id="name"
-            required
-        />
+        <input v-model="form.name" type="text" id="name" required />
       </div>
-      <div >
+
+      <div class="form-group">
         <label for="description">Description</label>
-        <textarea
-            v-model="form.description"
-            id="description"
-            rows="3"
-        ></textarea>
+        <textarea v-model="form.description" id="description" rows="3"></textarea>
       </div>
-      <div >
-        <button type="button" @click="$emit('close')" >
-          Annuler
-        </button>
-        <button type="submit">
-          Sauvegarder
-        </button>
+
+      <div class="form-actions">
+        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
+        <button type="submit" class="btn save">Sauvegarder</button>
       </div>
     </form>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "./../../assets/css/buttons.scss";
+@use "./../../assets/css/form.scss";
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import type { Card } from '@/types/Card.ts';
+import {ref, watch} from 'vue';
+import type {Card} from '@/types/Card.ts';
+import {cardMultimediaComposable} from '@/composables/cardmultimedia.composable.ts';
 
 const props = defineProps<{ card: Card | null }>();
 const emit = defineEmits(['save', 'close']);
@@ -18,74 +19,50 @@ const form = ref<Card>({
 watch(
     () => props.card,
     (newCard) => {
-      if (newCard) {
-        form.value = { ...newCard };
-      } else {
-        form.value = {
-          id: '',
-          themeId: '',
-          front: '',
-          back: '',
-          multimediaFront: '',
-          multimediaBack: '',
-          currentLevel: 0,
-        };
-      }
+      form.value = newCard
+          ? {...newCard}
+          : {id: '', themeId: '', front: '', back: '', multimediaFront: '', multimediaBack: '', currentLevel: 0};
     },
-    { immediate: true }
+    {immediate: true}
 );
 
-const frontFile = ref<File | null>(null);
-const backFile = ref<File | null>(null);
+const {newFrontFile, newBackFile, handleFileUpload} = cardMultimediaComposable();
 
-const handleFileUpload = (event: Event, isFront: boolean) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    const file = target.files[0];
-    if (isFront) {
-      frontFile.value = file;
-    } else {
-      backFile.value = file;
-    }
-  }
-};
-
-const save = () => {
-  emit('save', form.value, frontFile.value, backFile.value);
-};
+const save = () => emit('save', form.value, newFrontFile.value, newBackFile.value);
 </script>
+
 <template>
-  <div>
-    <h2>{{ card ? 'Modifier la carte' : 'Ajouter une carte' }}</h2>
-    <form @submit.prevent="save">
-      <div>
+  <div class="form-container">
+    <form @submit.prevent="save" class="form-content">
+      <div class="form-group">
         <label for="front">Recto</label>
-        <textarea v-model="form.front" id="front" rows="3" required></textarea>
-        <div>
-          <label for="multimediaFront">Média côté recto</label>
-          <input type="file" id="multimediaFront" accept="image/*,video/*,audio/*" @change="handleFileUpload($event, true)">
-          <p v-if="form.multimediaFront">Fichier actuel : {{ form.multimediaFront }}</p>
-        </div>
+        <textarea id="front" v-model="form.front" required rows="3"></textarea>
       </div>
-
-      <div>
+      <div class="form-group">
+        <label for="multimediaFront">Média côté recto</label>
+        <input id="multimediaFront" accept="image/*,video/*,audio/*" type="file"
+               @change="handleFileUpload($event, true)">
+        <p v-if="form.multimediaFront">Fichier actuel : {{ form.multimediaFront }}</p>
+      </div>
+      <div class="form-group">
         <label for="back">Verso</label>
-        <textarea v-model="form.back" id="back" rows="3" required></textarea>
-        <div>
-          <label for="multimediaBack">Média côté verso</label>
-          <input type="file" id="multimediaBack" accept="image/*,video/*,audio/*" @change="handleFileUpload($event, false)">
-          <p v-if="form.multimediaBack">Fichier actuel : {{ form.multimediaBack }}</p>
-        </div>
+        <textarea id="back" v-model="form.back" required rows="3"></textarea>
       </div>
-
-      <div>
-        <button type="button" @click="$emit('close')">Annuler</button>
-        <button type="submit">Sauvegarder</button>
+      <div class="form-group">
+        <label for="multimediaBack">Média côté verso</label>
+        <input id="multimediaBack" accept="image/*,video/*,audio/*" type="file"
+               @change="handleFileUpload($event, false)">
+        <p v-if="form.multimediaBack">Fichier actuel : {{ form.multimediaBack }}</p>
+      </div>
+      <div class="form-actions">
+        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
+        <button type="submit" @click="save" class="btn save">Sauvegarder</button>
       </div>
     </form>
   </div>
-  <br>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+@use "./../../assets/css/buttons.scss";
+@use "./../../assets/css/form.scss";
 </style>

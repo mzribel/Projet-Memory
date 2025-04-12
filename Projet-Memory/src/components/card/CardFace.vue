@@ -5,8 +5,13 @@ import Button from "@/components/buttons/Button.vue";
 defineProps<{
   showOptions?:boolean,
   isQuestion:boolean,
-  level?: [number, number],
+  level?: number,
 }>();
+
+const emit = defineEmits(['editCard', 'deleteCard']);
+const editCard = () => { emit("editCard"); }
+const deleteCard = () => { emit("deleteCard"); }
+
 </script>
 
 <template>
@@ -15,8 +20,9 @@ defineProps<{
     <div class="left">
       <span class="face-type">{{ isQuestion ? "Q" : "A"}}</span>
     </div>
-    <div class="right">
-      <Button v-if="showOptions" type="icon-btn" icon="fa-solid fa-pen" variant="outlined" color="secondary"></Button>
+    <div class="right" style="display: flex; gap: 8px">
+      <Button @click.stop.prevent='editCard' v-if="showOptions" type="icon-btn" icon="fa-solid fa-pen" variant="outlined" color="secondary"></Button>
+      <Button @click.stop.prevent='deleteCard' v-if="showOptions" type="icon-btn" icon="fa-solid fa-trash" variant="outlined" color="secondary"></Button>
     </div>
   </div>
   <div class="body vertical">
@@ -30,7 +36,7 @@ defineProps<{
   </div>
   <div class="footer">
     <div class="left">
-      <div class="level">Niveau 0</div>
+      <div class="level" v-if="level">Niveau {{ level }}</div>
     </div>
     <div class="right" v-if="showOptions">
       <span>Dernière révision : </span>
