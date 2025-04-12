@@ -78,8 +78,9 @@ const save = () => {
       <div class="form-group">
         <label for="levelToReview">Niveaux de révision</label>
         <select id="levelToReview" v-model="form.maxLevel">
-          <option v-for="n in 7" :key="n" :value="n">{{ n }}</option>
+          <option v-for="n in 8" :key="n" :value="n">{{ n }}</option>
         </select>
+        <p class="details">Intervalles des niveaux : {{ generateReviewInterval(form.maxLevel).join(" - ")}} jours </p>
       </div>
 
       <div class="form-group">

@@ -47,6 +47,5 @@ export function notificationComposable() {
         requestNotificationPermission,
         notifyUser,
         generatePracticeMessage
-        notifyUser
     }
 }

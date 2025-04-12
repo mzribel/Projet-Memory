@@ -31,14 +31,10 @@ const deleteCard = () => { emit("deleteCard"); }
   <div :class="isFlipped ? 'flipped' : ''" class="flip-card" @click="flipCard">
     <div class="flip-card-inner">
       <div class="flip-card-front">
-        <CardFace @edit-card="editCard" @delete-card="deleteCard" :is-question="true" :level="cardData.currentLevel" :show-options="showOptions">
-          {{ cardData.front }}
-        </CardFace>
+        <CardFace :card="cardData" @edit-card="editCard" @delete-card="deleteCard" :is-question="true" :show-options="showOptions"></CardFace>
       </div>
       <div class="flip-card-back">
-        <CardFace :is-question="false" @delete-card="deleteCard" :level="cardData.currentLevel" :show-options="showOptions">
-          {{ cardData.back }}
-        </CardFace>
+        <CardFace :card="cardData" :is-question="false" @delete-card="deleteCard" :show-options="showOptions"></CardFace>
       </div>
     </div>
   </div>
