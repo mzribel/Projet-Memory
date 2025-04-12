@@ -117,11 +117,4 @@ const cards = computed(() => {
   gap: 16px;
 }
 
-.mescouillesenski {
-  padding: 16px 0;
-  display: flex;
-  gap: 16px;
-  row-gap: 16px;
-  flex-wrap: wrap;
-}
 </style>

@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import {importDataComposable} from "@/composables/importdata.composable.ts";
-
-const { jsonImport } = importDataComposable();
 </script>
 
 <template>
@@ -9,7 +6,6 @@ const { jsonImport } = importDataComposable();
     <nav>
       <div class="left"><router-link to="/">Tony Memory</router-link></div>
       <div class="right">
-        <input type="file" accept=".json" @change="jsonImport" />
         <div class="user-data">
           <span class="username">Utilisateur anonyme</span>
           <div class="user-pfp">

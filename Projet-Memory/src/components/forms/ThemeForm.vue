@@ -3,6 +3,7 @@ import {ref, watch} from 'vue';
 import type {Theme} from '@/types/Theme.ts';
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {practiceComposable} from "@/composables/practice.composable.ts";
+import Button from "@/components/buttons/Button.vue";
 const { generateReviewInterval } = practiceComposable();
 const props = defineProps<{
   theme: Theme | null;
@@ -86,8 +87,8 @@ const save = () => {
       </div>
 
       <div class="form-actions">
-        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
-        <button type="submit" @click="save" class="btn save">Sauvegarder</button>
+        <Button @click="$emit('close')" label="Annuler" variant="outlined"></Button>
+        <Button @click="save" label="Sauvegarder" variant="filled" color="secondary"></Button>
       </div>
     </form>
   </div>

@@ -5,7 +5,7 @@ const { requestNotificationPermission, notifyUser } = notificationComposable();
 onMounted(async () => {
   await requestNotificationPermission();
 
-  // notifyUser(4);
+  notifyUser();
 })
 </script>
 <template>

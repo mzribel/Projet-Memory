@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
-import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useThemeStore} from "@/stores/themeStore.ts";
 import DrawerCategory from "@/components/nav_drawer/components/DrawerCategory.vue";
 import DrawerItem from "@/components/nav_drawer/components/DrawerItem.vue";
+import Modal from "@/components/modal/Modal.vue";
+import Button from "@/components/buttons/Button.vue";
+import {notificationComposable} from "@/composables/notification.composable.ts";
+const { notifyUser } = notificationComposable();
+import {importDataComposable} from "@/composables/importdata.composable.ts";
 
+const { jsonImport } = importDataComposable();
 // Base Menu
 const baseMenu = ref([
   {
@@ -28,20 +33,15 @@ const baseMenu = ref([
     icon: "fa-solid fa-layer-group",
     link: "/themes"
   },
-  {
-    title:"Test",
-    icon: "fa-solid fa-gear",
-    link: "/test"
-  }
 ]);
 
-const categoriesStore = useCategoryStore();
 const themesStore = useThemeStore();
-
-const categories = computed(() => categoriesStore.categories.slice(0, 5));
 const themes = computed(() => themesStore.themes.slice(0, 5));
 
-
+const parametersModalRef = ref<InstanceType<typeof Modal> | null>(null);
+const openParameters = () => {
+  parametersModalRef.value?.openModal();
+}
 </script>
 
 <template>
@@ -53,6 +53,7 @@ const themes = computed(() => themesStore.themes.slice(0, 5));
         :icon="item.icon"
         :link="item.link"
       ></DrawerItem>
+      <DrawerItem @click="openParameters" title="Paramètres" icon="fa-solid fa-gear"></DrawerItem>
     </DrawerCategory>
     <DrawerCategory title="Thèmes" empty_message="Aucun thème">
       <template v-if="themes">
@@ -65,9 +66,25 @@ const themes = computed(() => themesStore.themes.slice(0, 5));
       </template>
     </DrawerCategory>
   </div>
+  <Modal title="Paramètres" ref="parametersModalRef">
+  <template #body>
+    <div class="form-content">
+      <div class="form-group">
+        <label for="import-data">Importer des données</label>
+        <input id='import-data' type="file" accept=".json" @change="jsonImport" />
+      </div>
+      <div class="form-group">
+        <label>Tester les notifications</label>
+        <Button @click="notifyUser" icon="fa-solid fa-envelope" label="SEEEEEEEND IT !" variant="filled" color="secondary"></Button>
+      </div>
+    </div>
+  </template>
+  </Modal>
 </template>
 
 <style scoped lang="scss">
+@use "./../../assets/css/form.scss";
+
 .nav-drawer {
   background-color: #FEF7FF;
   font-family: "Roboto", sans-serif;

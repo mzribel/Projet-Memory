@@ -42,6 +42,6 @@ const themes = computed(()=> {
 .theme-list-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 </style>

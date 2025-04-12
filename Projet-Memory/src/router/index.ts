@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import TestView from "@/views/test/TestView.vue";
 import HomeView from "@/views/HomeView.vue";
 import CategoriesView from "@/views/categories/CategoriesView.vue";
 import CategoryDetailView from "@/views/categories/CategoryDetailView.vue";
@@ -12,8 +11,6 @@ import {useThemeStore} from "@/stores/themeStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
 
 const routes = [
-  { path: "/test", name:"Test", component: TestView }, // TODO : Remove
-
   { path: '/', name: 'Home', component: HomeView },
   { path: '/categories', name: 'Categories', component: CategoriesView },
   { path: '/themes', name: 'ThemeListView', component: ThemesView },
