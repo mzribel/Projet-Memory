@@ -66,5 +66,9 @@ const deleteCard = (cardId: string) => {
   </Modal>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.cards-ctn {
+  display: flex;
+  flex-wrap: wrap;
+}
 </style>
