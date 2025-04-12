@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Theme } from '@/types/Theme.ts';
-import router from "@/router";
 import { useThemeStore } from "@/stores/themeStore.ts";
-import {computed} from "vue";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import Block from "@/components/block/Block.vue";
 import Button from "@/components/buttons/Button.vue";

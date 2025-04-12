@@ -5,7 +5,6 @@ import {useThemeStore} from "@/stores/themeStore.ts";
 import {computed, onMounted, ref, watch} from "vue";
 import type {Theme} from "@/types/Theme.ts";
 import router from "@/router";
-import CardList from "@/components/lists/CardList.vue";
 import TitleBlock from "@/components/block/TitleBlock.vue";
 import Button from "@/components/buttons/Button.vue";
 import PageSubtitle from "@/components/block/PageSubtitle.vue";
@@ -13,7 +12,6 @@ import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
 import Section from "@/components/block/Section.vue";
 import Note from "@/components/block/Note.vue";
-import CardListItem from "@/components/card/CardListItem.vue";
 import Card from "@/components/card/Card.vue";
 
 // la route
@@ -34,7 +32,7 @@ onMounted(async () => {
 
 watch(
   () => route.params.themeId,
-  (newId, oldId) => {
+  (newId) => {
     fetchThemeOr404(newId as string ?? "")
   }
 )
@@ -42,11 +40,11 @@ watch(
 const category = computed(() => {
   if (!theme.value) { return null;}
     return categoryStore.categories.find((c) => c.id === theme?.value?.categoryId);
-})
+});
 const cards = computed(() => {
   if (!theme.value) { return null;}
   return cardStore.cards.filter((c) => c.themeId === theme?.value?.id);
-})
+});
 
 </script>
 

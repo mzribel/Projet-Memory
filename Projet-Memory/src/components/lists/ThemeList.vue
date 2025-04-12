@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { ref, computed } from 'vue';
 import ThemeItem from '../items/ThemeItem.vue';
 import ThemeForm from '../forms/ThemeForm.vue';
+import Modal from '@/components/modal/Modal.vue';
 import { useThemeStore } from '@/stores/themeStore';
 import type { Theme } from '@/types/Theme.ts';
 import {useCardStore} from "@/stores/cardStore.ts";
@@ -10,26 +11,22 @@ import Button from "@/components/buttons/Button.vue";
 const cardStore = useCardStore();
 const themeStore = useThemeStore();
 
-const isFormOpen = ref(false);
+const modalRef = ref<InstanceType<typeof Modal> | null>(null);
 const currentTheme = ref<Theme | null>(null);
 
 const openFormToCreateTheme = () => {
   currentTheme.value = null;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
 const editTheme = (theme: Theme) => {
   currentTheme.value = theme;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
 const saveTheme = async (theme: Theme) => {
   await themeStore.addThemeOrUpdateIt(theme);
-  closeForm();
-};
-
-const closeForm = () => {
-  isFormOpen.value = false;
+  modalRef.value?.closeModal();
 };
 
 const isLoaded = computed(() => themeStore.isLoaded);
@@ -53,16 +50,21 @@ const themes = ref(themeStore.themes);
       />
     </div>
     <div v-else>
-      <p>Aucun theme disponible.</p>
+      <p>Aucun thème disponible.</p>
     </div>
 
-
-    <ThemeForm
-        v-if="isFormOpen"
-        :theme="currentTheme"
-        @save="saveTheme"
-        @close="closeForm"
-    />
+    <Modal
+        ref="modalRef"
+        :title="currentTheme ? 'Modifier le thème' : 'Créer un nouveau thème'"
+    >
+      <template #body>
+        <ThemeForm
+            :theme="currentTheme"
+            @save="saveTheme"
+            @close="modalRef?.closeModal"
+        />
+      </template>
+    </Modal>
   </div>
 </template>
 

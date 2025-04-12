@@ -1,44 +1,34 @@
 <script lang="ts" setup>
 import type { Card } from '@/types/Card.ts';
-import { useCardStore } from "@/stores/cardStore.ts";
-import { onMounted, ref, computed } from "vue";
-import {practiceComposable} from "@/composables/practice.composable.ts";
+import { practiceComposable } from '@/composables/practice.composable.ts';
+import { cardMultimediaComposable } from '@/composables/cardmultimedia.composable.ts';
+import {onMounted, watch} from "vue";
 
 const props = defineProps<{ card: Card }>();
 const emit = defineEmits(['edit', 'delete']);
-const cardStore = useCardStore();
 
-const cardFileFront = ref<Blob | null>(null);
-const cardFileBack = ref<Blob | null>(null);
-const cardFileFrontUrl = ref<string | null>(null);
-const cardFileBackUrl = ref<string | null>(null);
+const { resetCardLevel } = practiceComposable();
 
-const {
-  getCardsToPractice,
-  promoteCard,
-  demoteCard,
-  resetCardLevel
-} = practiceComposable()
+const { fileUrl: cardFileFrontUrl, fileType: cardFileFrontType, loadFile: loadFrontFile } = cardMultimediaComposable();
+const { fileUrl: cardFileBackUrl, fileType: cardFileBackType, loadFile: loadBackFile } = cardMultimediaComposable();
+
+watch(
+  () => props.card,
+  (newCard) => {
+    if (newCard.multimediaFront) {
+      loadFrontFile(newCard.multimediaFront);
+    }
+    if (newCard.multimediaBack) {
+      loadBackFile(newCard.multimediaBack);
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
-  if (props.card.multimediaFront) {
-    const file = await cardStore.getFileById(props.card.multimediaFront);
-    if (file) {
-      cardFileFront.value = file;
-      cardFileFrontUrl.value = URL.createObjectURL(file);
-    }
-  }
-  if (props.card.multimediaBack) {
-    const file = await cardStore.getFileById(props.card.multimediaBack);
-    if (file) {
-      cardFileBack.value = file;
-      cardFileBackUrl.value = URL.createObjectURL(file);
-    }
-  }
+  await loadFrontFile(props.card.multimediaFront);
+  await loadBackFile(props.card.multimediaBack);
 });
-
-const cardFileFrontType = computed(() => cardFileFront.value?.type || '');
-const cardFileBackType = computed(() => cardFileBack.value?.type || '');
 </script>
 
 <template>

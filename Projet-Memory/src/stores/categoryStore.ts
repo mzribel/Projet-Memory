@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import {computed, onMounted, ref} from 'vue';
+import { ref} from 'vue';
 import { db } from '@/database';
 import type { Category } from '@/types/Category';
 // @ts-ignore
@@ -11,8 +11,7 @@ export const useCategoryStore = defineStore('category', () => {
 
     const loadCategories = async () => {
         try {
-            const storedCategories = await db.categories.toArray();
-            categories.value = storedCategories.map(category => JSON.parse(JSON.stringify(category)));
+            categories.value = await db.categories.toArray();
         } catch (error) {
             console.error('Error loading categories:', error);
         }
@@ -23,7 +22,7 @@ export const useCategoryStore = defineStore('category', () => {
         if (!category.id) {
             category.id = uuidv4();
         }
-        await db.categories.put(JSON.parse(JSON.stringify(category)));
+        await db.categories.put({ ...category });
         await loadCategories();
     };
 
