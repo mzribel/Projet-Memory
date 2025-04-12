@@ -5,7 +5,10 @@ import ThemeForm from '../forms/ThemeForm.vue';
 import Modal from '@/components/modal/Modal.vue';
 import { useThemeStore } from '@/stores/themeStore';
 import type { Theme } from '@/types/Theme.ts';
+import {useCardStore} from "@/stores/cardStore.ts";
+import Button from "@/components/buttons/Button.vue";
 
+const cardStore = useCardStore();
 const themeStore = useThemeStore();
 
 const modalRef = ref<InstanceType<typeof Modal> | null>(null);
@@ -26,18 +29,18 @@ const saveTheme = async (theme: Theme) => {
   modalRef.value?.closeModal();
 };
 
-const themes = computed(() => themeStore.themes);
 const isLoaded = computed(() => themeStore.isLoaded);
 const deleteTheme = themeStore.deleteThemeById;
+
+const themes = ref(themeStore.themes);
 </script>
 
 <template>
-  <div>
-    <h2>Liste des thèmes</h2>
-    <button @click="openFormToCreateTheme">Ajouter un thème</button>
+  <div class="container">
+    <Button @click="openFormToCreateTheme()" icon="fa-solid fa-plus" label="Ajouter un thème" variant="tonal" size="large"></Button>
 
-    <div v-if="!isLoaded">Chargement...</div>
-    <div v-else-if="themes.length">
+    <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
+    <div class="mescouillesenski"  v-else-if="themes.length">
       <ThemeItem
           v-for="theme in themes"
           :key="theme.id"
@@ -66,4 +69,14 @@ const deleteTheme = themeStore.deleteThemeById;
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mescouillesenski {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 </style>

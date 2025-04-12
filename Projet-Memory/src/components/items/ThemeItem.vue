@@ -2,9 +2,18 @@
 import type { Theme } from '@/types/Theme.ts';
 import { useThemeStore } from "@/stores/themeStore.ts";
 import {practiceComposable} from "@/composables/practice.composable.ts";
-
-const props = defineProps<{ theme: Theme }>();
+import Block from "@/components/block/Block.vue";
+import Button from "@/components/buttons/Button.vue";
+import Note from "@/components/block/Note.vue";
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+import {useCardStore} from "@/stores/cardStore.ts";
+const props = defineProps<{
+  theme: Theme
+}>();
 const themeStore = useThemeStore();
+
+const categoryStore = useCategoryStore();
+const cardStore = useCardStore();
 
 const { generateReviewInterval } = practiceComposable();
 
@@ -16,36 +25,68 @@ const toggleThemeSelection = () => {
   }
 };
 
+const updateThemeSelectedLevel = (theme: Theme) => {
+  themeStore.addThemeOrUpdateIt(theme);
+};
+
+const cardCount = computed(() => {
+  return cardStore.cards.filter(card => card.themeId == props.theme.id).length;
+})
+const categoryName = computed(() => {
+  return categoryStore.categories.find(c => c.id == props.theme.categoryId)?.name ?? "";
+})
+
 </script>
 
 <template>
-  <div class="">
-    <div>
-      <h3 class="">{{ theme.name }}</h3>
-      <p class="">
-        {{ theme.description || 'Pas de description' }}
-      </p>
-    </div>
-    <div >
-      <router-link :to="`/themes/${theme.id}`"><button>Voir les cartes</button></router-link>
-      <button @click="$emit('edit', theme)" >Modifier</button>
-      <button @click="$emit('delete', theme.id)" >Supprimer</button>
-
-      <label class="switch">
-        <input type="checkbox" :checked="theme.isThemeSelected" @change="toggleThemeSelection">
-        <span class="slider"></span>
-      </label>
-
-      <div v-if="theme.isThemeSelected">
-        <span>Niveaux de révision :</span>
-        {{ generateReviewInterval(theme.maxLevel) }}
+  <router-link :to="`/themes/${theme.id}`">
+  <Block type="small" class="theme-item">
+    <div class="header">
+      <div class="left">
+        <div class="icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div class="title">
+          <h3>{{ theme.name }}</h3>
+          <p v-if="categoryName" class="category">{{ categoryName}}</p>
+        </div>
       </div>
-
+      <div class="right" @click.prevent>
+        <Button @click.prevent="$emit('edit', theme)" type="fab-btn" icon="fa-solid fa-pen" color="secondary" variant="filled"></Button>
+        <Button @click.prevent="$emit('delete', theme)" type="fab-btn" icon="fa-solid fa-trash-can" color="secondary" variant="filled"></Button>
+      </div>
     </div>
-  </div>
+    <div class="tags">
+      <div class="tag">
+        <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+        {{ cardCount }} cartes
+      </div>
+    </div>
+    <div v-if="theme.description" class="description">
+      <h4>Description :</h4>
+      <p v-if="theme.description">{{ theme.description }}</p>
+    </div>
+  </Block>
+  </router-link>
 </template>
 
 <style scoped>
+
+@import "../../assets/css/items.scss";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .switch {
   position: relative;
   display: inline-block;

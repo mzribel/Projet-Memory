@@ -10,6 +10,9 @@ import type {Theme} from "@/types/Theme.ts";
 import Card from "@/components/card/Card.vue";
 import Button from "@/components/buttons/Button.vue";
 import {themeDataComposable} from "@/composables/themedata.composable.ts";
+import Block from "@/components/block/Block.vue";
+import PageSubtitle from "@/components/block/PageSubtitle.vue";
+import TitleBlock from "@/components/block/TitleBlock.vue";
 
 const {
   getCardsToPractice,
@@ -62,7 +65,9 @@ const nextCardTransition = () => {
 
 <template>
   <div>
-    <h1>Session de révision</h1>
+    <TitleBlock>
+      <template #title-left><h1>Révisions du jour</h1></template>
+    </TitleBlock>
     <template v-if="cardsToReview && currentCard">
       <div class="practice-form">
         <Transition name="card-slide" @after-leave="nextCardTransition">
