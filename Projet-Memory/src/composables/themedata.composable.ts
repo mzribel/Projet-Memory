@@ -1,7 +1,11 @@
 import type { Card } from '@/types/Card';
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+import {useCardStore} from "@/stores/cardStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
 
 export const themeDataComposable = () => {
     type GroupedCards = Record<string, Record<string, Card[]>>;
+
 
     const groupCardsByDateAndTheme = (cards: Card[]): GroupedCards => {
         const result: GroupedCards = {};
@@ -25,6 +29,9 @@ export const themeDataComposable = () => {
 
         return result;
     }
+
+
+
 
     return {
         groupCardsByDateAndTheme,

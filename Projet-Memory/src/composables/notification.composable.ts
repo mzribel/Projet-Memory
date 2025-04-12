@@ -37,8 +37,16 @@ export function notificationComposable() {
         }
     }
 
+    const generatePracticeMessage = (count:number) => {
+        return count ?
+            `Vous avez ${count} carte${count > 1 ? 's' : ''} à réviser aujourd'hui !` :
+            `Tout est bon ! Aucune carte à réviser aujourd'hui !`
+    }
+
     return {
         requestNotificationPermission,
+        notifyUser,
+        generatePracticeMessage
         notifyUser
     }
 }

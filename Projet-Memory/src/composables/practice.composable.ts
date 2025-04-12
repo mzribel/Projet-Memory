@@ -2,6 +2,9 @@ import type {Card} from "@/types/Card.ts";
 import arrayShuffle from "array-shuffle";
 import {computed} from "vue";
 import {useCardStore} from "@/stores/cardStore.ts";
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
+import type {Theme} from "@/types/Theme.ts";
 
 export const practiceComposable = () => {
     // Intervalles de révisions
@@ -11,6 +14,12 @@ export const practiceComposable = () => {
     const generateReviewInterval = (count:number=7, initial:number=1, factor:number=2) => {
         return Array.from({ length: count}, (_, i) => reviewInterval(i, initial, factor));
     }
+
+
+    const categoryStore = useCategoryStore();
+    const themeStore = useThemeStore();
+    const cardStore = useCardStore();
+
 
     const formatDateToLocalISO = (date: Date): string => {
         const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -66,6 +75,7 @@ export const practiceComposable = () => {
         // Shuffle les cartes et en retourne un nombre correspondant à la limite
         return arrayShuffle(newCards).slice(0, newCardsPerDay);
     }
+
     const getCardsToPractice = (cards:Card[], maxLevel:number, newCardsPerDay:number) => {
         let cardsToPractice: Card[] = [];
 
@@ -77,6 +87,21 @@ export const practiceComposable = () => {
         // Nouvelles cartes
         cardsToPractice.push(... getNewCards(cards, newCardsPerDay));
         return cardsToPractice;
+    }
+
+    const getCardsToPracticeTodayByTheme = (themes:Theme[]=themeStore.themes, cards:Card[]=cardStore.cards) => {
+        let result:{themeId:string, cards:Card[], newCards:number}[] = [];
+
+        themes.forEach(theme => {
+            let themeCards = cards.filter((card: Card) => theme.id === card.themeId)
+            let dueCards = themeCards
+                .filter((card: Card) => cardIsDue(card, theme.maxLevel))
+                .sort((a: Card, b: Card) => b.currentLevel - a.currentLevel);
+            let newCardsCount = getNewCards(themeCards, theme.newCardsPerDay).length;
+
+            result.push({themeId:theme.id, cards:dueCards, newCards:newCardsCount});
+        })
+        return result;
     }
 
     // Actions sur les cartes
@@ -118,6 +143,10 @@ export const practiceComposable = () => {
         await cardStore.addCardOrUpdateIt(card);
     }
 
+    const getCardCountToPracticeToday = () => {
+        return getCardsToPracticeTodayByTheme()
+            .reduce((acc, theme) => acc + theme.cards.length + theme.newCards, 0)
+    }
 
     return {
         reviewInterval,
@@ -126,5 +155,7 @@ export const practiceComposable = () => {
         promoteCard,
         demoteCard,
         resetCardLevel,
+        getCardsToPracticeTodayByTheme,
+        getCardCountToPracticeToday
     }
 }
