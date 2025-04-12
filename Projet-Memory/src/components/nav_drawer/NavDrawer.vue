@@ -54,17 +54,6 @@ const themes = computed(() => themesStore.themes.slice(0, 5));
         :link="item.link"
       ></DrawerItem>
     </DrawerCategory>
-    <DrawerCategory title="Catégories" empty_message="WHAT THE FUCK">
-      <template v-if="categories.length > 0">
-        <DrawerItem
-          v-for="category of categories"
-          :title="category.name"
-          :link="`/categories/${category.id}`">
-          ></DrawerItem>
-        <router-link to="/categories/" class="see-more">Voir tout</router-link>
-      </template>
-    </DrawerCategory>
-
     <DrawerCategory title="Thèmes" empty_message="Aucun thème">
       <template v-if="themes">
         <DrawerItem

@@ -8,4 +8,5 @@ export interface Theme {
     isThemeSelected: boolean; // Thème sélectionné pour la révision
     maxLevel: number; // Niveau de révision du thème
     createdAt: string;
+    lastActivityAt: string;
 }

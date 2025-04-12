@@ -1,6 +1,7 @@
 button {
   all: unset;
   height: 35px;
+  min-height: 35px;
   width: fit-content;
   padding: 8px 16px;
   display: flex;

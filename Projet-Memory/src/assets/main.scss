@@ -1,3 +1,5 @@
+@import "../assets/css/titles";
+
 a {
   color: unset;
   text-decoration: none;
@@ -9,7 +11,7 @@ body, html {
   height: 100%;
   margin: 0;
   font-family: "Roboto", sans-serif;
-  background-color: #F7F2FA;
+  background-color: white;
 }
 *,
 *::before,
@@ -31,7 +33,7 @@ main {
 }
 .content-ctn {
   display: flex;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
@@ -40,5 +42,7 @@ main {
     display: flex;
     flex-direction: column;
     flex:1;
+    padding: 16px 20px;
+    height: fit-content;
   }
 }
