@@ -6,10 +6,13 @@ import {practiceComposable} from "@/composables/practice.composable.ts";
 const { getCardCountToPracticeToday } = practiceComposable();
 
 onMounted(async () => {
-  await requestNotificationPermission();
-  notifyUser(generatePracticeMessage(getCardCountToPracticeToday()));
+  const granted = await requestNotificationPermission()
+  if (granted) {
+    setTimeout(() => {
+      notifyUser()
+    }, 5000)
+  }
 })
-
 </script>
 <template>
     <router-view/>
