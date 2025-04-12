@@ -1,4 +1,33 @@
+import {practiceComposable} from "@/composables/practice.composable.ts";
+import marianneIcon from '@/assets/img/mariannepray.png'
+import {useSettingsStore} from "@/stores/settingsStore.ts";
+import {computed} from "vue";
 export function notificationComposable() {
+
+    const settingsStore = useSettingsStore();
+    const settings = computed(() => settingsStore.settings)
+
+    const isNotificationSendable = () => {
+        if (!settings.value) {
+            console.error('Settings non chargées')
+            return false
+        }
+        if (settings.value?.useDailyNotification === false) {
+            console.log('Notifications actuellement désactivées')
+            return false
+        }
+
+        const lastNotificationDate = settings.value.lastNotificationDate
+        const today = new Date().toISOString().split('T')[0]
+
+        if (lastNotificationDate === today) {
+            console.log('Notification déjà envoyée aujourd\'hui')
+            return false
+        }
+
+        return true
+    }
+
     const requestNotificationPermission = async () => {
         if (!('Notification' in window)) {
             console.error('Notifications non supportées par ce navigateur.')
@@ -16,36 +45,36 @@ export function notificationComposable() {
             return
         }
 
+        await settingsStore.setLastNotificationDate(new Date().toISOString().split('T')[0])
+
+        const cardCount = practiceComposable().getCardCountToPracticeToday();
+        const message = generatePracticeMessage(cardCount)
+
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 type: 'SHOW_NOTIFICATION',
                 payload: {
                     title: 'Memory App',
-                    body:
-                        `La révision du jour est disponible !` +
-                        `\nVous avez ${"mes couilles en ski"} cartes à réviser aujourd'hui.` + // TODO : mettre le nombre de cartes à reviser
-                        `\nCliquez sur cette notification pour commencer !`,
-                    icon: '/public/marianne_pray.webp',
-
+                    body: message,
+                    icon: marianneIcon,
                 }
-            }).onclick = () => {
-                console.log('Notification clicked');
-                window.location.href = '/practice';
-            }
-        } else {
-            console.warn('Service Worker non actif.')
+            })
         }
     }
 
     const generatePracticeMessage = (count:number) => {
         return count ?
-            `Vous avez ${count} carte${count > 1 ? 's' : ''} à réviser aujourd'hui !` :
+            `La révision du jour est disponible !` +
+            `\nVous avez ${count} cartes à réviser aujourd'hui.` +
+            `\nCliquez sur cette notification pour commencer !`
+            :
             `Tout est bon ! Aucune carte à réviser aujourd'hui !`
     }
 
     return {
         requestNotificationPermission,
         notifyUser,
-        generatePracticeMessage
+        generatePracticeMessage,
+        isNotificationSendable
     }
 }

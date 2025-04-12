@@ -1,11 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import type {Category} from "@/types/Category.ts";
-import {useThemeStore} from "@/stores/themeStore.ts";
 import type {Settings} from "@/types/Settings.ts";
 import {db} from "@/database.ts";
-import type {Card} from "@/types/Card.ts";
-import {v4 as uuidv4} from "uuid";
 import {useFileStore} from "@/stores/fileStore.ts";
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -32,7 +28,8 @@ export const useSettingsStore = defineStore('settings', () => {
             id: '1',
             displayName: '',
             useDailyNotification: false,
-            profilePicture: ''
+            profilePicture: '',
+            lastNotificationDate: ""
         };
         await db.settings.put(settings);
         await loadSettings();
@@ -47,14 +44,31 @@ export const useSettingsStore = defineStore('settings', () => {
             id: "1",
             displayName: settings.displayName,
             useDailyNotification: settings.useDailyNotification,
-            profilePicture: settings.profilePicture
+            profilePicture: settings.profilePicture,
+            lastNotificationDate: settings.lastNotificationDate
         });
         await loadSettings();
+    }
+
+    const setLastNotificationDate = async (date: string) => {
+        if (!settings.value) {
+            console.error('Settings non chargées')
+            return
+        }
+        settings.value.lastNotificationDate = date;
+        await db.settings.put({
+            id: "1",
+            displayName: settings.value.displayName,
+            useDailyNotification: settings.value.useDailyNotification,
+            profilePicture: settings.value.profilePicture,
+            lastNotificationDate: date
+        });
     }
 
     return {
         settings,
         loadSettings,
-        updateSettings
+        updateSettings,
+        setLastNotificationDate,
     }
 })
