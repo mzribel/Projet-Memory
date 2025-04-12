@@ -1,3 +1,5 @@
+import {practiceComposable} from "@/composables/practice.composable.ts";
+import marianneIcon from '@/assets/img/mariannepray.png'
 export function notificationComposable() {
     const requestNotificationPermission = async () => {
         if (!('Notification' in window)) {
@@ -16,30 +18,27 @@ export function notificationComposable() {
             return
         }
 
+        const cardCount = practiceComposable().getCardCountToPracticeToday();
+        const message = generatePracticeMessage(cardCount)
+
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
                 type: 'SHOW_NOTIFICATION',
                 payload: {
                     title: 'Memory App',
-                    body:
-                        `La révision du jour est disponible !` +
-                        `\nVous avez ${"mes couilles en ski"} cartes à réviser aujourd'hui.` + // TODO : mettre le nombre de cartes à reviser
-                        `\nCliquez sur cette notification pour commencer !`,
-                    icon: '/public/marianne_pray.webp',
-
+                    body: message,
+                    icon: marianneIcon,
                 }
-            }).onclick = () => {
-                console.log('Notification clicked');
-                window.location.href = '/practice';
-            }
-        } else {
-            console.warn('Service Worker non actif.')
+            })
         }
     }
 
     const generatePracticeMessage = (count:number) => {
         return count ?
-            `Vous avez ${count} carte${count > 1 ? 's' : ''} à réviser aujourd'hui !` :
+            `La révision du jour est disponible !` +
+            `\nVous avez ${count} cartes à réviser aujourd'hui.` +
+            `\nCliquez sur cette notification pour commencer !`
+            :
             `Tout est bon ! Aucune carte à réviser aujourd'hui !`
     }
 
@@ -47,6 +46,5 @@ export function notificationComposable() {
         requestNotificationPermission,
         notifyUser,
         generatePracticeMessage
-        notifyUser
     }
 }
