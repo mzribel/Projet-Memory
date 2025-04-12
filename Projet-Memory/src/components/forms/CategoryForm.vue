@@ -51,7 +51,7 @@ const save = () => {
   </div>
 </template>
 
-<style scoped>
-@import "./../../assets/css/buttons.scss";
-@import "./../../assets/css/form.scss";
+<style scoped lang="scss">
+@use "./../../assets/css/buttons.scss";
+@use "./../../assets/css/form.scss";
 </style>
