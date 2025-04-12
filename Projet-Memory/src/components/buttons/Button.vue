@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   type?: "icon-btn" | "fab-btn",
-  size?: "medium" | "large",
+  size?: "medium" | "large" | "small",
   variant?: "outlined" | "filled" | "tonal",
   color?: "primary" | "secondary",
   icon?: string,

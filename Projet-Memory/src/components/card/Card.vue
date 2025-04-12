@@ -21,7 +21,6 @@ const currentCard = ref<CardData | null>(null);
 //   modalRef.value?.openModal();
 // }
 
-const modalRef = ref<InstanceType<typeof Modal> | null>(null);
 
 const emit = defineEmits(['editCard', "deleteCard"]);
 const editCard = () => { emit("editCard"); }
@@ -43,9 +42,6 @@ const deleteCard = () => { emit("deleteCard"); }
       </div>
     </div>
   </div>
-  <Modal ref="modalRef">
-    hello
-  </Modal>
 </template>
 
 <style lang="scss" scoped>

@@ -1,4 +1,18 @@
 <script lang="ts" setup>
+
+import {useSettingsStore} from "@/stores/settingsStore.ts";
+import {computed} from "vue";
+import {useFileStore} from "@/stores/fileStore.ts";
+
+const settingsStore = useSettingsStore();
+const fileStore = useFileStore();
+const settings = computed(()=>settingsStore.settings);
+
+const profilePictureURL = computed(()=> {
+  if (!settings.value) return '';
+  return fileStore.getFileURLById(settings.value.profilePicture);
+})
+
 </script>
 
 <template>
@@ -7,9 +21,11 @@
       <div class="left"><router-link to="/">Tony Memory</router-link></div>
       <div class="right">
         <div class="user-data">
-          <span class="username">Utilisateur anonyme</span>
+          <span v-if="settings && settings.displayName" class="username">{{ settings.displayName }}</span>
+          <span v-else class="username">Utilisateur anonyme</span>
           <div class="user-pfp">
-            <img src="../assets/img/peuchere.png" alt="Aidez-le" />
+            <img v-if="profilePictureURL" :src="profilePictureURL" alt="Photo de profil">
+            <img v-else src="../assets/img/peuchere.png" alt="Photo de profil par défaut">
           </div>
         </div>
       </div>

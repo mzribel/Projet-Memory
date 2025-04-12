@@ -33,7 +33,7 @@ defineExpose({openModal, closeModal});
         <slot name="header"></slot>
       </div>
       <div class="modal-body">
-        <slot name="body"></slot>
+        <slot name="body" :closeModal="closeModal"></slot>
       </div>
       <div class="modal-footer">
         <slot name="footer"></slot>

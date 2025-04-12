@@ -7,7 +7,7 @@ const { getCardCountToPracticeToday } = practiceComposable();
 
 onMounted(async () => {
   await requestNotificationPermission();
-  notifyUser(generatePracticeMessage(getCardCountToPracticeToday()));
+  // notifyUser(generatePracticeMessage(getCardCountToPracticeToday()));
 })
 
 </script>
