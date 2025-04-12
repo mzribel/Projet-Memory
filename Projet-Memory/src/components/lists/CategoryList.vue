@@ -4,21 +4,22 @@ import CategoryItem from '../items/CategoryItem.vue';
 import CategoryForm from '../forms/CategoryForm.vue';
 import { useCategoryStore } from '@/stores/categoryStore';
 import type { Category } from '@/types/Category.ts';
+import Modal from "@/components/modal/Modal.vue";
 import Button from "@/components/buttons/Button.vue";
 
 const categoryStore = useCategoryStore();
 
-const isFormOpen = ref(false);
+const modalRef = ref<InstanceType<typeof Modal> | null>(null);
 const currentCategory = ref<Category | null>(null);
 
 const openFormToCreateCategory = () => {
   currentCategory.value = null;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
 const editCategory = (category: Category) => {
   currentCategory.value = category;
-  isFormOpen.value = true;
+  modalRef.value?.openModal();
 };
 
 const saveCategory = async (category: Category) => {
@@ -27,11 +28,11 @@ const saveCategory = async (category: Category) => {
 };
 
 const closeForm = () => {
-  isFormOpen.value = false;
+  modalRef.value?.closeModal();
+  currentCategory.value = null;
 };
 
 const isLoaded = computed(() => categoryStore.isLoaded);
-const addCategory = categoryStore.addCategory;
 const deleteCategory = categoryStore.deleteCategoryById;
 defineProps<{
   categories:Category[]}>
@@ -57,13 +58,18 @@ defineProps<{
       <p>Aucune catégorie disponible .</p>
     </div>
 
-
-    <CategoryForm
-        v-if="isFormOpen"
-        :category="currentCategory"
-        @save="saveCategory"
-        @close="closeForm"
-    />
+    <Modal
+        ref="modalRef"
+        :title="currentCategory ? 'Modifier la catégorie' : 'Créer une nouvelle catégorie'"
+    >
+      <template #body>
+        <CategoryForm
+            :category="currentCategory"
+            @save="saveCategory"
+            @close="closeForm"
+        />
+      </template>
+    </Modal>
   </div>
 </template>
 
