@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import {onMounted} from "vue";
 import {notificationComposable} from "@/composables/notification.composable.ts";
-const { requestNotificationPermission, notifyUser, generatePracticeMessage } = notificationComposable();
 import {practiceComposable} from "@/composables/practice.composable.ts";
+
+const { requestNotificationPermission, notifyUser, generatePracticeMessage } = notificationComposable();
 const { getCardCountToPracticeToday } = practiceComposable();
 
 onMounted(async () => {
-  await requestNotificationPermission();
-  notifyUser(generatePracticeMessage(getCardCountToPracticeToday()));
+  const granted = await requestNotificationPermission()
+  if (granted) {
+    setTimeout(() => {
+      notifyUser()
+    }, 5000)
+  }
 })
 
 </script>
