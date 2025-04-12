@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {precacheAndRoute} from "workbox-precaching";
 
 self.addEventListener('message', event => {

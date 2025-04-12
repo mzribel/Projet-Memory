@@ -1,6 +1,33 @@
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import marianneIcon from '@/assets/img/mariannepray.png'
+import {useSettingsStore} from "@/stores/settingsStore.ts";
+import {computed} from "vue";
 export function notificationComposable() {
+
+    const settingsStore = useSettingsStore();
+    const settings = computed(() => settingsStore.settings)
+
+    const isNotificationSendable = () => {
+        if (!settings.value) {
+            console.error('Settings non chargées')
+            return false
+        }
+        if (settings.value?.useDailyNotification === false) {
+            console.log('Notifications actuellement désactivées')
+            return false
+        }
+
+        const lastNotificationDate = settings.value.lastNotificationDate
+        const today = new Date().toISOString().split('T')[0]
+
+        if (lastNotificationDate === today) {
+            console.log('Notification déjà envoyée aujourd\'hui')
+            return false
+        }
+
+        return true
+    }
+
     const requestNotificationPermission = async () => {
         if (!('Notification' in window)) {
             console.error('Notifications non supportées par ce navigateur.')
@@ -17,6 +44,8 @@ export function notificationComposable() {
             console.log('Permission refusée')
             return
         }
+
+        await settingsStore.setLastNotificationDate(new Date().toISOString().split('T')[0])
 
         const cardCount = practiceComposable().getCardCountToPracticeToday();
         const message = generatePracticeMessage(cardCount)
@@ -45,6 +74,7 @@ export function notificationComposable() {
     return {
         requestNotificationPermission,
         notifyUser,
-        generatePracticeMessage
+        generatePracticeMessage,
+        isNotificationSendable
     }
 }

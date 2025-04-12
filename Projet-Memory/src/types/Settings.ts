@@ -3,4 +3,5 @@ export interface Settings {
     displayName:string;
     useDailyNotification:boolean;
     profilePicture:string;
+    lastNotificationDate?:string;
 }

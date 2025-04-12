@@ -2,14 +2,15 @@
 import {onMounted} from "vue";
 import {notificationComposable} from "@/composables/notification.composable.ts";
 
-const { requestNotificationPermission, notifyUser } = notificationComposable();
-
+const { requestNotificationPermission, notifyUser, isNotificationSendable } = notificationComposable();
 
 onMounted(async () => {
   const granted = await requestNotificationPermission();
   if (granted) {
     setTimeout(() => {
-      notifyUser()
+      if (isNotificationSendable()) {
+        notifyUser()
+      }
     }, 5000)
   }
 })
