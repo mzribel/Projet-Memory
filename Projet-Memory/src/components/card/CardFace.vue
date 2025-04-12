@@ -1,11 +1,12 @@
 <script setup lang="ts">
 
 import Button from "@/components/buttons/Button.vue";
+import type {Card} from "@/types/Card.ts";
 
 defineProps<{
   showOptions?:boolean,
   isQuestion:boolean,
-  level?: number,
+  card:Card
 }>();
 
 const emit = defineEmits(['editCard', 'deleteCard']);
@@ -31,16 +32,16 @@ const deleteCard = () => { emit("deleteCard"); }
 <!--      <audio controls src="/shared-assets/audio/t-rex-roar.mp3"></audio>-->
 <!--      <video controls><source src="" type="video/mp4" /></video>-->
     </div>
-    <div class="text"><slot></slot></div>
+    <div class="text">{{ isQuestion ? card.front : card.back }}</div>
 
   </div>
   <div class="footer">
     <div class="left">
-      <div class="level" v-if="level">Niveau {{ level }}</div>
+      <div class="level">Niveau {{ card.currentLevel }}</div>
     </div>
     <div class="right" v-if="showOptions">
-      <span>Dernière révision : </span>
-      <span>Prochaine révision : </span>
+      <span v-if="card.lastReviewedAt">Dernière révision : {{ card.lastReviewedAt.slice(0,10) }}</span>
+      <span v-if="card.nextReviewAt">Prochaine révision : {{ card.nextReviewAt.slice(0,10) }}</span>
     </div>
   </div>
 </div>

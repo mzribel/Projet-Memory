@@ -34,8 +34,10 @@ const nextCard = async (memorized:boolean) => {
   if (!currentCard.value) { return }
   if (memorized) {
     await promoteCard(currentCard.value, 5);
+    slideDirection.value = "right";
   } else {
     await demoteCard(currentCard.value, 5);
+    slideDirection.value = "left";
   }
   cardVisible.value = false;
 };
@@ -54,7 +56,11 @@ onMounted(() => {
   })
 });
 
-const isCardFlipped = ref(false);
+const slideDirection = ref<"right"|"left">("left");
+const transitionName = computed(()=> {
+  return 'card-slide-'+slideDirection.value;
+})
+
 
 const nextCardTransition = () => {
     currentIndex.value++;
@@ -70,7 +76,7 @@ const nextCardTransition = () => {
     </TitleBlock>
     <template v-if="cardsToReview && currentCard">
       <div class="practice-form">
-        <Transition name="card-slide" @after-leave="nextCardTransition">
+        <Transition :name="transitionName" @after-leave="nextCardTransition">
           <Card v-if="cardVisible" :key="currentCard.id" :card-data="currentCard"/>
         </Transition>
         <div class="btn-container">
@@ -99,27 +105,38 @@ const nextCardTransition = () => {
 
 <style scoped>
 /* Transition pour la carte */
-.card-slide-enter-active {
+.card-slide-right-enter-active,
+.card-slide-left-enter-active{
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-.card-slide-enter {
+.card-slide-right-enter,
+.card-slide-left-enter {
   opacity: 0;
   transform: translateY(50px); /* Carte qui vient de 50px en bas */
 }
 
-.card-slide-enter-to {
+.card-slide-left-enter-to,
+.card-slide-right-enter-to{
   opacity: 1;
   transform: translateY(0); /* Carte arrive à sa position d'origine */
 }
 
 /* Animation de sortie (slide vers la droite et out) */
-.card-slide-leave-active {
+.card-slide-right-leave-active,
+.card-slide-left-leave-active{
   transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
-.card-slide-leave-to {
+.card-slide-right-leave-to,
+.card-slide-left-leave-to {
   opacity: 0;
+}
+
+.card-slide-left-leave-to {
+  transform: translateX(-100px); /* Carte glisse vers la gauche */
+}
+.card-slide-right-leave-to {
   transform: translateX(100px); /* Carte glisse vers la droite */
 }
 
