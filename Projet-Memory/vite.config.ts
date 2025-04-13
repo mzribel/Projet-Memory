@@ -9,23 +9,23 @@ export default defineConfig({
     vue(),
     VitePWA({
       registerType: 'autoUpdate',
-      strategies: 'generateSW',
+      strategies: 'injectManifest',
+      injectManifest: {
+        swSrc: 'public/sw.js',
+        swDest: 'dist/sw.js'
+      },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg}'],
-        // cleanupOutdatedCaches: true,
-        // skipWaiting: true,
-        // clientsClaim: true,
+        globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg,webp,woff2,woff}'],
       }
-
     }),
+
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
-    port:8080
-  }
+    port: 8080,
+  },
 })
-

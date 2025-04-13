@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import type { Category } from '@/types/Category.ts';
+import Button from "@/components/buttons/Button.vue";
 
 const props = defineProps<{
   category: Category | null;
@@ -44,8 +45,10 @@ const save = () => {
       </div>
 
       <div class="form-actions">
-        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
-        <button type="submit" class="btn save">Sauvegarder</button>
+        <div class="form-actions">
+          <Button @click="$emit('close')" label="Annuler" variant="outlined"></Button>
+          <Button @click="save" label="Sauvegarder" variant="filled" color="secondary"></Button>
+        </div>
       </div>
     </form>
   </div>

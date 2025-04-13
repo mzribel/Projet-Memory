@@ -3,12 +3,13 @@ import {ref, watch} from 'vue';
 import type {Theme} from '@/types/Theme.ts';
 import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {practiceComposable} from "@/composables/practice.composable.ts";
+import Button from "@/components/buttons/Button.vue";
 const { generateReviewInterval } = practiceComposable();
 const props = defineProps<{
   theme: Theme | null;
 }>();
 
-const emit = defineEmits(['save', 'close']);
+const emit = defineEmits(['save', 'close', 'resetProgression']);
 
 const form = ref<Theme>({
   id: '',
@@ -49,6 +50,7 @@ const save = () => {
   emit('save', form.value);
 };
 
+
 </script>
 <template>
   <div class="form-container">
@@ -76,8 +78,9 @@ const save = () => {
       <div class="form-group">
         <label for="levelToReview">Niveaux de révision</label>
         <select id="levelToReview" v-model="form.maxLevel">
-          <option v-for="n in 7" :key="n" :value="n">{{ n }}</option>
+          <option v-for="n in 8" :key="n" :value="n">{{ n }}</option>
         </select>
+        <p class="details">Intervalles des niveaux : {{ generateReviewInterval(form.maxLevel).join(" - ")}} jours </p>
       </div>
 
       <div class="form-group">
@@ -85,9 +88,14 @@ const save = () => {
         <input id="newCardsPerDay" type="number" min="0" v-model="form.newCardsPerDay" />
       </div>
 
+      <div class="form-group">
+        <label for="">Réinitialiser la progression</label>
+        <Button @click="emit('resetProgression')" icon="fa-solid fa-arrow-rotate-left" label="Réinitialiser" variant="tonal"></Button>
+      </div>
+
       <div class="form-actions">
-        <button type="button" @click="$emit('close')" class="btn cancel">Annuler</button>
-        <button type="submit" @click="save" class="btn save">Sauvegarder</button>
+        <Button @click="$emit('close')" label="Annuler" variant="outlined"></Button>
+        <Button @click="save" label="Sauvegarder" variant="filled" color="secondary"></Button>
       </div>
     </form>
   </div>

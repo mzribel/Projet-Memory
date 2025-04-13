@@ -14,7 +14,7 @@ const categoryStore = useCategoryStore();
 <template v-if="isLoaded">
   <Navbar />
   <main>
-    <NavDrawer :categories="[]" :themes="[]"></NavDrawer>
+    <NavDrawer></NavDrawer>
     <div class="content-ctn">
       <div id="content">
         <slot/>

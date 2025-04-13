@@ -12,11 +12,12 @@ import {useCategoryStore} from "@/stores/categoryStore.ts";
 import {useCardStore} from "@/stores/cardStore.ts";
 import Section from "@/components/block/Section.vue";
 import Note from "@/components/block/Note.vue";
-import Card from "@/components/card/Card.vue";
 import CardList from "@/components/lists/CardList.vue";
 import ThemeForm from "@/components/forms/ThemeForm.vue";
 import Modal from "@/components/modal/Modal.vue";
-
+import {practiceComposable} from "@/composables/practice.composable.ts";
+import type {Card} from "@/types/Card.ts";
+const { resetCardLevel } = practiceComposable();
 // la route
 const route = useRoute();
 
@@ -40,6 +41,13 @@ const saveTheme = async (theme:Theme) => {
   await themeStore.addThemeOrUpdateIt(theme);
   themeModalRef.value?.closeModal();
 };
+
+const resetProgression = async () => {
+  if (!cards.value || !theme.value) {return;}
+  cards.value.forEach((card:Card) => {
+    resetCardLevel(card);
+  })
+}
 
 onMounted(async () => {
   await fetchThemeOr404(route.params.themeId as string ?? "");
@@ -100,6 +108,7 @@ const cards = computed(() => {
           :theme="theme ?? null"
           @save="saveTheme"
           @close="themeModalRef?.closeModal"
+         @reset-progression="resetProgression"
         />
       </template>
     </Modal>
@@ -117,11 +126,4 @@ const cards = computed(() => {
   gap: 16px;
 }
 
-.mescouillesenski {
-  padding: 16px 0;
-  display: flex;
-  gap: 16px;
-  row-gap: 16px;
-  flex-wrap: wrap;
-}
 </style>

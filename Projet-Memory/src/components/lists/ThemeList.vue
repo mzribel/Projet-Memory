@@ -44,7 +44,7 @@ const themes = computed(()=> {
     <Button @click="openFormToCreateTheme()" icon="fa-solid fa-plus" label="Ajouter un thème" variant="tonal" size="large"></Button>
 
     <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
-    <div class="mescouillesenski"  v-else-if="themes.length">
+    <div class="flex column gap-8"  v-else-if="themes.length">
       <ThemeItem
           v-for="theme in themes"
           :key="theme.id"
@@ -53,8 +53,8 @@ const themes = computed(()=> {
           @delete="deleteTheme(theme.id)"
       />
     </div>
-    <div v-else>
-      <p>Aucun thème disponible.</p>
+    <div v-else class="no-content">
+      <p>Aucun thème disponible. Créez-en un !</p>
     </div>
 
     <Modal
@@ -77,10 +77,5 @@ const themes = computed(()=> {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-.mescouillesenski {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 </style>

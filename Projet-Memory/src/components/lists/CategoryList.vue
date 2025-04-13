@@ -47,7 +47,7 @@ const categories = computed(() => {
   <div class="container">
     <Button @click="openFormToCreateCategory()" icon="fa-solid fa-plus" label="Ajouter une catégorie" variant="tonal" size="large"></Button>
 
-    <div v-if="categories" class="mescouillesenski">
+    <div v-if="categories.length" class="flex column gap-8">
       <CategoryItem
           v-for="category in categories"
           :key="category.id"
@@ -56,8 +56,8 @@ const categories = computed(() => {
           @delete="deleteCategory(category.id)"
       />
     </div>
-    <div v-else>
-      <p>Aucune catégorie disponible .</p>
+    <div v-else class="no-content">
+      <p>Aucune catégorie disponible. Créez-en une !</p>
     </div>
 
     <Modal
@@ -81,10 +81,5 @@ const categories = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-.mescouillesenski {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 </style>

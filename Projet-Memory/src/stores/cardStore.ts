@@ -13,7 +13,7 @@ export const useCardStore = defineStore('card', () => {
         try {
             cards.value = await db.cards.toArray();
         } catch (error) {
-            console.error('Error loading cards:', error);
+            console.error('Erreur lors du chargement des cartes : ', error);
         }
         isLoaded.value = true;
     };

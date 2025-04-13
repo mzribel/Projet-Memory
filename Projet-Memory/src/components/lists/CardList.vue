@@ -48,25 +48,16 @@ const deleteCard = (cardId: string) => {
 </script>
 
 <template>
-  <div>
-    <h2 class="">Cartes de révision</h2>
-    <CardForm
-      v-if="isFormOpen && !currentCard?.id"
-      :card="currentCard"
-      @save="saveCard"
-      />
-    <div v-if="cards" class="card-list">
-      <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="tonal"></Button>
-      <div class="mescouillesenski">
+  <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="tonal"></Button>
+
+  <div v-if="cards.length" class="card-list flex column gap-8">
+      <div class="cards-ctn flex row-gap-8">
         <Card @edit-card="editCard(card)" @delete-card="deleteCard(card.id)" v-for="card in cards" :show-options="true" :card-data="card"></Card>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="no-content">
       <p>Aucune carte disponible. Créez-en une !</p>
     </div>
-
-  </div>
-
   <Modal ref="modalRef"
          title="Carte">
     <template #body>
@@ -75,5 +66,9 @@ const deleteCard = (cardId: string) => {
   </Modal>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.cards-ctn {
+  display: flex;
+  flex-wrap: wrap;
+}
 </style>

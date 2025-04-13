@@ -2,6 +2,9 @@ import type {Card} from "@/types/Card.ts";
 import arrayShuffle from "array-shuffle";
 import {computed} from "vue";
 import {useCardStore} from "@/stores/cardStore.ts";
+import {useCategoryStore} from "@/stores/categoryStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
+import type {Theme} from "@/types/Theme.ts";
 
 export const practiceComposable = () => {
     // Intervalles de révisions
@@ -11,6 +14,12 @@ export const practiceComposable = () => {
     const generateReviewInterval = (count:number=7, initial:number=1, factor:number=2) => {
         return Array.from({ length: count}, (_, i) => reviewInterval(i, initial, factor));
     }
+
+
+    const categoryStore = useCategoryStore();
+    const themeStore = useThemeStore();
+    const cardStore = useCardStore();
+
 
     const formatDateToLocalISO = (date: Date): string => {
         const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
@@ -45,7 +54,8 @@ export const practiceComposable = () => {
             formatDateToLocalISO(new Date(card.firstReviewedAt)) == today;
     }
 
-    const getNewCards = (cards:Card[], newCardsPerDay?:number) => {
+    const getNewCards = (cards:Card[]|null, newCardsPerDay?:number) => {
+        if (cards == null) cards = cardStore.cards;
         // Récupère les cartes de niveau 1 révisées ajd
         if (newCardsPerDay) {
             const reviewedToday = cards.reduce((count, card) => {
@@ -57,15 +67,17 @@ export const practiceComposable = () => {
         }
 
         let newCards = cards.filter((card: Card) => !card.currentLevel)
-
+        console.log(newCards)
         // Pas de limite, ou nombre de cartes sous la limite
         if (!newCardsPerDay || newCards.length <= newCardsPerDay) {
+            console.log("here")
             return newCards;
         }
 
         // Shuffle les cartes et en retourne un nombre correspondant à la limite
         return arrayShuffle(newCards).slice(0, newCardsPerDay);
     }
+
     const getCardsToPractice = (cards:Card[], maxLevel:number, newCardsPerDay:number) => {
         let cardsToPractice: Card[] = [];
 
@@ -79,6 +91,52 @@ export const practiceComposable = () => {
         return cardsToPractice;
     }
 
+    const getCardsToPracticeTodayByTheme = (themes:Theme[]=themeStore.themes, cards:Card[]=cardStore.cards) => {
+        let result:{themeId:string, cards:Card[], newCards:number}[] = [];
+
+        themes.forEach(theme => {
+            let themeCards = cards.filter((card: Card) => theme.id === card.themeId)
+            let dueCards = themeCards
+                .filter((card: Card) => cardIsDue(card, theme.maxLevel))
+                .sort((a: Card, b: Card) => b.currentLevel - a.currentLevel);
+            let newCardsCount = getNewCards(themeCards, theme.newCardsPerDay).length;
+
+            result.push({themeId:theme.id, cards:dueCards, newCards:newCardsCount});
+        })
+        return result;
+    }
+
+    const getThemesToPracticeByPeriod = (themes:Theme[]=themeStore.themes, cards:Card[]=cardStore.cards, date:"past"|"today"|"future"|"all") => {
+        let result:{themeId:string, cards:Card[], newCards:number}[] = [];
+
+        themes.forEach(theme => {
+            let themeCards = cards.filter((card: Card) => theme.id === card.themeId)
+            let dueCards = themeCards
+                .filter((card: Card) => {
+                    if (!card.nextReviewAt) return false;
+                    const reviewDate = new Date(card.nextReviewAt);
+                    const now = new Date();
+                    reviewDate.setHours(0, 0, 0, 0);
+                    now.setHours(0, 0, 0, 0);
+                    switch (date) {
+                        case "past":
+                            return cardIsDue(card, theme.maxLevel) && reviewDate < now;
+                        case "today":
+                            return cardIsDue(card, theme.maxLevel) && reviewDate == now;
+                        case "future":
+                            return reviewDate > now;
+                        default:
+                            return true;
+                    }
+                })
+                .sort((a: Card, b: Card) => b.currentLevel - a.currentLevel);
+            const count = getNewCards(null, theme.newCardsPerDay).length;
+            let newCardsCount = date == "today" ? count : 0;
+
+            if (dueCards.length || newCardsCount) result.push({themeId:theme.id, cards:dueCards, newCards:newCardsCount});
+        })
+        return result;
+    }
     // Actions sur les cartes
     const reviewCard = async (card:Card, maxLevel:number, direction:1|-1=1) => {
         let cardStore = useCardStore();
@@ -118,6 +176,10 @@ export const practiceComposable = () => {
         await cardStore.addCardOrUpdateIt(card);
     }
 
+    const getCardCountToPracticeToday = () => {
+        return getCardsToPracticeTodayByTheme()
+            .reduce((acc, theme) => acc + theme.cards.length + theme.newCards, 0)
+    }
 
     return {
         reviewInterval,
@@ -126,5 +188,8 @@ export const practiceComposable = () => {
         promoteCard,
         demoteCard,
         resetCardLevel,
+        getCardsToPracticeTodayByTheme,
+        getCardCountToPracticeToday,
+        getThemesToPracticeByPeriod
     }
 }

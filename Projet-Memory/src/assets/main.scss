@@ -46,3 +46,29 @@ main {
     height: fit-content;
   }
 }
+
+.flex {
+  display: flex;
+  &.column { flex-direction: column; }
+  &.row { flex-direction: row; }
+  &.gap-4 { gap: 4px; }
+  &.gap-8 { gap: 8px; }
+  &.gap-16 { gap: 16px; }
+  &.gap-24 { gap: 24px; }
+  &.col-gap-4 { column-gap: 4px; }
+  &.col-gap-8 { column-gap: 8px; }
+  &.col-gap-16 { column-gap: 16px; }
+  &.col-gap-24 { column-gap: 24px; }
+  &.row-gap-4 { row-gap: 4px; }
+  &.row-gap-8 { row-gap: 8px; }
+  &.row-gap-16 { row-gap: 16px; }
+  &.row-gap-24 { row-gap: 24px; }
+}
+
+.no-content {
+  display: flex;
+  font-size: 14px;
+  opacity: .75;
+  font-style: italic;
+  justify-content: center;
+}
