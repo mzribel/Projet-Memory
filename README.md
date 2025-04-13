@@ -76,16 +76,16 @@ Le code source se trouve dans le dossier `.\Projet-Memory\src\`.
 Ce dossier contient d'autres dossiers et des fichiers qui peuvent être répartis par fonctionnalités :
 ```txt
 // Données :
-- database.ts			-> Configuration initiale de l'Indexed DB
+- database.ts		-> Configuration initiale de l'Indexed DB
 > types					-> Interfaces pour les types de données
 > stores				-> Configuration et gestion des stores Pinia
 
 // Métier 
-> composables			-> Fonctions réactives réutilisables
+> composables		-> Fonctions réactives réutilisables
 
 // Interfaces
 > assets				-> Ressouces statiques (img, logo, scss...)
-> components			-> Composants Vue réutilisables et isolés, regroupés par fonctionnalité
+> components		-> Composants Vue réutilisables et isolés, regroupés par fonctionnalité
 > layouts				-> Layouts de page utilisés sur plusieurs vues 
 > views					-> Pages principales liées aux routes
 
