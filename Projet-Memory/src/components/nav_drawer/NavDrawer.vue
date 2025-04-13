@@ -86,6 +86,13 @@ const imagePreview = computed(() => {
     null
 })
 
+const importData = async (e: Event) => {
+  if (await jsonImport(e)) {
+    await settingStore.setLastNotificationDate("");
+    window.location.reload();
+  }
+}
+
 </script>
 
 <template>
@@ -128,7 +135,7 @@ const imagePreview = computed(() => {
       </div>
       <div class="form-group">
         <label for="import-data">Importer des données</label>
-        <input id='import-data' type="file" accept=".json" @change="jsonImport" />
+        <input id='import-data' type="file" accept=".json" @change="importData" />
       </div>
       <div class="form-group inline">
         <label class="switch">

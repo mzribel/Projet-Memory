@@ -78,7 +78,6 @@ const togglePractice = () => {
 }
 
 const todayThemes = computed(() => {
-  console.log(getThemesToPracticeByPeriod(themeStore.themes, cardStore.cards, "today"))
   return getThemesToPracticeByPeriod(themeStore.themes, cardStore.cards, "today");
 })
 const pastThemes = computed(() => {

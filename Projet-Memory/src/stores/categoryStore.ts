@@ -16,7 +16,7 @@ export const useCategoryStore = defineStore('category', () => {
         try {
             categories.value = await db.categories.toArray();
         } catch (error) {
-            console.error('Error loading categories:', error);
+            console.error('Erreur lors du chargement des catégories : ', error);
         }
         isLoaded.value = true;
     };

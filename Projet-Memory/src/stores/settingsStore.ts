@@ -18,7 +18,7 @@ export const useSettingsStore = defineStore('settings', () => {
             settings.value = (await db.settings.toArray())[0];
             if (!settings.value) await initialiseSettings()
         } catch (error) {
-            console.error('Error loading settings:', error);
+            console.error('Erreur lors du chargement des paramètres : ', error);
         }
         isLoaded.value = true;
     }
@@ -27,7 +27,7 @@ export const useSettingsStore = defineStore('settings', () => {
         let settings:Settings = {
             id: '1',
             displayName: '',
-            useDailyNotification: false,
+            useDailyNotification: true,
             profilePicture: '',
             lastNotificationDate: ""
         };

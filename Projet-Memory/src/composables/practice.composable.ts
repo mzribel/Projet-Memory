@@ -67,9 +67,10 @@ export const practiceComposable = () => {
         }
 
         let newCards = cards.filter((card: Card) => !card.currentLevel)
-
+        console.log(newCards)
         // Pas de limite, ou nombre de cartes sous la limite
         if (!newCardsPerDay || newCards.length <= newCardsPerDay) {
+            console.log("here")
             return newCards;
         }
 
@@ -130,7 +131,6 @@ export const practiceComposable = () => {
                 })
                 .sort((a: Card, b: Card) => b.currentLevel - a.currentLevel);
             const count = getNewCards(null, theme.newCardsPerDay).length;
-            console.log(date == "today")
             let newCardsCount = date == "today" ? count : 0;
 
             if (dueCards.length || newCardsCount) result.push({themeId:theme.id, cards:dueCards, newCards:newCardsCount});

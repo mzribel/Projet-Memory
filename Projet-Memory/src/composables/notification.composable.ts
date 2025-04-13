@@ -9,11 +9,9 @@ export function notificationComposable() {
 
     const isNotificationSendable = () => {
         if (!settings.value) {
-            console.error('Settings non chargées')
             return false
         }
         if (settings.value?.useDailyNotification === false) {
-            console.log('Notifications actuellement désactivées')
             return false
         }
 
@@ -59,6 +57,11 @@ export function notificationComposable() {
                     icon: marianneIcon,
                 }
             })
+        } else {
+            new Notification('Memory App', {
+                body: message,
+                icon: marianneIcon
+            });
         }
     }
 

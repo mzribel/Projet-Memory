@@ -12,7 +12,7 @@ export const useThemeStore = defineStore('theme', () => {
         try {
             themes.value = await db.themes.toArray();
         } catch (error) {
-            console.error('Error loading themes:', error);
+            console.error('Erreur lors du chargement des thèmes : ', error);
         }
         isLoaded.value = true;
     }

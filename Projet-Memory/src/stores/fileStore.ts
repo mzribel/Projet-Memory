@@ -11,7 +11,7 @@ export const useFileStore = defineStore("files", () => {
         try {
             files.value = await db.files.toArray();
         } catch (error) {
-            console.error('Error loading cards:', error);
+            console.error('Erreur lors du chargement des cartes : ', error);
         }
         isLoaded.value = true;
     };

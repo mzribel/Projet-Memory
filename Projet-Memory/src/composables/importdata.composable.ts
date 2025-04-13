@@ -19,9 +19,10 @@ export function importDataComposable() {
                 if (json.themes) await db.themes.bulkPut(json.themes as Theme[]);
                 if (json.cards) await db.cards.bulkPut(json.cards as Card[]);
             });
-            window.location.reload();
+            return true;
         } catch (err) {
             console.error(err);
+            return false;
         }
     };
 

@@ -5,7 +5,6 @@ import piniaPersist from 'pinia-plugin-persistedstate';
 import localforage from 'localforage';
 import App from './App.vue';
 import router from './router';
-import './index.css';
 
 localforage.config({
     name: 'memoryApp',
@@ -37,5 +36,5 @@ navigator.serviceWorker.register('/sw.js', { type: 'module' })
             }
         }
     }).catch(error => {
-        console.error('Erreur lors de l\'enregistrement du Service Worker:', error)
+        console.error('Erreur lors de l\'enregistrement du Service Worker : ', error)
     })
