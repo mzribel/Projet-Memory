@@ -3,6 +3,7 @@
 import {useSettingsStore} from "@/stores/settingsStore.ts";
 import {computed} from "vue";
 import {useFileStore} from "@/stores/fileStore.ts";
+import Button from "@/components/buttons/Button.vue";
 
 const settingsStore = useSettingsStore();
 const fileStore = useFileStore();
@@ -13,12 +14,19 @@ const profilePictureURL = computed(()=> {
   return fileStore.getFileURLById(settings.value.profilePicture);
 })
 
+const emit = defineEmits(['toggleBurger']);
+defineProps<{
+  showBurger?: boolean;
+  isOpen: boolean;
+}>();
 </script>
 
 <template>
   <header>
     <nav>
-      <div class="left"><router-link to="/">Tony Memory</router-link></div>
+      <div class="left">
+        <Button v-if="showBurger" @click='emit("toggleBurger")' :icon="`fa-solid ${isOpen ? 'fa-bars' : 'fa-close'}`" class="menu-burger-btn"/>
+      </div>
       <div class="right">
         <div class="user-data">
           <span v-if="settings && settings.displayName" class="username">{{ settings.displayName }}</span>
@@ -82,6 +90,10 @@ header {
       letter-spacing: 1.2px;
       opacity: .8;
     }
+  }
+
+  .menu-burger-btn {
+    font-size: 20px;
   }
 }
 </style>

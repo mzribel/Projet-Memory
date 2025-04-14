@@ -93,6 +93,8 @@ const importData = async (e: Event) => {
   }
 }
 
+const emit = defineEmits(["isClicked"])
+
 </script>
 
 <template>
@@ -103,6 +105,7 @@ const importData = async (e: Event) => {
         :title="item.title"
         :icon="item.icon"
         :link="item.link"
+        @click="emit('isClicked')"
       ></DrawerItem>
       <DrawerItem @click="openParameters" title="Paramètres" icon="fa-solid fa-gear"></DrawerItem>
     </DrawerCategory>
@@ -166,8 +169,9 @@ const importData = async (e: Event) => {
   font-family: "Roboto", sans-serif;
   padding: 12px;
   height: 100%;
-  width: 360px;
+  width: 100%;
   color: #49454F;
+  border-right: 1px solid #49454F;
   overflow: auto;
   display: flex;
   flex-direction: column;
