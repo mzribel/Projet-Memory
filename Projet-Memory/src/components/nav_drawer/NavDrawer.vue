@@ -170,6 +170,7 @@ const emit = defineEmits(["isClicked"])
   display: none;
 }
 .nav-drawer {
+  background-color: white;
   font-family: "Roboto", sans-serif;
   padding: 12px;
   height: 100%;

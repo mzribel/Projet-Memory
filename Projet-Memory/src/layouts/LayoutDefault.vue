@@ -42,7 +42,7 @@ const closeDrawer = () => {
 <template v-if="isLoaded">
   <Navbar @toggle-burger="toggleNavDrawer" :show-burger="showToggleButton" :is-open="navIsHidden"/>
   <main>
-    <div class="nav-ctn" :class="navIsHidden ? 'hidden' : ''" ref="mescouillesenski">
+    <div class="nav-ctn" :class="navIsHidden ? 'hidden' : ''">
       <NavDrawer @is-clicked="closeDrawer" ref="navDrawerRef"></NavDrawer>
     </div>
     <div class="content-ctn">
