@@ -57,8 +57,8 @@ L'application permet de :
 - [x] Notification quotidiennes paramétrables
 - [x] Application téléchargeable et fonctionnement hors-ligne 
 - [x] Gestion multimédia
+- [X] Données de test *(dans `./data/` et importables via les paramètres)*
 - [ ] Responsive *(en cours de réalisation)*
-- [ ] Données de test *(dans `./data/` et importables via les paramètres)*
 - [ ] Atomic Design : les composants ont été réalisés pour, mais la documentation associée n'a pas été réalisée par manque de temps
 
 ### Fonctionnalités supplémentaires
