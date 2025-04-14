@@ -51,7 +51,7 @@ const deleteCard = (cardId: string) => {
   <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="tonal"></Button>
 
   <div v-if="cards.length" class="card-list flex column gap-8">
-      <div class="cards-ctn flex row-gap-8">
+      <div class="cards-ctn flex gap-8">
         <Card @edit-card="editCard(card)" @delete-card="deleteCard(card.id)" v-for="card in cards" :show-options="true" :card-data="card"></Card>
       </div>
     </div>
