@@ -3,7 +3,6 @@ import DrawerItem from "@/components/nav_drawer/components/DrawerItem.vue";
 
 defineProps<{
   title?:string
-  empty_message?:string
 }>();
 
 </script>
@@ -11,13 +10,10 @@ defineProps<{
 <template>
   <div class="nav-category">
     <DrawerItem v-if="title" :title="title" :is-title="true"></DrawerItem>
-    <div v-if="$slots.default" class="item-ctn">
+    <div class="item-ctn">
       <slot></slot>
     </div>
-    <div v-else-if="empty_message" class="no-item">
-      {{ empty_message }}
-      hiyo
-    </div>
+    <slot name="details"></slot>
   </div>
 </template>
 
@@ -25,28 +21,22 @@ defineProps<{
 .nav-category {
   display: flex;
   flex-direction: column;
+  &.padding-left .item-ctn {
+    padding-left: 15px;
+    position: relative;
+    &:before {
+      position: absolute;
+      content: "";
+      height: 100%;
+      width: 1px;
+      background-color: #000;
+      top: 0;
+      left: 15px;
+    }
+  }
   &:not(:last-of-type) {
     margin-bottom: 1px;
     position:relative;
-    &::after {
-      //content:"";
-      position:absolute;
-      bottom:-1px;
-      left:16px;
-      height: 1px;
-      width: calc(100% - 32px);
-      background-color: #CAC4D0;
-    }
-  }
-
-  .no-item {
-    font-size: 14px;
-    font-style: italic;
-    opacity: .8;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 </style>

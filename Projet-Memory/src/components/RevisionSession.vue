@@ -161,10 +161,10 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
         <template #title-left><h2>Aujourd'hui</h2></template>
         <template #content>
           <div v-if="todayThemes.length" v-for="theme of todayThemes" class="flex column row-gap-8">
-            <Note>
+            <Note class="">
               <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }}</h3>
               <div class="details">
-                <div class="levels">
+                <div class="levels flex column row-gap-8">
                       <span v-if="theme.newCards">
                         <b>Niveau 0</b>: {{ theme.newCards }} carte{{theme.newCards > 1 ? 's' : ''}} (nouvelles cartes !)
                       </span>
@@ -186,10 +186,10 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
             <div v-for="theme of date.themes">
               <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }}</h3>
               <div class="details">
-                <div class="levels">
-                      <span v-for="(count, level) of countCardsByLevel(theme.cards)">
-                        <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
-                      </span>
+                <div class="levels flex column row-gap-8">
+                    <span v-for="(count, level) of countCardsByLevel(theme.cards)">
+                      <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
+                    </span>
                 </div>
               </div>
             </div>
@@ -201,19 +201,21 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
         <TitleBlock class="second">
           <template #title-left><h1>Prochaines révisions</h1></template>
         </TitleBlock>
-          <Section v-for="date in groupByDate(futureThemes)" :key="date.date" v-if="groupByDate(futureThemes)?.length">
+          <Section v-for="date in groupByDate(futureThemes)" :key="date.date" v-if="groupByDate(futureThemes)?.length" class="flex column row-gap-8">
             <template #title-left><h2>{{ date.date }}</h2></template>
             <template #content>
+              <div class="flex column row-gap-16">
               <Note v-for="theme of date.themes" :show-bar="true" :key="theme.themeId">
                     <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }}</h3>
                     <div class="details">
-                      <div class="levels">
-                      <span v-for="(count, level) of countCardsByLevel(theme.cards)">
-                        <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
-                      </span>
+                      <div class="levels flex column row-gap-8">
+                        <span v-for="(count, level) of countCardsByLevel(theme.cards)">
+                          <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
+                        </span>
                       </div>
                     </div>
               </Note>
+              </div>
             </template>
           </Section>
         <div v-else class="no-content padding">Aucune révision future prévue !</div>

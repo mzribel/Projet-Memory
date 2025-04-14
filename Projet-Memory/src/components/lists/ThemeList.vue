@@ -41,7 +41,7 @@ const themes = computed(()=> {
 
 <template>
   <div class="container">
-    <Button @click="openFormToCreateTheme()" icon="fa-solid fa-plus" label="Ajouter un thème" variant="tonal" size="large"></Button>
+    <Button @click="openFormToCreateTheme()" icon="fa-solid fa-plus" label="Ajouter un thème" variant="outlined" color="secondary" size="large"></Button>
 
     <div v-if="!isLoaded">Chargement... {{ isLoaded }}</div>
     <div class="flex column gap-8"  v-else-if="themes.length">

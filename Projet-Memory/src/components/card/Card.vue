@@ -16,12 +16,6 @@ const {cardData, showOptions} = defineProps<{
 
 const currentCard = ref<CardData | null>(null);
 
-// const editCard = () => {
-//   currentCard.value = cardData;
-//   modalRef.value?.openModal();
-// }
-
-
 const emit = defineEmits(['editCard', "deleteCard"]);
 const editCard = () => { emit("editCard"); }
 const deleteCard = () => { emit("deleteCard"); }

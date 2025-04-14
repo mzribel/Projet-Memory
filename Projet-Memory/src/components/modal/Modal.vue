@@ -54,7 +54,6 @@ defineExpose({openModal, closeModal});
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .2s ease-in-out ;
 }
 
 .modal-background {
@@ -67,10 +66,6 @@ defineExpose({openModal, closeModal});
   backdrop-filter: blur(3px);
   opacity: 1;
 }
-.hidden .modal-background {
-  opacity: 0;
-}
-
 .modal {
   background-color: white;
   padding: 16px 24px;

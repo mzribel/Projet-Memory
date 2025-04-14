@@ -109,15 +109,20 @@ const emit = defineEmits(["isClicked"])
       ></DrawerItem>
       <DrawerItem @click="openParameters" title="Paramètres" icon="fa-solid fa-gear"></DrawerItem>
     </DrawerCategory>
-    <DrawerCategory title="Thèmes" empty_message="Aucun thème">
-      <template v-if="themes">
+    <DrawerCategory title="Thèmes" empty_message="Aucun thème" class="padding-left">
+      <template v-slot:default>
         <DrawerItem
+          v-if="themes"
           v-for="theme of themes"
           :title="theme.name"
           :link="`/themes/${theme.id}`">
           ></DrawerItem>
+        <div v-else class="no-content">Hehe</div>
+      </template>
+      <template #details v-if="themes">
         <router-link to="/themes/" class="see-more">Voir tout</router-link>
       </template>
+
     </DrawerCategory>
   </div>
   <Modal title="Paramètres" ref="parametersModalRef">
@@ -165,13 +170,12 @@ const emit = defineEmits(["isClicked"])
   display: none;
 }
 .nav-drawer {
-  background-color: #FEF7FF;
   font-family: "Roboto", sans-serif;
   padding: 12px;
   height: 100%;
   width: 100%;
   color: #49454F;
-  border-right: 1px solid #49454F;
+  border-right: 2px solid #49454F;
   overflow: auto;
   display: flex;
   flex-direction: column;

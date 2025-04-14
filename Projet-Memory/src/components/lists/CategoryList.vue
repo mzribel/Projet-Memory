@@ -45,7 +45,7 @@ const categories = computed(() => {
 
 <template>
   <div class="container">
-    <Button @click="openFormToCreateCategory()" icon="fa-solid fa-plus" label="Ajouter une catégorie" variant="tonal" size="large"></Button>
+    <Button @click="openFormToCreateCategory()" icon="fa-solid fa-plus" label="Ajouter une catégorie" variant="outlined" color="secondary" size="large"></Button>
 
     <div v-if="categories.length" class="flex column gap-8">
       <CategoryItem

@@ -48,7 +48,7 @@ const deleteCard = (cardId: string) => {
 </script>
 
 <template>
-  <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="tonal"></Button>
+  <Button @click="openForm()" icon="fa-solid fa-plus" label="Ajouter une carte" variant="outlined" color="secondary"></Button>
 
   <div v-if="cards.length" class="card-list flex column gap-8">
       <div class="cards-ctn flex gap-8">
