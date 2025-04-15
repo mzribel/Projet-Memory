@@ -50,7 +50,7 @@ L'application permet de :
 - Créer des catégories, contenant des thèmes
 - Créer des thèmes, contenant des cartes de révision
 - Réviser chaque jour les cartes qui doivent l'être, ainsi qu'un nombre de nouvelles cartes par thème défini dans ceux-ci (s'il en reste).
-
+ 
 ### Liste exhaustive
 - [x] Création de catégories, thèmes et cartes
 - [x] Révision et répétition espacée
