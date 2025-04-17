@@ -1,5 +1,7 @@
 # TP Final - Projet Memory
 
+ATTENTION : Marianne du futur a commit à la date du 20 avril apres avoir fait des tests en ayant modifié la date de son PC 🫠
+
 Rendu final du cours de développement front-end avancé par **Tony De Donato** et **Marianne Corbel**, avec toutes nos excuses pour le retard et la gêne que celui-ci a pu occasionner.
 
 Afin qu'il serve à nos portfolio respectifs, ce rendu est susceptible d'évoluer dans les jours/semaines suivants le rendu mais il s'agirait surtout de rangement de code et de fonctionnalités QoL, pas des éléments du barème.
