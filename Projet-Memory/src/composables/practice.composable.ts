@@ -67,10 +67,8 @@ export const practiceComposable = () => {
         }
 
         let newCards = cards.filter((card: Card) => !card.currentLevel)
-        console.log(newCards)
         // Pas de limite, ou nombre de cartes sous la limite
         if (!newCardsPerDay || newCards.length <= newCardsPerDay) {
-            console.log("here")
             return newCards;
         }
 
@@ -78,7 +76,7 @@ export const practiceComposable = () => {
         return arrayShuffle(newCards).slice(0, newCardsPerDay);
     }
 
-    const getCardsToPractice = (cards:Card[], maxLevel:number, newCardsPerDay:number) => {
+    const getCardsToPractice = (cards:Card[], maxLevel:number, newCardsPerDay?:number) => {
         let cardsToPractice: Card[] = [];
 
         // Cartes dues aujourd'hui
@@ -190,6 +188,7 @@ export const practiceComposable = () => {
         resetCardLevel,
         getCardsToPracticeTodayByTheme,
         getCardCountToPracticeToday,
-        getThemesToPracticeByPeriod
+        getThemesToPracticeByPeriod,
+        formatDateToLocalISO
     }
 }

@@ -1,22 +1,17 @@
 <script lang="ts" setup>
-import {ref, onMounted, computed} from 'vue';
-import ProgressTracker from './ProgressTracker.vue';
-import RevisionCard from './RevisionCard.vue';
-import { useCardStore } from "@/stores/cardStore.ts";
-import { useThemeStore } from "@/stores/themeStore.ts";
+import {computed, onMounted, ref} from 'vue';
+import {useCardStore} from "@/stores/cardStore.ts";
+import {useThemeStore} from "@/stores/themeStore.ts";
 import type {Card as CardType} from "@/types/Card.ts";
 import {practiceComposable} from "@/composables/practice.composable.ts";
 import type {Theme} from "@/types/Theme.ts";
 import Card from "@/components/card/Card.vue";
 import Button from "@/components/buttons/Button.vue";
 import {themeDataComposable} from "@/composables/themedata.composable.ts";
-import Block from "@/components/block/Block.vue";
-import PageSubtitle from "@/components/block/PageSubtitle.vue";
 import TitleBlock from "@/components/block/TitleBlock.vue";
 import Section from "@/components/block/Section.vue";
-import ThemeItem from "@/components/items/ThemeItem.vue";
 import Note from "@/components/block/Note.vue";
-import {useCategoryStore} from "@/stores/categoryStore.ts";
+const { formatDateToLocalISO } = practiceComposable()
 
 const {
   getCardsToPractice,
@@ -29,9 +24,6 @@ const {
 const cardStore = useCardStore();
 const themeStore = useThemeStore();
 const { groupCardsByDateAndTheme } = themeDataComposable();
-const groupedCards = computed(() => {
-  return groupCardsByDateAndTheme(cardStore.cards);
-})
 const cardsToReview = ref<CardType[]>([]);
 
 const cardVisible = ref(true);
@@ -54,12 +46,17 @@ const currentCard = computed(() => {
 });
 
 onMounted(() => {
+  updateCards();
+});
+
+const updateCards = () => {
+  cardsToReview.value = [];
   const selectedThemes = themeStore.themes;
   selectedThemes.forEach((theme:Theme) => {
     const allCards = cardStore.getCardsByThemeId(theme.id);
-    cardsToReview.value.push(...getCardsToPractice(allCards, theme.maxLevel, theme.newCardsPerDay ?? 5));
+    cardsToReview.value.push(...getCardsToPractice(allCards, theme.maxLevel, theme.newCardsPerDay));
   })
-});
+}
 
 const slideDirection = ref<"right"|"left">("left");
 const transitionName = computed(()=> {
@@ -74,15 +71,11 @@ const nextCardTransition = () => {
 
 const isPracticing = ref(false);
 const togglePractice = () => {
+
   isPracticing.value = !isPracticing.value;
+  updateCards();
 }
 
-const todayThemes = computed(() => {
-  return getThemesToPracticeByPeriod(themeStore.themes, cardStore.cards, "today");
-})
-const pastThemes = computed(() => {
-  return getThemesToPracticeByPeriod(themeStore.themes, cardStore.cards, "past");
-})
 const futureThemes = computed(() => {
   return getThemesToPracticeByPeriod(themeStore.themes, cardStore.cards, "future");
 })
@@ -126,13 +119,66 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
   }
   return result;
 }
+
+function groupCardsByTheme(cards: CardType[]): { themeId: string, cards: CardType[] }[] {
+  const map = new Map<string, CardType[]>();
+
+  for (const card of cards) {
+    const themeId = card.themeId;
+    if (!map.has(themeId)) {
+      map.set(themeId, []);
+    }
+    map.get(themeId)!.push(card);
+  }
+
+  return Array.from(map.entries()).map(([themeId, cards]) => ({
+    themeId,
+    cards,
+  }));
+}
+
+type DelayStats = {
+  dueCount: number;
+  minDelayDays: number | null;
+  maxDelayDays: number | null;
+};
+
+function getDelayStatsForThemeCards(cards: CardType[]): DelayStats {
+  const now = new Date(formatDateToLocalISO(new Date()));
+  const delays = cards
+    .filter(card => card.nextReviewAt)
+    .map(card => {
+      const nextReviewDate = new Date(card.nextReviewAt!);
+      nextReviewDate.setHours(0, 0, 0, 0)
+      const delayInDays = Math.floor((now.getTime() - nextReviewDate.getTime()) / (1000 * 60 * 60 * 24));
+      return Math.floor((now.getTime() - nextReviewDate.getTime()) / (1000 * 60 * 60 * 24));
+    })
+    .filter(delay => delay > 0); // seulement les retards
+  return {
+    dueCount: delays.length,
+    minDelayDays: delays.length > 0 ? Math.min(...delays) : null,
+    maxDelayDays: delays.length > 0 ? Math.max(...delays) : null,
+  };
+}
+
+
+const groupedThemesToReviewToday = computed(() => {
+  return groupCardsByTheme(cardsToReview.value)
+    .map(theme => {
+      return {
+        ...theme,
+        delayInfo:getDelayStatsForThemeCards(theme.cards),
+        newCardsCount: theme.cards.filter(c => !c.currentLevel).length,
+      }
+    })
+})
 </script>
 
 <template>
   <div>
     <TitleBlock :align-center-title="true">
       <template #title-left><h1>Révisions du jour</h1></template>
-      <template #title-right v-if="cardsToReview">
+      <template #title-right v-if="cardsToReview.length">
         <Button
           :icon="isPracticing ? 'fa-solid fa-stop' : 'fa-solid fa-play'"
           :label="isPracticing ? 'Arrêter la session' : 'Commencer la session'"
@@ -143,6 +189,11 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
 
     <template v-if="isPracticing">
       <div class="practice-ctn" v-if="cardsToReview && currentCard">
+        <Note :show-bar="true">
+            <h3><b>Thème : </b>{{ themeStore.getThemeById(currentCard.themeId)?.name ?? 'Thème perdu' }}</h3>
+            <div>Niveau max du thème : {{ themeStore.getThemeById(currentCard.themeId)?.maxLevel ?? 5 }}</div>
+            <div>Progression de la révision : {{ currentIndex +1}} / {{ cardsToReview.length }}</div>
+        </Note>
         <div class="practice-form">
           <Transition :name="transitionName" @after-leave="nextCardTransition">
             <Card v-if="cardVisible" :key="currentCard.id" :card-data="currentCard"/>
@@ -159,15 +210,19 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
     <div v-else class="flex column row-gap-16">
       <Section class="flex column row-gap-8">
         <template #title-left><h2>Aujourd'hui</h2></template>
+        <template #title-right v-if="cardsToReview.length">{{cardsToReview.length}} carte{{cardsToReview.length ? 's' : ''}}</template>
         <template #content>
-          <div v-if="todayThemes.length" v-for="theme of todayThemes" class="flex column row-gap-8">
-            <Note class="">
-              <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }}</h3>
+          <div v-if="groupedThemesToReviewToday.length" class="flex column row-gap-16">
+            <Note v-for="theme of groupedThemesToReviewToday" :show-bar="true">
+              <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }} - <span class="subtitle">{{ theme.cards.length }} carte{{ theme.cards.length > 1 ? "s":""}}</span></h3>
               <div class="details">
-                <div class="levels flex column row-gap-8">
-                      <span v-if="theme.newCards">
-                        <b>Niveau 0</b>: {{ theme.newCards }} carte{{theme.newCards > 1 ? 's' : ''}} (nouvelles cartes !)
-                      </span>
+                <div class="delay" v-if="theme.delayInfo.dueCount">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <span>{{ theme.delayInfo.dueCount }} carte{{ theme.delayInfo.dueCount > 1 ? 's' : ''}} en retard !</span>
+                    <span v-if="theme.delayInfo.minDelayDays != theme.delayInfo.maxDelayDays">({{theme.delayInfo.minDelayDays}}-{{theme.delayInfo.maxDelayDays}}j)</span>
+                    <span v-else>({{theme.delayInfo.minDelayDays}}j)</span>
+                </div>
+                <div class="levels flex column">
                       <span v-for="(count, level) of countCardsByLevel(theme.cards)">
                         <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
                       </span>
@@ -178,30 +233,12 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
           <div v-else class="no-content padding">Aucune carte à apprendre aujourd'hui !</div>
         </template>
       </Section>
-      <Section>
-        <template #title-left><h2>En retard</h2></template>
-        <template #content>
-          <div v-for="date of groupByDate(pastThemes)" v-if="groupByDate(pastThemes)?.length" class="flex column row-gap-8">
-            <h4>{{ date.date }}</h4>
-            <div v-for="theme of date.themes">
-              <h3>{{ themeStore.getThemeById(theme.themeId)?.name ?? 'Thème perdu' }}</h3>
-              <div class="details">
-                <div class="levels flex column row-gap-8">
-                    <span v-for="(count, level) of countCardsByLevel(theme.cards)">
-                      <b>Niveau {{ level }}:</b> {{ count }} carte{{count > 1 ? 's' : ''}}
-                    </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-else class="no-content padding">Aucun thème en retard.</div>
-        </template>
-      </Section>
       <div>
         <TitleBlock class="second">
           <template #title-left><h1>Prochaines révisions</h1></template>
         </TitleBlock>
-          <Section v-for="date in groupByDate(futureThemes)" :key="date.date" v-if="groupByDate(futureThemes)?.length" class="flex column row-gap-8">
+        <div v-if="groupByDate(futureThemes)?.length" class="flex column row-gap-16">
+          <Section v-for="date in groupByDate(futureThemes)" :key="date.date" class="flex column row-gap-8">
             <template #title-left><h2>{{ date.date }}</h2></template>
             <template #content>
               <div class="flex column row-gap-16">
@@ -218,6 +255,7 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
               </div>
             </template>
           </Section>
+        </div>
         <div v-else class="no-content padding">Aucune révision future prévue !</div>
       </div>
 
@@ -281,5 +319,29 @@ const groupByDate = (themes:{themeId: string, cards: CardType[], newCards: numbe
 
 .second {
   margin-top: 32px;
+}
+.levels {
+  font-size: 14px;
+  opacity: .75;
+  font-style: italic;
+}
+
+.subtitle {
+  font-size: 14px;
+  opacity: .75;
+}
+
+.delay {
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-style: italic;
+  :not(i) {
+    font-size: 12px;
+  }
+  i {
+    font-size: 14px;
+  }
 }
 </style>
