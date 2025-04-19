@@ -30,10 +30,10 @@ const cardVisible = ref(true);
 const nextCard = async (memorized:boolean) => {
   if (!currentCard.value) { return }
   if (memorized) {
-    await promoteCard(currentCard.value, 5);
+    await promoteCard(currentCard.value, themeStore.getThemeById(currentCard.value.themeId)?.maxLevel ?? 5);
     slideDirection.value = "right";
   } else {
-    await demoteCard(currentCard.value, 5);
+    await demoteCard(currentCard.value, themeStore.getThemeById(currentCard.value.themeId)?.maxLevel ?? 5);
     slideDirection.value = "left";
   }
   cardVisible.value = false;
